@@ -1,0 +1,4 @@
+[submodule "deploy"]
+	path = deploy
+	url = git@github.com:RISCfuture/learnmorse.codes.git
+	branch = gh-pages

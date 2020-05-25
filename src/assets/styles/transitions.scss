@@ -1,0 +1,211 @@
+@mixin delayed($duration) {
+  &-enter-active {
+    transition-delay: $duration;
+  }
+}
+
+@mixin accelerate {
+  &-enter-active {
+    transition-timing-function: ease-out;
+  }
+
+  &-leave-active {
+    transition-timing-function: ease-in;
+  }
+}
+
+@mixin linear {
+  &-enter-active {
+    transition-timing-function: linear;
+  }
+
+  &-leave-active {
+    transition-timing-function: linear;
+  }
+}
+
+@mixin transition-in {
+  &-enter-active {
+    @content(1);
+  }
+
+  &-enter {
+    @content(2);
+  }
+
+  &-enter-to {
+    @content(3);
+  }
+}
+
+@mixin transition-out {
+  &-leave-active {
+    @content(1);
+  }
+
+  &-leave {
+    @content(2);
+  }
+
+  &-leave-to {
+    @content(3);
+  }
+}
+
+@mixin in-fade($block, $duration: 0.25s) {
+  @if ($block == 1) {
+    transition-property: opacity;
+    transition-duration: $duration;
+  } @else if ($block == 2) {
+    opacity: 0;
+  } @else {
+    opacity: 1;
+  }
+}
+
+@mixin out-fade($block, $duration: 0.25s) {
+  @if ($block == 1) {
+    transition-property: opacity;
+    transition-duration: $duration;
+  } @else if ($block == 2) {
+    opacity: 1;
+  } @else {
+    opacity: 0;
+  }
+}
+
+@mixin in-up($block, $duration: 0.25s) {
+  @if ($block == 1) {
+    transition-property: transform, opacity;
+    transition-duration: $duration;
+  } @else if ($block == 2) {
+    transform: translateY(100%);
+    opacity: 0;
+  } @else {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@mixin out-up($block, $duration: 0.25s) {
+  @if ($block == 1) {
+    transition-property: transform, opacity;
+    transition-duration: $duration;
+  } @else if ($block == 2) {
+    transform: translateY(0);
+    opacity: 1;
+  } @else {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@mixin in-grow($block, $duration: 0.25s) {
+  @if ($block == 1) {
+    transition-property: transform, opacity;
+    transition-duration: $duration;
+  } @else if ($block == 2) {
+    transform: scale(0);
+    opacity: 0;
+  } @else {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@mixin out-grow($block, $duration: 0.25s) {
+  @if ($block == 1) {
+    transition-property: transform, opacity;
+    transition-duration: $duration;
+  } @else if ($block == 2) {
+    transform: scale(1);
+    opacity: 1;
+  } @else {
+    transform: scale(10);
+    opacity: 0;
+  }
+}
+
+.in-fade-out-fade {
+  @include transition-out using($block) {
+    @include out-fade($block);
+  }
+
+  @include transition-out using($block) {
+    @include out-fade($block);
+  }
+}
+
+.in-fade-1 {
+  @include delayed(0.5s);
+
+  @include transition-in using($block) {
+    @include in-fade($block);
+  }
+}
+
+.in-fade-2 {
+  @include delayed(1.5s);
+
+  @include transition-in using($block) {
+    @include in-fade($block);
+  }
+}
+
+.in-fade-3 {
+  @include delayed(2s);
+
+  @include transition-in using($block) {
+    @include in-fade($block, 3s);
+  }
+}
+
+.in-move-up-out-move-up {
+  @include accelerate;
+
+  @include transition-in using($block) {
+    @include in-up($block);
+  }
+
+  @include transition-out using($block) {
+    @include out-up($block);
+  }
+}
+
+.out-move-up {
+  @include transition-out using($block) {
+    @include out-up($block);
+  }
+}
+
+.in-grow-out-grow {
+  @include transition-in using($block) {
+    @include in-grow($block);
+  }
+
+  @include transition-out using($block) {
+    @include out-grow($block);
+  }
+}
+
+.in-grow-out-fade {
+  @include transition-in using($block) {
+    @include in-grow($block);
+  }
+
+  @include transition-out using($block) {
+    @include out-fade($block);
+  }
+}
+
+.in-grow-out-grow-linear {
+  @include linear;
+
+  @include transition-in using($block) {
+    @include in-grow($block);
+  }
+
+  @include transition-out using($block) {
+    @include out-grow($block);
+  }
+}

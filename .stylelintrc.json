@@ -1,0 +1,9 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "rules": {
+    "function-parentheses-space-inside": "never-single-line",
+    "max-nesting-depth": null,
+    "property-no-vendor-prefix": null,
+    "selector-max-id": null
+  }
+}

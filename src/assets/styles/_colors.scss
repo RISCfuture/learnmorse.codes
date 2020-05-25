@@ -1,0 +1,56 @@
+@use 'sass:map';
+
+// the basics
+
+$light: #fff;
+$medium: #a6a6a6;
+$dark: #000;
+$color: #00f;
+$pass: #0d0;
+$fail: #f00;
+
+/* Defines color themes for light and dark schemes. Use this mixin to get the
+   proper color to use given the user's desired color scheme. This mixin yields
+   to your content block a map of named colors to use. */
+
+@mixin theme {
+  @media all and (prefers-color-scheme: dark) {
+    @content((
+      'background': $dark,
+                'border-color': lighten($dark, 10%),
+                'button-background-color': lighten($dark, 10%),
+                'button-background-hover-color': lighten($dark, 20%),
+                'fail': $fail,
+                'link-color': lighten($color, 20%),
+                'muted-color': $medium,
+                'pass': $pass,
+                'text-color': $light
+        ));
+  }
+
+  @content((
+    'background': $light,
+            'border-color': darken($light, 10%),
+            'button-background-color': darken($light, 10%),
+            'button-background-hover-color': darken($light, 20%),
+            'fail': lighten($fail, 20%),
+            'link-color': $color,
+            'muted-color': darken($medium, 20%),
+            'pass': lighten($pass, 20%),
+            'text-color': $dark
+    ));
+}
+
+/* Convenience method for getting named colors from the map given to you by
+   the `theme` mixin; just so you don't have to also use `sass:map` in all your
+   CSS files. */
+
+@function get($theme, $name) {
+  @return map.get($theme, $name);
+}
+
+@mixin muted {
+  @include theme using($theme) {
+    color: get($theme, 'muted-color');
+  }
+}
