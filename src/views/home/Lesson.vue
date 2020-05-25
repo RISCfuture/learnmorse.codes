@@ -144,6 +144,8 @@
     }
 
     onKeyPress(event: KeyboardEvent): void {
+      if (event.target !== document.body) return
+
       // eslint-disable-next-line default-case
       switch (event.key) {
         case 'ArrowLeft':
