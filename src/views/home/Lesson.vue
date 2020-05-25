@@ -144,7 +144,7 @@
     }
 
     onKeyPress(event: KeyboardEvent): void {
-      if (event.target !== document.body) return
+      if (event.target instanceof HTMLInputElement) return
 
       // eslint-disable-next-line default-case
       switch (event.key) {
