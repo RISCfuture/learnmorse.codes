@@ -1,9 +1,9 @@
 module.exports = {
-  plugins: [
-    'cypress'
+  plugins: ['cypress'],
+  extends: [
+    'plugin:cypress/recommended'
   ],
   env: {
-    mocha: true,
     'cypress/globals': true
   },
   rules: {
