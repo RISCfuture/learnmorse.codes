@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p :class="{pass, perfect}" data-cy="score" id="score">{{penalty | score}}</p>
+    <p :class="{pass, perfect}" data-cy="score" id="score">{{score}}</p>
     <p data-cy="extraCredit" v-if="pass && extraCredit">{{extraCreditString}}</p>
 
     <diff :diff="diff" v-if="showDiff" />
@@ -13,7 +13,6 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import numeral from 'numeral'
   import Component from 'vue-class-component'
   import { Prop, Watch } from 'vue-property-decorator'
   import { confetti } from 'dom-confetti'
@@ -32,13 +31,7 @@
    */
 
   @Component({
-    components: { Diff: DiffComponent, Tip, Platitude },
-    filters: {
-      score(penalty: number): string {
-        const clampedScore = clamp(penalty, 0.0, 1.0)
-        return numeral(1 - clampedScore).format('0%')
-      }
-    }
+    components: { Diff: DiffComponent, Tip, Platitude }
   })
   export default class Result extends Vue {
     $refs!: {
@@ -52,6 +45,11 @@
     @Prop({ type: Boolean, default: false }) showDiff!: boolean
 
     showTip = false
+
+    get score(): string {
+      const clampedScore = clamp(this.penalty, 0.0, 1.0)
+      return this.$n(1 - clampedScore, 'percent')
+    }
 
     get pass(): boolean {
       return isPass(this.penalty)
@@ -68,7 +66,7 @@
     get extraCreditString(): string {
       return <string> this.$tc('lesson.copy.extraCredit',
         this.extraCredit,
-        { points: numeral(this.extraCredit).format('0,0') })
+        { points: this.$n(this.extraCredit, 'integer') })
     }
 
     mounted(): void {
