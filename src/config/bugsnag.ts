@@ -4,7 +4,8 @@ import BugsnagPluginVue from '@bugsnag/plugin-vue'
 
 Bugsnag.start({
   apiKey: '29094f9e852387f9cf1e6525b93d0ce9',
-  plugins: [new BugsnagPluginVue()]
+  plugins: [new BugsnagPluginVue()],
+  enabledReleaseStages: ['production']
 })
 
 // eslint-disable-next-line no-unused-expressions
