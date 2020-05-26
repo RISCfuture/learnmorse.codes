@@ -194,7 +194,7 @@ There is a `.travis.yml` configuration for Travis CI as well.
 
 ## Deployment
 
-Learn Morse Code is hosted using GitHub pages. The `deploy.rb` script creates
+Learn Morse Code is hosted using GitHub pages. The `deploy.sh` script creates
 the `dist/` directory, makes it point to the `gh-pages` branch of this
 repository, deploys into that directory, commits the changes, and then pushes
 those changes upstream. GitHub should automatically handle the rest.
