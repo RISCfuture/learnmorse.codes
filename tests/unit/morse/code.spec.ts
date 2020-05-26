@@ -5,11 +5,11 @@ import { messageToSequence, textToMessage } from '@/util/morse/code'
 
 describe('textToMessage', () => {
   it('converts a string into Morse code', () => {
-    expect(textToMessage('paris ')).to.eq('.--. .- .-. .. ...\t')
-    expect(textToMessage('Hello, world!')).to.eq('.... . .-.. .-.. --- --..--\t.-- --- .-. .-.. -.. -.-.--')
-    expect(textToMessage('')).to.eq('')
-    expect(textToMessage('a')).to.eq('.-')
-    expect(textToMessage('hi')).to.eq('.... ..')
+    expect(textToMessage('paris ')).to.eql('.--. .- .-. .. ...\t')
+    expect(textToMessage('Hello, world!')).to.eql('.... . .-.. .-.. --- --..--\t.-- --- .-. .-.. -.. -.-.--')
+    expect(textToMessage('')).to.eql('')
+    expect(textToMessage('a')).to.eql('.-')
+    expect(textToMessage('hi')).to.eql('.... ..')
   })
 })
 
