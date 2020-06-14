@@ -3,9 +3,7 @@ import lesson from './lesson'
 import website from './website'
 import completed from './completed'
 
-import LocaleMessages = VueI18n.LocaleMessages;
-
-const en: LocaleMessages = {
+const en: VueI18n.LocaleMessages = {
   completed,
   lesson,
   website

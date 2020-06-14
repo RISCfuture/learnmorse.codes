@@ -10,6 +10,7 @@ module.exports = {
   },
   rules: {
     strict: 'off',
-    'mocha/no-mocha-arrows': 'off'
+    'mocha/no-mocha-arrows': 'off',
+    'mocha/max-top-level-suites': 'off'
   }
 }

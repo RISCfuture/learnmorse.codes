@@ -9,6 +9,7 @@
   import { Segment as SegmentType } from '@/util/morse/code'
   import { segmentUnitWidth } from '@/util/morse/timing'
   import Pulse from '@/components/morse/Pulse.vue'
+
   @Component({
     components: { Pulse }
   })
