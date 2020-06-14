@@ -25,7 +25,7 @@
     components: { SymbolKey }
   })
   export default class Learn extends mixins(Timers) {
-    $refs!: {
+    readonly $refs!: {
       symbolElements: SymbolKey[]
     }
 

@@ -77,7 +77,7 @@
     }
   })
   export default class Lesson extends mixins(Timers) {
-    $refs!: {
+    readonly $refs!: {
       learnSymbols: Learn
     }
 

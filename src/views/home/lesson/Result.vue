@@ -34,7 +34,7 @@
     components: { Diff: DiffComponent, Tip, Platitude }
   })
   export default class Result extends Vue {
-    $refs!: {
+    readonly $refs!: {
       confettiSource: HTMLDivElement
     }
 

@@ -33,7 +33,7 @@
 
   @Component
   export default class Completed extends mixins(Timers) {
-    $refs!: {
+    readonly $refs!: {
       confetti1: HTMLDivElement
       confetti2: HTMLDivElement
       confetti3: HTMLDivElement

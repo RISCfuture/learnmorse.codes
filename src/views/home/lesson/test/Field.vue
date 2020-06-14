@@ -53,7 +53,7 @@
 
   @Component
   export default class TestField extends mixins(Timers) {
-    $refs!: {
+    readonly $refs!: {
       testInput: HTMLInputElement
     }
 
