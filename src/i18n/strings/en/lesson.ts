@@ -11,7 +11,8 @@ const lesson: LocaleMessageObject = {
       header: 'Did it get away from you?',
       body: 'Looks like things maybe fell apart for a bit there. Take a breath, review the symbols above if you need to, and when you’re ready, press the big gray button below.',
       retryButton: 'OK. Let’s go again.'
-    }
+    },
+    fieldLabel: 'type here'
   },
   platitudes: {
     encouragement: [
@@ -49,6 +50,10 @@ const lesson: LocaleMessageObject = {
     'Don’t think about the dots and dashes. Try to learn what each symbol SOUNDS like.',
     'Close your eyes when you study the sound of each symbol.',
     'Use the left and right arrows to move between lessons.'
-  ]
+  ],
+  practice: {
+    elide: 'elide',
+    insert: 'insert'
+  }
 }
 export default lesson

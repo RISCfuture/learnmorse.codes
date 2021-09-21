@@ -1,7 +1,9 @@
 <template>
   <div :class="{hover}"
        @mouseleave="mouseHover = false"
+       @focusout="mouseHover = false"
        @mouseover="mouseHover = true"
+       @focusin="mouseHover = true"
        :data-cy="dataCy"
        class="learn-symbol">
     <p>{{displaySymbol}}</p>
@@ -13,6 +15,7 @@
   import Component, { mixins } from 'vue-class-component'
   import { Prop, Watch } from 'vue-property-decorator'
   import inView from 'element-in-view'
+  import { isUndefined } from 'lodash-es'
   import MorseCode from '@/components/morse/MorseCode.vue'
   import MorseCodeAudio from '@/util/morse/audio'
   import { delayAroundAudio } from '@/components/animation'
@@ -50,6 +53,7 @@
     get hover(): boolean { return (this.mouseHover && this.interactive) || this.codeHover }
 
     get displaySymbol(): string {
+      if (isUndefined(this.symbol)) return ''
       return this.symbol.toLocaleUpperCase()
     }
 
@@ -85,6 +89,8 @@
       })
     }
 
+    mounted(): void { this.audioGenerator = new MorseCodeAudio(this.displaySymbol) }
+
     private scrollIntoView(smooth: boolean): Promise<void> {
       return new Promise(resolve => {
         if (inView(this.$el, { threshold: 1 })) {
@@ -112,8 +118,15 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/fonts';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/fonts";
+  @use "src/assets/styles/responsive";
+
+  p {
+    @include fonts.Podkova-SemiBold;
+    @include responsive.font-size-very-large;
+
+    transition: transform 0.5s;
+  }
 
   .learn-symbol {
     @include responsive.bottom-margin-large;
@@ -121,13 +134,6 @@
     &.hover p {
       transform: scale(2);
     }
-  }
-
-  p {
-    @include fonts.Podkova-SemiBold;
-    @include responsive.font-size-very-large;
-
-    transition: transform 0.5s;
   }
 </style>
 

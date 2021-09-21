@@ -4,10 +4,10 @@
     <p>{{$t('completed.body')}}</p>
 
     <div id="buttons">
-      <a @click.prevent="resetLesson" class="button" data-cy="resetButton">
+      <a href="#" @click.prevent="resetLesson" class="button" data-cy="resetButton">
         {{$t('completed.resetButton')}}
       </a>
-      <a @click.prevent="practiceMode" class="button" data-cy="practiceButton">
+      <a href="#" @click.prevent="practiceMode" class="button" data-cy="practiceButton">
         {{$t('completed.practiceButton')}}
       </a>
     </div>
@@ -55,10 +55,11 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/responsive";
 
   h1 {
     @include responsive.font-size-very-large;
+
     font-weight: 700;
   }
 

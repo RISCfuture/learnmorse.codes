@@ -2,7 +2,7 @@
   <div data-cy="abandoned">
     <h1>{{$t('lesson.copy.abandoned.header')}}</h1>
     <p>{{$t('lesson.copy.abandoned.body')}}</p>
-    <a @click.prevent="$emit('retry')" class="button" data-cy="retryButton">
+    <a href="#" @click.prevent="$emit('retry')" class="button" data-cy="retryButton">
       {{$t('lesson.copy.abandoned.retryButton')}}
     </a>
   </div>
@@ -28,7 +28,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/responsive";
 
   p {
     @include responsive.bottom-margin-large;
@@ -36,6 +36,7 @@
 
   .button {
     @include responsive.font-size-large;
+
     display: inline-block;
   }
 </style>

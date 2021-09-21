@@ -7,7 +7,7 @@
       <h2>{{$t('website.getStarted.line2')}}</h2>
     </transition>
     <transition appear mode="out-in" name="in-fade-3">
-      <a @click.prevent="getStarted" class="button" data-cy="getStartedButton">
+      <a href="#" @click.prevent="getStarted" class="button" data-cy="getStartedButton">
         {{$t('website.getStarted.button')}}
       </a>
     </transition>
@@ -34,8 +34,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/colors';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/colors";
+  @use "src/assets/styles/responsive";
 
   h2 {
     @include responsive.bottom-margin-huge;

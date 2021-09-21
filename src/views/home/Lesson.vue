@@ -24,6 +24,8 @@
 </template>
 
 <script lang="ts">
+  /* eslint-disable no-shadow */
+
   import Component, { mixins } from 'vue-class-component'
   import { Action, Getter } from 'vuex-class'
   import { Watch } from 'vue-property-decorator'
@@ -148,12 +150,12 @@
 
       // eslint-disable-next-line default-case
       switch (event.key) {
-        case 'ArrowLeft':
-          this.decrementLesson()
-          break
-        case 'ArrowRight':
-          this.incrementLesson()
-          break
+      case 'ArrowLeft':
+        this.decrementLesson()
+        break
+      case 'ArrowRight':
+        this.incrementLesson()
+        break
       }
     }
 

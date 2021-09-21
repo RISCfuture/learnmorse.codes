@@ -3,7 +3,7 @@ import symbolToSequence from '@/data/morse'
 /**
  * A segment in a Morse code sequence.
  */
-
+// eslint-disable-next-line no-shadow
 export enum Segment {
   /** The gap between pulses, equal in duration to a dit. */
   INTRA_SEGMENT = 0,

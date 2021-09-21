@@ -3,10 +3,12 @@ module.exports = {
   env: {
     node: true
   },
+  plugins: ['vuejs-accessibility'],
   extends: [
     '@vue/airbnb',
     '@vue/typescript/recommended',
-    'plugin:vue/essential'
+    'plugin:vue/essential',
+    'plugin:vuejs-accessibility/recommended'
   ],
   parserOptions: {
     parser: '@typescript-eslint/parser', // the typescript-parser for eslint, instead of tslint
@@ -38,6 +40,15 @@ module.exports = {
       rules: {
         indent: 'off',
         'class-methods-use-this': 'off'
+      }
+    },
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+      ],
+      env: {
+        mocha: true
       }
     }
   ]

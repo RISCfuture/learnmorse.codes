@@ -4,7 +4,7 @@
       <h1>{{$t('website.resume.text')}}</h1>
     </transition>
     <transition appear mode="out-in" name="in-fade-1">
-      <a @click.prevent="resume" class="button" data-cy="resumeButton">
+      <a href="#" @click.prevent="resume" class="button" data-cy="resumeButton">
         {{$t('website.resume.button')}}
       </a>
     </transition>
@@ -32,8 +32,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/colors';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/colors";
+  @use "src/assets/styles/responsive";
 
   h1 {
     @include responsive.bottom-margin-huge;

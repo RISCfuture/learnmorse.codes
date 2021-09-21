@@ -1,6 +1,6 @@
 <template>
   <div id="test">
-    <a @click.prevent="startOnMobile"
+    <a href="#" @click.prevent="startOnMobile"
        class="button"
        v-if="!startedOnMobile">
       {{$t('lesson.copy.getReadyButton')}}
@@ -15,6 +15,7 @@
            ref="testInput"
            spellcheck="false"
            type="text"
+           :aria-label="$t('lesson.copy.fieldLabel')"
            :class="{started: startedOnMobile}"
            v-model="testInput" />
 
@@ -142,8 +143,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/colors';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/colors";
+  @use "src/assets/styles/responsive";
 
   #test-input {
     @include responsive.font-size-very-large;

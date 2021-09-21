@@ -28,11 +28,12 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/colors';
+  @use "sass:color";
+  @use "src/assets/styles/colors";
 
   a {
     @include colors.theme using($theme) {
-      color: lighten(colors.get($theme, 'link-color'), 20%);
+      color: color.adjust(colors.get($theme, "link-color"), $lightness: -20%);
     }
   }
 </style>

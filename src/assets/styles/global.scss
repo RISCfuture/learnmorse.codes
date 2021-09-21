@@ -1,44 +1,48 @@
-@use './fonts';
-@use './colors';
-@use './responsive';
+@use "./fonts";
+@use "./colors";
+@use "./responsive";
 
 html,
 body {
   @include colors.theme using($theme) {
-    background-color: colors.get($theme, 'background');
+    background-color: colors.get($theme, "background");
   }
 }
 
 * {
   @include fonts.Kreon-Regular;
+
+  @include colors.theme using($theme) {
+    color: colors.get($theme, "text-color");
+  }
+
   font-weight: normal;
   text-align: center;
-  @include colors.theme using($theme) {
-    color: colors.get($theme, 'text-color');
-  }
 }
 
 a {
+  @include colors.theme using($theme) {
+    color: colors.get($theme, "link-color");
+  }
+
   cursor: pointer;
   text-decoration: none;
-  @include colors.theme using($theme) {
-    color: colors.get($theme, 'link-color');
-  }
 }
 
 .button {
   @include responsive.font-size-very-large;
+
+  @include colors.theme using ($theme) {
+    background-color: colors.get($theme, "button-background-color");
+    color: colors.get($theme, "text-color");
+  }
+
   border-radius: 20px;
   padding: 20px;
 
-  @include colors.theme using ($theme) {
-    background-color: colors.get($theme, 'button-background-color');
-    color: colors.get($theme, 'text-color');
-  }
-
   &:hover {
     @include colors.theme using ($theme) {
-      background-color: colors.get($theme, 'button-background-hover-color');
+      background-color: colors.get($theme, "button-background-hover-color");
     }
   }
 }
@@ -55,19 +59,19 @@ footer {
   padding: 10px 0;
 }
 
-[type=text] {
+[type="text"] {
+  @include colors.theme using($theme) {
+    border: 1px solid colors.get($theme, "border-color");
+  }
+
   appearance: none;
   background-color: transparent;
   box-sizing: border-box;
   margin: 0;
   padding: 20px;
   width: 100%;
-  @include colors.theme using($theme) {
-    border: 1px solid colors.get($theme, 'border-color');
-  }
 
   &:focus {
     outline: none;
   }
 }
-

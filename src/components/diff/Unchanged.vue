@@ -17,11 +17,11 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/colors';
+  @use "src/assets/styles/colors";
 
   p {
     @include colors.theme using ($theme) {
-      color: colors.get($theme, 'pass');
+      color: colors.get($theme, "pass");
     }
   }
 </style>

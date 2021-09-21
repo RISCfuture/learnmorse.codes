@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="symbol">{{change.remove | symbol}}</p>
-    <img class="correction" src="@/assets/images/Elide.svg" />
+    <img class="correction" src="@/assets/images/Elide.svg" :alt="$t('lesson.practice.elide')" />
   </div>
 </template>
 

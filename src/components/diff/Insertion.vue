@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="symbol">{{change.add | symbol}}</p>
-    <img class="correction" src="@/assets/images/Insert.svg" />
+    <img class="correction" src="@/assets/images/Insert.svg" :alt="$t('lesson.practice.insert')" />
   </div>
 </template>
 
@@ -18,8 +18,8 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/colors';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/colors";
+  @use "src/assets/styles/responsive";
 
   div {
     position: relative;

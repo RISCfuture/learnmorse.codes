@@ -7,12 +7,14 @@ import { last } from 'lodash-es'
 import MorseCodeAudio from '@/util/morse/audio'
 
 class OscillatorNode {
+  // eslint-disable-next-line no-use-before-define
   _context: AudioContext
 
   frequency = {
     setValueAtTime: Sinon.fake()
   }
 
+  // eslint-disable-next-line no-use-before-define
   constructor(context: AudioContext) {
     this._context = context
   }

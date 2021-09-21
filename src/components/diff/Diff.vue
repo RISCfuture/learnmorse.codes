@@ -36,7 +36,7 @@
 
   @Component({
     components: {
-     Deletion, Insertion, Unchanged, Substitution
+      Deletion, Insertion, Unchanged, Substitution
     }
   })
   export default class Diff extends Vue {
@@ -54,8 +54,8 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/fonts';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/fonts";
+  @use "src/assets/styles/responsive";
 
   #diff {
     display: flex;
@@ -66,14 +66,15 @@
     @include fonts.Podkova-Bold;
     @include responsive.font-size-large;
 
+    @include responsive.small { width: 30px; }
+
     flex: 0 0 auto;
     width: 40px;
-    @include responsive.small { width: 30px; }
   }
 </style>
 
 <style lang="scss">
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/responsive";
 
   .correction {
     @include responsive.small {

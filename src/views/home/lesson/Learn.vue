@@ -95,7 +95,6 @@
     flex-flow: row nowrap;
     justify-content: safe center;
     overflow-x: scroll;
-
     padding: 0 50px;
 
     &.overflowing {

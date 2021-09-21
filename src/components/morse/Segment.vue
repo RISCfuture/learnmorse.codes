@@ -6,15 +6,15 @@
   import Vue from 'vue'
   import Component from 'vue-class-component'
   import { Prop } from 'vue-property-decorator'
-  import { Segment as SegmentType } from '@/util/morse/code'
   import { segmentUnitWidth } from '@/util/morse/timing'
   import Pulse from '@/components/morse/Pulse.vue'
+  import { Segment } from '@/util/morse/code'
 
   @Component({
     components: { Pulse }
   })
-  export default class Segment extends Vue {
-    @Prop({ type: Number, required: true }) segment!: SegmentType
+  export default class SegmentView extends Vue {
+    @Prop({ type: Number, required: true }) segment!: Segment
 
     get width(): number {
       return segmentUnitWidth[this.segment]
@@ -22,11 +22,11 @@
 
     get colorClass(): string {
       switch (this.segment) {
-        case SegmentType.DIT:
-        case SegmentType.DAH:
-          return 'text'
-        default:
-          return 'transparent'
+      case Segment.DIT:
+      case Segment.DAH:
+        return 'text'
+      default:
+        return 'transparent'
       }
     }
   }

@@ -21,8 +21,8 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/colors';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/colors";
+  @use "src/assets/styles/responsive";
 
   p {
     @include responsive.top-margin-large;

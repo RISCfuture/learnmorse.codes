@@ -64,9 +64,11 @@
     }
 
     get extraCreditString(): string {
-      return <string> this.$tc('lesson.copy.extraCredit',
+      return <string> this.$tc(
+        'lesson.copy.extraCredit',
         this.extraCredit,
-        { points: this.$n(this.extraCredit, 'integer') })
+        { points: this.$n(this.extraCredit, 'integer') }
+      )
     }
 
     mounted(): void {
@@ -86,25 +88,33 @@
 </script>
 
 <style lang="scss" scoped>
-  @use 'src/assets/styles/colors';
-  @use 'src/assets/styles/fonts';
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/colors";
+  @use "src/assets/styles/fonts";
+  @use "src/assets/styles/responsive";
 
   #score {
     @include fonts.Kreon-Black;
     @include responsive.font-size-huge;
+
     margin: 0;
     padding: 0;
 
     &.pass:not(.perfect) {
       @include colors.theme using ($theme) {
-        color: colors.get($theme, 'pass');
+        color: colors.get($theme, "pass");
       }
     }
 
     &.perfect {
-      background: linear-gradient(135deg,
-      #a864fd 0%, #29cdff 25%, #78ff44 50%, #ff718d 75%, #fdff6a 100%);
+      background:
+        linear-gradient(
+          135deg,
+          #a864fd 0%,
+          #29cdff 25%,
+          #78ff44 50%,
+          #ff718d 75%,
+          #fdff6a 100%
+        );
       -webkit-background-clip: text;
       display: inline-block;
       -webkit-text-fill-color: transparent;

@@ -1,4 +1,4 @@
-@use 'sass:map';
+@use "sass:map";
 
 // the basics
 
@@ -16,29 +16,29 @@ $fail: #f00;
 @mixin theme {
   @media all and (prefers-color-scheme: dark) {
     @content((
-      'background': $dark,
-                'border-color': lighten($dark, 10%),
-                'button-background-color': lighten($dark, 10%),
-                'button-background-hover-color': lighten($dark, 20%),
-                'fail': $fail,
-                'link-color': lighten($color, 20%),
-                'muted-color': $medium,
-                'pass': $pass,
-                'text-color': $light
-        ));
+      "background": $dark,
+      "border-color": lighten($dark, 10%),
+      "button-background-color": lighten($dark, 10%),
+      "button-background-hover-color": lighten($dark, 20%),
+      "fail": $fail,
+      "link-color": lighten($color, 20%),
+      "muted-color": $medium,
+      "pass": $pass,
+      "text-color": $light
+    ));
   }
 
   @content((
-    'background': $light,
-            'border-color': darken($light, 10%),
-            'button-background-color': darken($light, 10%),
-            'button-background-hover-color': darken($light, 20%),
-            'fail': lighten($fail, 20%),
-            'link-color': $color,
-            'muted-color': darken($medium, 20%),
-            'pass': lighten($pass, 20%),
-            'text-color': $dark
-    ));
+    "background": $light,
+    "border-color": darken($light, 10%),
+    "button-background-color": darken($light, 10%),
+    "button-background-hover-color": darken($light, 20%),
+    "fail": lighten($fail, 20%),
+    "link-color": $color,
+    "muted-color": darken($medium, 20%),
+    "pass": lighten($pass, 20%),
+    "text-color": $dark
+  ));
 }
 
 /* Convenience method for getting named colors from the map given to you by
@@ -51,6 +51,6 @@ $fail: #f00;
 
 @mixin muted {
   @include theme using($theme) {
-    color: get($theme, 'muted-color');
+    color: get($theme, "muted-color");
   }
 }

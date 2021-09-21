@@ -18,6 +18,8 @@
 </template>
 
 <script lang="ts">
+  /* eslint-disable no-shadow */
+
   import Component, { mixins } from 'vue-class-component'
   import { Watch } from 'vue-property-decorator'
   import GetReady from '@/views/home/lesson/GetReady.vue'
@@ -106,7 +108,7 @@
 </script>
 
 <style lang="scss">
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/responsive";
 
   #practice #test {
     @include responsive.top-margin-large;

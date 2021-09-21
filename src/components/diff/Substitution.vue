@@ -2,7 +2,7 @@
   <div>
     <p class="symbol">{{change.replace | symbol}}</p>
     <p class="replacement">{{change.with | symbol}}</p>
-    <img class="correction" src="@/assets/images/Elide.svg" />
+    <img class="correction" src="@/assets/images/Elide.svg" :alt="$t('lesson.practice.elide')" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/responsive';
+  @use "src/assets/styles/responsive";
 
   div {
     position: relative;
@@ -33,7 +33,6 @@
   }
 
   .replacement {
-
     color: #f00;
     margin: 0;
     padding: 0;

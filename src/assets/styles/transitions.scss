@@ -53,10 +53,10 @@
 }
 
 @mixin in-fade($block, $duration: 0.25s) {
-  @if ($block == 1) {
+  @if $block == 1 {
     transition-property: opacity;
     transition-duration: $duration;
-  } @else if ($block == 2) {
+  } @else if $block == 2 {
     opacity: 0;
   } @else {
     opacity: 1;
@@ -64,10 +64,10 @@
 }
 
 @mixin out-fade($block, $duration: 0.25s) {
-  @if ($block == 1) {
+  @if $block == 1 {
     transition-property: opacity;
     transition-duration: $duration;
-  } @else if ($block == 2) {
+  } @else if $block == 2 {
     opacity: 1;
   } @else {
     opacity: 0;
@@ -75,10 +75,10 @@
 }
 
 @mixin in-up($block, $duration: 0.25s) {
-  @if ($block == 1) {
+  @if $block == 1 {
     transition-property: transform, opacity;
     transition-duration: $duration;
-  } @else if ($block == 2) {
+  } @else if $block == 2 {
     transform: translateY(100%);
     opacity: 0;
   } @else {
@@ -88,10 +88,10 @@
 }
 
 @mixin out-up($block, $duration: 0.25s) {
-  @if ($block == 1) {
+  @if $block == 1 {
     transition-property: transform, opacity;
     transition-duration: $duration;
-  } @else if ($block == 2) {
+  } @else if $block == 2 {
     transform: translateY(0);
     opacity: 1;
   } @else {
@@ -101,10 +101,10 @@
 }
 
 @mixin in-grow($block, $duration: 0.25s) {
-  @if ($block == 1) {
+  @if $block == 1 {
     transition-property: transform, opacity;
     transition-duration: $duration;
-  } @else if ($block == 2) {
+  } @else if $block == 2 {
     transform: scale(0);
     opacity: 0;
   } @else {
@@ -114,10 +114,10 @@
 }
 
 @mixin out-grow($block, $duration: 0.25s) {
-  @if ($block == 1) {
+  @if $block == 1 {
     transition-property: transform, opacity;
     transition-duration: $duration;
-  } @else if ($block == 2) {
+  } @else if $block == 2 {
     transform: scale(1);
     opacity: 1;
   } @else {

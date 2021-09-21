@@ -26,11 +26,11 @@
 </script>
 
 <style scoped lang="scss">
-  @use 'src/assets/styles/colors';
+  @use "src/assets/styles/colors";
 
   .color-text {
     @include colors.theme using ($theme) {
-      fill: colors.get($theme, 'text-color');
+      fill: colors.get($theme, "text-color");
     }
   }
 
