@@ -1,6 +1,6 @@
 @use "sass:map";
 
-// the basics
+/* the basics */
 
 $light: #fff;
 $medium: #a6a6a6;
@@ -15,7 +15,7 @@ $fail: #f00;
 
 @mixin theme {
   @media all and (prefers-color-scheme: dark) {
-    @content((
+    @content ((
       "background": $dark,
       "border-color": lighten($dark, 10%),
       "button-background-color": lighten($dark, 10%),
@@ -28,7 +28,7 @@ $fail: #f00;
     ));
   }
 
-  @content((
+  @content ((
     "background": $light,
     "border-color": darken($light, 10%),
     "button-background-color": darken($light, 10%),
