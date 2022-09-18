@@ -9,7 +9,7 @@
  * | tab   | long space             |
  */
 
-const symbolToSequence: {[key: string]: string} = {
+const symbolToSequence: { [key: string]: string } = {
   a: '.-',
   b: '-...',
   c: '-.-.',
@@ -30,7 +30,7 @@ const symbolToSequence: {[key: string]: string} = {
   r: '.-.',
   s: '...',
   t: '-',
-  u: '.--',
+  u: '..-',
   v: '...-',
   w: '.--',
   x: '-..-',
