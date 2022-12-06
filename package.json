@@ -9,10 +9,8 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "docs:generate": "npx typedoc --out docs src",
-    "ci:e2e:start-server": "yarn serve",
-    "ci:e2e:run": "cypress run --record --key 5d510140-7407-4f81-b342-49a54e5a00b6",
-    "ci:e2e": "npx start-server-and-test ci:e2e:start-server 8080 ci:e2e:run",
-    "ci:unit": "yarn run test:unit"
+    "ci:e2e": "vue-cli-service test:e2e --headless --browser chrome --record --key 5d510140-7407-4f81-b342-49a54e5a00b6",
+    "ci:unit": "vue-cli-service test:unit -i tests/unit/setup.ts"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
