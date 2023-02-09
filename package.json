@@ -23,7 +23,7 @@
       "npx stylelint --fix"
     ]
   },
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@3.4.1",
   "dependencies": {
     "@bugsnag/core": "^7.16.1",
     "@bugsnag/js": "^7.14.0",
