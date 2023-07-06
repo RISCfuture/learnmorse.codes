@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-
 import {
   ActionTree, GetterTree, Module, MutationTree
 } from 'vuex'
@@ -40,7 +38,7 @@ const mutations: MutationTree<LessonState> = {
     state.currentLesson -= 1
   },
 
-  SET_LESSON(state, { lesson }) {
+  SET_LESSON(state, { lesson }: {lesson: number}) {
     state.currentLesson = lesson
   },
 

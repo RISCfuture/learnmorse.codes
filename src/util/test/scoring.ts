@@ -1,5 +1,3 @@
-/* eslint-disable no-use-before-define */
-
 import {
   has, isUndefined, memoize, minBy
 } from 'lodash-es'
@@ -120,7 +118,7 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
   const expectedMinusFirst = expected.slice(1)
   const actualMinusFirst = actual.slice(1)
 
-  if (expected[0] === actual[0]) {
+  if (expected.startsWith(actual[0])) {
     const diffRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
     return {
       penalty: diffRest.penalty,

@@ -4,9 +4,8 @@ import BugsnagPluginVue from '@bugsnag/plugin-vue'
 
 Bugsnag.start({
   apiKey: '29094f9e852387f9cf1e6525b93d0ce9',
-  plugins: [<Plugin> new BugsnagPluginVue()],
+  plugins: [(new BugsnagPluginVue() as Plugin)],
   enabledReleaseStages: ['production']
 })
 
-// eslint-disable-next-line no-unused-expressions
 Bugsnag.getPlugin('vue')?.installVueErrorHandler(Vue)

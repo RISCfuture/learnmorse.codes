@@ -3,9 +3,6 @@ import { ditDurationPulse, ditDurationSpace, segmentUnitWidth } from '@/util/mor
 
 const toneFrequency = 800
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const AudioContext = require('audiocontext')
-
 const allNodes: AudioNode[] = []
 
 /**
@@ -14,7 +11,6 @@ const allNodes: AudioNode[] = []
 
 export function stopAllAudio(): void {
   let node: AudioNode | undefined
-  // eslint-disable-next-line no-cond-assign
   while (node = allNodes.pop()) { node.disconnect() }
 }
 
@@ -27,7 +23,7 @@ let globalContext: AudioContext | null = null
 
 export function sharedAudioContext(): AudioContext {
   if (!globalContext) globalContext = new AudioContext()
-  return globalContext!
+  return globalContext
 }
 
 function segmentDuration(segment: Segment) {
@@ -93,7 +89,6 @@ export default class MorseCodeAudio {
 
     let time = this.context.currentTime + startDelay
     sequence.forEach(segment => {
-      // eslint-disable-next-line default-case
       switch (segment) {
         case Segment.INTRA_SEGMENT:
         case Segment.SHORT_SPACE:

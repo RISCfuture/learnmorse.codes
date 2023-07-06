@@ -1,25 +1,34 @@
 <template>
   <div id="practice">
-    <transition appear mode="out-in" name="in-fade-out-fade">
-      <get-ready key="starting" v-if="isStarting" />
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-out-fade"
+    >
+      <get-ready
+        v-if="isStarting"
+        key="starting"
+      />
 
-      <test :lesson="lesson"
-            @finished="onTestingFinished($event)"
-            key="testing"
-            v-else-if="isTesting" />
+      <test
+        v-else-if="isTesting"
+        key="testing"
+        :lesson="lesson"
+        @finished="onTestingFinished($event)"
+      />
 
-      <result :diff="diff"
-              :penalty="penalty"
-              :show-diff="true"
-              key="scoring"
-              v-else-if="isScoring" />
+      <result
+        v-else-if="isScoring"
+        key="scoring"
+        :diff="diff"
+        :penalty="penalty"
+        :show-diff="true"
+      />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-  /* eslint-disable no-shadow */
-
   import Component, { mixins } from 'vue-class-component'
   import { Watch } from 'vue-property-decorator'
   import GetReady from '@/views/home/lesson/GetReady.vue'
@@ -60,7 +69,6 @@
 
     penalty: number | null = null
 
-    // eslint-disable-next-line class-methods-use-this
     get lesson(): number {
       return lastLessonNumber
     }

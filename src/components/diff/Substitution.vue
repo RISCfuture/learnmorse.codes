@@ -1,8 +1,16 @@
 <template>
   <div>
-    <p class="symbol">{{change.replace | symbol}}</p>
-    <p class="replacement">{{change.with | symbol}}</p>
-    <img class="correction" src="@/assets/images/Elide.svg" :alt="$t('lesson.practice.elide')" />
+    <p class="symbol">
+      {{ change.replace | symbol }}
+    </p>
+    <p class="replacement">
+      {{ change.with | symbol }}
+    </p>
+    <img
+      class="correction"
+      src="@/assets/images/Elide.svg"
+      :alt="$t('lesson.practice.elide')"
+    >
   </div>
 </template>
 

@@ -1,5 +1,8 @@
 <template>
-  <pulse :color="colorClass" :width="width" />
+  <pulse
+    :color="colorClass"
+    :width="width"
+  />
 </template>
 
 <script lang="ts">

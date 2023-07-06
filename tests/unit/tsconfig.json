@@ -12,7 +12,8 @@
     "useDefineForClassFields":          true,
     "types":                            [
       "node",
-      "cypress"
+      "mocha",
+      "chai"
     ],
     "paths":                            {
       "@/*": [

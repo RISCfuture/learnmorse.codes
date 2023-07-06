@@ -1,5 +1,5 @@
 <template>
-  <p>{{platitude}}</p>
+  <p>{{ platitude }}</p>
 </template>
 
 <script lang="ts">

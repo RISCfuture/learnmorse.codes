@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target":                       "esnext",
+    "target":                       "es2019",
     "module":                       "esnext",
     "strict":                       true,
     "jsx":                          "preserve",
@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap":                    true,
     "baseUrl":                      ".",
+    "resolveJsonModule":            true,
     "types":                        [
       "webpack-env",
       "mocha",

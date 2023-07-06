@@ -1,5 +1,5 @@
 <template>
-  <p>{{tip}}</p>
+  <p>{{ tip }}</p>
 </template>
 
 <script lang="ts">

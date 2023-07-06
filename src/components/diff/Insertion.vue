@@ -1,7 +1,13 @@
 <template>
   <div>
-    <p class="symbol">{{change.add | symbol}}</p>
-    <img class="correction" src="@/assets/images/Insert.svg" :alt="$t('lesson.practice.insert')" />
+    <p class="symbol">
+      {{ change.add | symbol }}
+    </p>
+    <img
+      class="correction"
+      src="@/assets/images/Insert.svg"
+      :alt="$t('lesson.practice.insert')"
+    >
   </div>
 </template>
 

@@ -9,7 +9,7 @@
  * | tab   | long space             |
  */
 
-const symbolToSequence: { [key: string]: string } = {
+const symbolToSequence: Record<string, string> = {
   a: '.-',
   b: '-...',
   c: '-.-.',

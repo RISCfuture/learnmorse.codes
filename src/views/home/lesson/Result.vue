@@ -1,13 +1,33 @@
 <template>
   <div>
-    <p :class="{pass, perfect}" data-cy="score" id="score">{{score}}</p>
-    <p data-cy="extraCredit" v-if="pass && extraCredit">{{extraCreditString}}</p>
+    <p
+      id="score"
+      :class="{ pass, perfect }"
+      data-cy="score"
+    >
+      {{ score }}
+    </p>
+    <p
+      v-if="pass && extraCredit"
+      data-cy="extraCredit"
+    >
+      {{ extraCreditString }}
+    </p>
 
-    <diff :diff="diff" v-if="showDiff" />
+    <diff
+      v-if="showDiff"
+      :diff="diff"
+    />
     <tip v-else-if="showTip" />
-    <platitude :pass="pass" v-else />
+    <platitude
+      v-else
+      :pass="pass"
+    />
 
-    <div id="confetti-source" ref="confettiSource" />
+    <div
+      id="confetti-source"
+      ref="confettiSource"
+    />
   </div>
 </template>
 

@@ -3,7 +3,6 @@ import symbolToSequence from '@/data/morse'
 /**
  * A segment in a Morse code sequence.
  */
-// eslint-disable-next-line no-shadow
 export enum Segment {
   /** The gap between pulses, equal in duration to a dit. */
   INTRA_SEGMENT = 0,
@@ -37,7 +36,6 @@ function isSpace(segment: string) {
 export function messageToSequence(message: string): Segment[] {
   return message.split('').reduce<Segment[]>(
     (sequence, segment, index) => {
-      // eslint-disable-next-line default-case
       switch (segment) {
         case '.':
           if (index < message.length - 1 && !isSpace(message[index + 1])) {

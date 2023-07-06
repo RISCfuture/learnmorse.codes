@@ -1,20 +1,42 @@
 <template>
   <div data-cy="completed">
-    <h1>{{$t('completed.header')}}</h1>
-    <p>{{$t('completed.body')}}</p>
+    <h1>{{ $t('completed.header') }}</h1>
+    <p>{{ $t('completed.body') }}</p>
 
     <div id="buttons">
-      <a href="#" @click.prevent="resetLesson" class="button" data-cy="resetButton">
-        {{$t('completed.resetButton')}}
+      <a
+        href="#"
+        class="button"
+        data-cy="resetButton"
+        @click.prevent="resetLesson"
+      >
+        {{ $t('completed.resetButton') }}
       </a>
-      <a href="#" @click.prevent="practiceMode" class="button" data-cy="practiceButton">
-        {{$t('completed.practiceButton')}}
+      <a
+        href="#"
+        class="button"
+        data-cy="practiceButton"
+        @click.prevent="practiceMode"
+      >
+        {{ $t('completed.practiceButton') }}
       </a>
     </div>
 
-    <div class="confetti" id="confetti-1" ref="confetti1" />
-    <div class="confetti" id="confetti-2" ref="confetti2" />
-    <div class="confetti" id="confetti-3" ref="confetti3" />
+    <div
+      id="confetti-1"
+      ref="confetti1"
+      class="confetti"
+    />
+    <div
+      id="confetti-2"
+      ref="confetti2"
+      class="confetti"
+    />
+    <div
+      id="confetti-3"
+      ref="confetti3"
+      class="confetti"
+    />
   </div>
 </template>
 

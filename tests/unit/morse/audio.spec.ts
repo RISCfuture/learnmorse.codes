@@ -1,5 +1,4 @@
-/* eslint-disable no-underscore-dangle,@typescript-eslint/no-empty-function */
-/* eslint-disable class-methods-use-this,@typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-empty-function */
 
 import { expect } from 'chai'
 import Sinon from 'sinon'
@@ -7,14 +6,12 @@ import { last } from 'lodash-es'
 import MorseCodeAudio from '@/util/morse/audio'
 
 class OscillatorNode {
-  // eslint-disable-next-line no-use-before-define
   _context: AudioContext
 
   frequency = {
     setValueAtTime: Sinon.fake()
   }
 
-  // eslint-disable-next-line no-use-before-define
   constructor(context: AudioContext) {
     this._context = context
   }
@@ -70,7 +67,7 @@ describe('MorseCodeAudio', () => {
     })
 
     it('plays a message', () => {
-      const subject = new MorseCodeAudio('paris ', <any>context)
+      const subject = new MorseCodeAudio('paris ', (context as never))
       subject.play()
 
       expect(context._events).to.deep.almost.equal([
@@ -106,7 +103,7 @@ describe('MorseCodeAudio', () => {
     })
 
     it('does nothing given an empty message', () => {
-      new MorseCodeAudio('', <any>context).play()
+      new MorseCodeAudio('', (context as never)).play()
       expect(context._events).to.eql([])
     })
   })

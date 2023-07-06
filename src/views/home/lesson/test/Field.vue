@@ -1,25 +1,34 @@
 <template>
   <div id="test">
-    <a href="#" @click.prevent="startOnMobile"
-       class="button"
-       v-if="!startedOnMobile">
-      {{$t('lesson.copy.getReadyButton')}}
+    <a
+      v-if="!startedOnMobile"
+      href="#"
+      class="button"
+      @click.prevent="startOnMobile"
+    >
+      {{ $t('lesson.copy.getReadyButton') }}
     </a>
 
-    <input @keydown.passive="onActivity"
-           autocapitalize="off"
-           autocomplete="off"
-           autocorrect="off"
-           data-cy="testInput"
-           id="test-input"
-           ref="testInput"
-           spellcheck="false"
-           type="text"
-           :aria-label="$t('lesson.copy.fieldLabel')"
-           :class="{started: startedOnMobile}"
-           v-model="testInput" />
+    <input
+      id="test-input"
+      ref="testInput"
+      v-model="testInput"
+      autocapitalize="off"
+      autocomplete="off"
+      autocorrect="off"
+      data-cy="testInput"
+      spellcheck="false"
+      type="text"
+      :aria-label="$t('lesson.copy.fieldLabel')"
+      :class="{ started: startedOnMobile }"
+      @keydown.passive="onActivity"
+    >
 
-    <input :value="answer" data-cy="answerKey" type="hidden" />
+    <input
+      :value="answer"
+      data-cy="answerKey"
+      type="hidden"
+    >
   </div>
 </template>
 

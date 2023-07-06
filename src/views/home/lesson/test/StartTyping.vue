@@ -1,5 +1,7 @@
 <template>
-  <p data-cy="startTyping">{{$t('lesson.copy.startTyping')}}</p>
+  <p data-cy="startTyping">
+    {{ $t('lesson.copy.startTyping') }}
+  </p>
 </template>
 
 <script lang="ts">

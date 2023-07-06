@@ -1,6 +1,10 @@
 <template>
   <div class="morse-code">
-    <segment v-for="(segment, index) in sequence" :segment="segment" :key="index" />
+    <segment
+      v-for="(segment, index) in sequence"
+      :key="index"
+      :segment="segment"
+    />
   </div>
 </template>
 

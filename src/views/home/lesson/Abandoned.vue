@@ -1,9 +1,14 @@
 <template>
   <div data-cy="abandoned">
-    <h1>{{$t('lesson.copy.abandoned.header')}}</h1>
-    <p>{{$t('lesson.copy.abandoned.body')}}</p>
-    <a href="#" @click.prevent="$emit('retry')" class="button" data-cy="retryButton">
-      {{$t('lesson.copy.abandoned.retryButton')}}
+    <h1>{{ $t('lesson.copy.abandoned.header') }}</h1>
+    <p>{{ $t('lesson.copy.abandoned.body') }}</p>
+    <a
+      href="#"
+      class="button"
+      data-cy="retryButton"
+      @click.prevent="$emit('retry')"
+    >
+      {{ $t('lesson.copy.abandoned.retryButton') }}
     </a>
   </div>
 </template>
@@ -20,7 +25,6 @@
 
   @Component
   export default class Abandoned extends Vue {
-    // eslint-disable-next-line class-methods-use-this
     mounted(): void {
       stopAllAudio()
     }

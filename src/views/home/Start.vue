@@ -1,14 +1,31 @@
 <template>
   <div id="get-started">
-    <transition appear mode="out-in" name="in-fade-1">
-      <h1>{{$t('website.getStarted.line1')}}</h1>
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-1"
+    >
+      <h1>{{ $t('website.getStarted.line1') }}</h1>
     </transition>
-    <transition appear mode="out-in" name="in-fade-2">
-      <h2>{{$t('website.getStarted.line2')}}</h2>
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-2"
+    >
+      <h2>{{ $t('website.getStarted.line2') }}</h2>
     </transition>
-    <transition appear mode="out-in" name="in-fade-3">
-      <a href="#" @click.prevent="getStarted" class="button" data-cy="getStartedButton">
-        {{$t('website.getStarted.button')}}
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-3"
+    >
+      <a
+        href="#"
+        class="button"
+        data-cy="getStartedButton"
+        @click.prevent="getStarted"
+      >
+        {{ $t('website.getStarted.button') }}
       </a>
     </transition>
   </div>

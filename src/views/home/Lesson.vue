@@ -1,31 +1,48 @@
 <template>
   <div id="lesson">
-    <learn :audio="symbolGuidePlaysAudio"
-           :interactive="symbolGuideIsInteractive"
-           :lesson="currentLesson"
-           @finished="readyToTest"
-           ref="learnSymbols" />
+    <learn
+      ref="learnSymbols"
+      :audio="symbolGuidePlaysAudio"
+      :interactive="symbolGuideIsInteractive"
+      :lesson="currentLesson"
+      @finished="readyToTest"
+    />
 
-    <transition appear mode="out-in" name="in-fade-out-fade">
-      <result :diff="diff" :penalty="penalty" key="scoring" v-if="isScoring" />
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-out-fade"
+    >
+      <result
+        v-if="isScoring"
+        key="scoring"
+        :diff="diff"
+        :penalty="penalty"
+      />
 
-      <get-ready key="starting" v-else-if="isStarting" />
+      <get-ready
+        v-else-if="isStarting"
+        key="starting"
+      />
 
-      <abandoned @retry="readyToTest" key="abandoned" v-else-if="isAbandoned" />
+      <abandoned
+        v-else-if="isAbandoned"
+        key="abandoned"
+        @retry="readyToTest"
+      />
 
-      <test :lesson="currentLesson"
-            @abandon="onAbandoned"
-            @finished="onTestingFinished($event)"
-            key="testing"
-            v-else-if="isTesting" />
-
+      <test
+        v-else-if="isTesting"
+        key="testing"
+        :lesson="currentLesson"
+        @abandon="onAbandoned"
+        @finished="onTestingFinished($event)"
+      />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-  /* eslint-disable no-shadow */
-
   import Component, { mixins } from 'vue-class-component'
   import { Action, Getter } from 'vuex-class'
   import { Watch } from 'vue-property-decorator'
@@ -148,7 +165,6 @@
     onKeyPress(event: KeyboardEvent): void {
       if (event.target instanceof HTMLInputElement) return
 
-      // eslint-disable-next-line default-case
       switch (event.key) {
       case 'ArrowLeft':
         this.decrementLesson()

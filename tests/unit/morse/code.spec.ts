@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 import { expect } from 'chai'
 import { messageToSequence, textToMessage } from '@/util/morse/code'
 
@@ -16,7 +14,10 @@ describe('textToMessage', () => {
 describe('messageToSegments', () => {
   it('converts a string into segments', () => {
     expect(messageToSequence('.--. .- .-. .. ...\t')).
-      to.eql([1, 0, 111, 0, 111, 0, 1, 10, 1, 0, 111, 10, 1, 0, 111, 0, 1, 10, 1, 0, 1, 10, 1, 0, 1, 0, 1, 100])
+      to.eql([
+        1, 0, 111, 0, 111, 0, 1, 10, 1, 0, 111, 10, 1, 0,
+        111, 0, 1, 10, 1, 0, 1, 10, 1, 0, 1, 0, 1, 100
+      ])
     expect(messageToSequence('')).
       to.eql([])
     expect(messageToSequence('.')).

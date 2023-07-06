@@ -1,11 +1,27 @@
 <template>
-  <div data-cy="resume" id="resume">
-    <transition appear mode="out-in" name="in-fade-1">
-      <h1>{{$t('website.resume.text')}}</h1>
+  <div
+    id="resume"
+    data-cy="resume"
+  >
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-1"
+    >
+      <h1>{{ $t('website.resume.text') }}</h1>
     </transition>
-    <transition appear mode="out-in" name="in-fade-1">
-      <a href="#" @click.prevent="resume" class="button" data-cy="resumeButton">
-        {{$t('website.resume.button')}}
+    <transition
+      appear
+      mode="out-in"
+      name="in-fade-1"
+    >
+      <a
+        href="#"
+        class="button"
+        data-cy="resumeButton"
+        @click.prevent="resume"
+      >
+        {{ $t('website.resume.button') }}
       </a>
     </transition>
   </div>

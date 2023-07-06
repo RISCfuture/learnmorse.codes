@@ -1,6 +1,14 @@
 <template>
-  <svg height="10" :width="widthPixels" xmlns="http://www.w3.org/2000/svg">
-    <path :d="path" :class="colorClass" fill-rule="evenodd" />
+  <svg
+    height="10"
+    :width="widthPixels"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      :d="path"
+      :class="colorClass"
+      fill-rule="evenodd"
+    />
   </svg>
 </template>
 

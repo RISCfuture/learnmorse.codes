@@ -28,7 +28,6 @@ export default class Timers extends Vue {
 
   protected cancelTimers(): void {
     let timer: number | undefined
-    // eslint-disable-next-line no-cond-assign
     while (!isUndefined(timer = this.timers.pop())) clearTimeout(timer)
   }
 

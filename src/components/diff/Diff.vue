@@ -1,17 +1,34 @@
 <template>
-  <div id="diff" data-cy="diff">
-    <div class="diff-character" v-for="(change, index) in diff.changes" :key="index">
-      <unchanged v-if="isUnchanged(change)" :change="change" />
-      <insertion v-if="isInsertion(change)" :change="change" />
-      <deletion v-if="isDeletion(change)" :change="change" />
-      <substitution v-if="isSubstitution(change)" :change="change" />
+  <div
+    id="diff"
+    data-cy="diff"
+  >
+    <div
+      v-for="(change, index) in diff.changes"
+      :key="index"
+      class="diff-character"
+    >
+      <unchanged
+        v-if="isUnchanged(change)"
+        :change="change"
+      />
+      <insertion
+        v-if="isInsertion(change)"
+        :change="change"
+      />
+      <deletion
+        v-if="isDeletion(change)"
+        :change="change"
+      />
+      <substitution
+        v-if="isSubstitution(change)"
+        :change="change"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  /* eslint-disable class-methods-use-this */
-
   import Vue from 'vue'
   import Component from 'vue-class-component'
   import { Prop } from 'vue-property-decorator'

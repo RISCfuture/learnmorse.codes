@@ -1,5 +1,7 @@
 <template>
-  <p data-cy="getReady">{{$t('lesson.copy.getReady')}}</p>
+  <p data-cy="getReady">
+    {{ $t('lesson.copy.getReady') }}
+  </p>
 </template>
 
 <script lang="ts">

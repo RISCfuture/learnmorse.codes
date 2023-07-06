@@ -1,14 +1,25 @@
 <template>
-  <i18n path="website.footer.text" tag="footer">
+  <i18n
+    path="website.footer.text"
+    tag="footer"
+  >
     <template #linkToMe>
-      <a href="https://tim.codes" rel="noreferrer" target="_blank">
-        {{$t('website.footer.linkToMe')}}
+      <a
+        href="https://tim.codes"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {{ $t('website.footer.linkToMe') }}
       </a>
     </template>
 
     <template #linkToProject>
-      <a href="https://github.com/RISCfuture/learnmorse.codes" rel="noreferrer" target="_blank">
-        {{$t('website.footer.linkToProject')}}
+      <a
+        href="https://github.com/RISCfuture/learnmorse.codes"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {{ $t('website.footer.linkToProject') }}
       </a>
     </template>
   </i18n>

@@ -1,17 +1,28 @@
 <template>
   <div class="test-symbols">
-
-    <transition appear mode="out-in" name="in-grow-out-grow-linear">
-      <start-typing key="startTyping" v-if="startTyping" />
-      <test-field :lesson="lesson"
-                  @abandon="$emit('abandon')"
-                  @finished="onFinished($event)"
-                  @finishing="onFinishing"
-                  key="test"
-                  v-else />
+    <transition
+      appear
+      mode="out-in"
+      name="in-grow-out-grow-linear"
+    >
+      <start-typing
+        v-if="startTyping"
+        key="startTyping"
+      />
+      <test-field
+        v-else
+        key="test"
+        :lesson="lesson"
+        @abandon="$emit('abandon')"
+        @finished="onFinished($event)"
+        @finishing="onFinishing"
+      />
     </transition>
 
-    <transition appear name="in-grow-out-fade">
+    <transition
+      appear
+      name="in-grow-out-fade"
+    >
       <pencils-down v-if="pencilsDown" />
     </transition>
   </div>

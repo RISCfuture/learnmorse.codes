@@ -1,6 +1,8 @@
 <template>
   <div>
-    <p class="symbol">{{change.unchanged | symbol}}</p>
+    <p class="symbol">
+      {{ change.unchanged | symbol }}
+    </p>
   </div>
 </template>
 

@@ -1,11 +1,16 @@
 <template>
-  <div id="learn-symbols" :class="{overflowing}">
-    <symbol-key :audio="audio"
-                :interactive="interactive"
-                :key="symbol"
-                :symbol="symbol"
-                ref="symbolElements"
-                v-for="symbol in symbols" />
+  <div
+    id="learn-symbols"
+    :class="{ overflowing }"
+  >
+    <symbol-key
+      v-for="symbol in symbols"
+      :key="symbol"
+      ref="symbolElements"
+      :audio="audio"
+      :interactive="interactive"
+      :symbol="symbol"
+    />
   </div>
 </template>
 

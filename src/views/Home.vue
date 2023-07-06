@@ -2,13 +2,25 @@
   <div id="container">
     <transition name="out-move-up">
       <practice v-if="showPractice" />
-      <completed v-else-if="showCompleted" @practice="practice = true" />
-      <resume @started="started = true" v-else-if="showResume" />
+      <completed
+        v-else-if="showCompleted"
+        @practice="practice = true"
+      />
+      <resume
+        v-else-if="showResume"
+        @started="started = true"
+      />
       <lesson v-else-if="showLesson" />
-      <start @started="started = true" v-else />
+      <start
+        v-else
+        @started="started = true"
+      />
     </transition>
 
-    <transition appear name="in-fade-3">
+    <transition
+      appear
+      name="in-fade-3"
+    >
       <copyright-info />
     </transition>
   </div>

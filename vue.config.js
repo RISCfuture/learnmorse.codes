@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign,@typescript-eslint/no-var-requires */
-
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 
 module.exports = {
@@ -18,6 +16,7 @@ module.exports = {
   },
 
   configureWebpack: {
+    devtool: 'source-map',
     plugins: [
       new StyleLintPlugin({
         files: ['src/**/*.{vue,scss}']

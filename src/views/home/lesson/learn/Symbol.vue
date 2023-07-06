@@ -1,12 +1,14 @@
 <template>
-  <div :class="{hover}"
-       @mouseleave="mouseHover = false"
-       @focusout="mouseHover = false"
-       @mouseover="mouseHover = true"
-       @focusin="mouseHover = true"
-       :data-cy="dataCy"
-       class="learn-symbol">
-    <p>{{displaySymbol}}</p>
+  <div
+    :class="{ hover }"
+    :data-cy="dataCy"
+    class="learn-symbol"
+    @mouseleave="mouseHover = false"
+    @focusout="mouseHover = false"
+    @mouseover="mouseHover = true"
+    @focusin="mouseHover = true"
+  >
+    <p>{{ displaySymbol }}</p>
     <morse-code :text="symbol" />
   </div>
 </template>

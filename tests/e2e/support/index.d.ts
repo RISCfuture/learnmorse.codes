@@ -1,5 +1,3 @@
-/* eslint-disable spaced-comment */
-
 // load type definitions that come with Cypress module
 /// <reference types="cypress" />
 
@@ -22,5 +20,12 @@ declare namespace Cypress {
     ): Chainable<Element>;
 
     slowType(value: string): Chainable<Element>;
+
+    testInput(answerFunction: (answer: string) => void): Chainable<Element>
+
+    shouldHaveText(text: string): Chainable<Element>
+    shouldMatchText(text: string): Chainable<Element>
+
+    setLocalStorage(key: string, value: string): Chainable<Element>
   }
 }
