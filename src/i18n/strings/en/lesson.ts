@@ -1,12 +1,13 @@
-import { LocaleMessageObject } from 'vue-i18n'
+import type { LocaleMessage } from '@intlify/core-base'
 
-const lesson: LocaleMessageObject = {
+const lesson: LocaleMessage = {
   copy: {
     getReady: 'Get ready...',
     getReadyButton: 'Gimme the test!',
     startTyping: 'Start typing!',
     grading: 'Pencils down!',
-    extraCredit: '...plus an extra point for typing that space! | ...plus {points} extra points for typing those spaces!',
+    extraCredit:
+      '...plus an extra point for typing that space! | ...plus {points} extra points for typing those spaces!',
     abandoned: {
       header: 'Did it get away from you?',
       body: 'Looks like things maybe fell apart for a bit there. Take a breath, review the symbols above if you need to, and when you’re ready, press the big gray button below.',

@@ -1,6 +1,6 @@
-import { LocaleMessageObject } from 'vue-i18n'
+import type { LocaleMessage } from '@intlify/core-base'
 
-const website: LocaleMessageObject = {
+const website: LocaleMessage = {
   getStarted: {
     line1: 'Are you ready to learn Morse code?',
     line2: 'Well too bad, because it’s happening, right now.',
