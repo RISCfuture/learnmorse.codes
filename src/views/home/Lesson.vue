@@ -8,28 +8,12 @@
       @finished="readyToTest"
     />
 
-    <transition
-      appear
-      mode="out-in"
-      name="in-fade-out-fade"
-    >
-      <result
-        v-if="isScoring"
-        key="scoring"
-        :diff="diff"
-        :penalty="penalty"
-      />
+    <transition appear mode="out-in" name="in-fade-out-fade">
+      <result v-if="showResult" key="scoring" :diff="diff!" :penalty="penalty!" :show-diff="true" />
 
-      <get-ready
-        v-else-if="isStarting"
-        key="starting"
-      />
+      <get-ready v-else-if="isStarting" key="starting" />
 
-      <abandoned
-        v-else-if="isAbandoned"
-        key="abandoned"
-        @retry="readyToTest"
-      />
+      <abandoned v-else-if="isAbandoned" key="abandoned" @retry="readyToTest" />
 
       <test
         v-else-if="isTesting"
@@ -42,205 +26,158 @@
   </div>
 </template>
 
-<script lang="ts">
-  import Component, { mixins } from 'vue-class-component'
-  import { Action, Getter } from 'vuex-class'
-  import { Watch } from 'vue-property-decorator'
-  import { isNull } from 'lodash-es'
-  import Learn from '@/views/home/lesson/Learn.vue'
-  import Test from '@/views/home/lesson/Test.vue'
-  import Result from '@/views/home/lesson/Result.vue'
-  import {
-    Diff, isInsertion, isPass, isSubstitution
-  } from '@/util/test/scoring'
-  import GetReady from '@/views/home/lesson/GetReady.vue'
-  import { delayAfterScoring, delayBeforeStarting } from '@/components/animation'
-  import { newSymbolsInLesson } from '@/data/koch'
-  import Timers from '@/mixins/timers'
-  import Abandoned from '@/views/home/lesson/Abandoned.vue'
-  import { isMobile } from '@/util/etc'
+<script setup lang="ts">
+import Abandoned from '@/views/home/lesson/Abandoned.vue'
+import GetReady from '@/views/home/lesson/GetReady.vue'
+import Result from '@/views/home/lesson/Result.vue'
+import Test from '@/views/home/lesson/Test.vue'
+import Learn from '@/views/home/lesson/Learn.vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { type Diff, isInsertion, isPass, isSubstitution } from '@/util/test/scoring'
+import { useLessonStore } from '@/stores/lesson'
+import { isMobile } from '@/util/etc'
+import { delayAfterScoring, delayBeforeStarting } from '@/components/animation'
+import useTimers from '@/mixins/timers'
+import { isNull } from 'lodash-es'
+import { newSymbolsInLesson } from '@/data/koch'
+import { storeToRefs } from 'pinia'
 
-  enum State {
-    LEARNING,
-    STARTING,
-    TESTING,
-    SCORING,
-    ABANDONED
+/**
+ * Displays the Lesson view, which handles all of the following:
+ *
+ * * demonstrating new symbols to the user,
+ * * testing the user with a Morse code sequence,
+ * * presenting the user their score,
+ * * advancing or re-testing as appropriate,
+ * * and handling abandoned tests.
+ *
+ * Each of these states is handled by a specific sub-Vue. This view mostly manages the transition
+ * between each of these states.
+ *
+ * Because the {@link Test} view must display its own "Start Test" button on mobile devices, the
+ * _starting_ state is skipped on mobile devices. After the learning portion is complete on
+ * mobile, the view proceeds directly to the _testing_ state, where the "Start Test" button is
+ * shown.
+ */
+
+enum State {
+  LEARNING,
+  STARTING,
+  TESTING,
+  SCORING,
+  ABANDONED
+}
+
+const { addTimer, cancelTimers } = useTimers()
+const store = useLessonStore()
+const { currentLesson } = storeToRefs(store)
+
+const learnSymbols = ref<InstanceType<typeof Learn> | null>(null)
+
+const state = ref(State.LEARNING)
+const diff = ref<Diff | null>(null)
+const penalty = ref<number | null>(null)
+
+const isStarting = computed(() => state.value === State.STARTING)
+const isTesting = computed(() => state.value === State.TESTING)
+const isScoring = computed(() => state.value === State.SCORING)
+const isAbandoned = computed(() => state.value === State.ABANDONED)
+
+const symbolGuideIsInteractive = computed(() => state.value !== State.LEARNING)
+const symbolGuidePlaysAudio = computed(() => state.value !== State.TESTING)
+
+const showResult = computed(() => isScoring.value && !isNull(diff.value) && !isNull(penalty))
+
+function readyToTest() {
+  state.value = isMobile ? State.TESTING : State.STARTING
+}
+
+function startTest() {
+  state.value = State.TESTING
+}
+
+function onKeyPress(event: KeyboardEvent) {
+  if (event.target instanceof HTMLInputElement) return
+
+  switch (event.key) {
+    case 'ArrowLeft':
+      store.decrementLesson()
+      break
+    case 'ArrowRight':
+      store.incrementLesson()
+      break
   }
+}
 
-  /**
-   * Displays the Lesson view, which handles all of the following:
-   *
-   * * demonstrating new symbols to the user,
-   * * testing the user with a Morse code sequence,
-   * * presenting the user their score,
-   * * advancing or re-testing as appropriate,
-   * * and handling abandoned tests.
-   *
-   * Each of these states is handled by a specific sub-Vue. This view mostly manages the transition
-   * between each of these states.
-   *
-   * Because the {@link Test} view must display its own "Start Test" button on mobile devices, the
-   * _starting_ state is skipped on mobile devices. After the learning portion is complete on
-   * mobile, the view proceeds directly to the _testing_ state, where the "Start Test" button is
-   * shown.
-   */
+function onTestingFinished({ diff: d, penalty: p }: { diff: Diff; penalty: number }) {
+  state.value = State.SCORING
+  diff.value = d
+  penalty.value = p
+}
 
-  @Component({
-    components: {
-      Abandoned,
-      GetReady,
-      Result,
-      Test,
-      Learn
+function onAbandoned() {
+  if (state.value === State.TESTING) state.value = State.ABANDONED
+}
+
+function acceptResult() {
+  if (isNull(penalty.value)) state.value = State.LEARNING
+  else if (isPass(penalty.value)) store.incrementLesson()
+  else repeatLesson()
+}
+
+function newLesson() {
+  cancelTimers()
+  state.value = State.LEARNING
+  demoNewSymbols()
+}
+
+function repeatLesson() {
+  state.value = State.LEARNING
+  demoMissedSymbols()
+}
+
+function demoNewSymbols() {
+  const symbols = newSymbolsInLesson(currentLesson.value)
+  if (learnSymbols.value) learnSymbols.value.demonstrateSymbols(symbols)
+}
+
+function demoMissedSymbols() {
+  if (isNull(diff.value)) return
+
+  const missedSymbols = new Set<string>()
+  diff.value.changes.forEach((c) => {
+    if (isInsertion(c)) missedSymbols.add(c.add)
+    if (isSubstitution(c)) {
+      missedSymbols.add(c.replace)
+      missedSymbols.add(c.with)
     }
   })
-  export default class Lesson extends mixins(Timers) {
-    readonly $refs!: {
-      learnSymbols: Learn
-    }
 
-    state: State = State.LEARNING
+  if (learnSymbols.value) learnSymbols.value.demonstrateSymbols([...missedSymbols])
+}
 
-    diff: Diff | null = null
+onMounted(() => {
+  window.addEventListener('keyup', onKeyPress)
+  newLesson()
+})
 
-    penalty: number | null = null
+onUnmounted(() => {
+  window.removeEventListener('keyup', onKeyPress)
+})
 
-    @Getter currentLesson!: number
-
-    @Action incrementLesson!: () => Promise<void>
-
-    @Action decrementLesson!: () => Promise<void>
-
-    @Action storeSuccess!: (args: { lesson: number }) => Promise<void>
-
-    get isLearning(): boolean {
-      return this.state === State.LEARNING
-    }
-
-    get isStarting(): boolean {
-      return this.state === State.STARTING
-    }
-
-    get isTesting(): boolean {
-      return this.state === State.TESTING
-    }
-
-    get isScoring(): boolean {
-      return this.state === State.SCORING
-    }
-
-    get isAbandoned(): boolean {
-      return this.state === State.ABANDONED
-    }
-
-    get symbolGuideIsInteractive(): boolean {
-      return this.state !== State.LEARNING
-    }
-
-    get symbolGuidePlaysAudio(): boolean {
-      return this.state !== State.TESTING
-    }
-
-    readyToTest(): void {
-      this.state = isMobile ? State.TESTING : State.STARTING
-    }
-
-    startTest(): void {
-      this.state = State.TESTING
-    }
-
-    created(): void {
-      window.addEventListener('keyup', this.onKeyPress)
-    }
-
-    mounted(): void {
-      this.newLesson()
-    }
-
-    beforeDestroy(): void {
-      window.removeEventListener('keyup', this.onKeyPress)
-    }
-
-    onKeyPress(event: KeyboardEvent): void {
-      if (event.target instanceof HTMLInputElement) return
-
-      switch (event.key) {
-      case 'ArrowLeft':
-        this.decrementLesson()
-        break
-      case 'ArrowRight':
-        this.incrementLesson()
-        break
-      }
-    }
-
-    onTestingFinished({ diff, penalty }: { diff: Diff, penalty: number }): void {
-      this.state = State.SCORING
-      this.diff = diff
-      this.penalty = penalty
-    }
-
-    onAbandoned(): void {
-      if (this.state === State.TESTING) this.state = State.ABANDONED
-    }
-
-    @Watch('state')
-    private onStateChange() {
-      if (this.state === State.STARTING) {
-        this.addTimer(delayBeforeStarting, () => this.startTest())
-      } else if (this.state === State.SCORING) {
-        this.addTimer(delayAfterScoring, () => this.acceptResult())
-      }
-    }
-
-    @Watch('penalty')
-    private onPenaltyChange() {
-      if (!isNull(this.penalty) && isPass(this.penalty)) {
-        this.storeSuccess({ lesson: this.currentLesson })
-      }
-    }
-
-    @Watch('currentLesson')
-    private currentLessonChanged() {
-      this.newLesson()
-    }
-
-    private acceptResult() {
-      if (isNull(this.penalty)) this.state = State.LEARNING
-      else if (isPass(this.penalty)) this.incrementLesson()
-      else this.repeatLesson()
-    }
-
-    private newLesson() {
-      this.cancelTimers()
-      this.state = State.LEARNING
-      this.demoNewSymbols()
-    }
-
-    private repeatLesson() {
-      this.state = State.LEARNING
-      this.demoMissedSymbols()
-    }
-
-    private demoNewSymbols() {
-      const symbols = newSymbolsInLesson(this.currentLesson)
-      this.$refs.learnSymbols.demonstrateSymbols(symbols)
-    }
-
-    private demoMissedSymbols() {
-      if (!this.diff) return
-
-      const missedSymbols = new Set<string>()
-      this.diff.changes.forEach(c => {
-        if (isInsertion(c)) missedSymbols.add(c.add)
-        if (isSubstitution(c)) {
-          missedSymbols.add(c.replace)
-          missedSymbols.add(c.with)
-        }
-      })
-
-      this.$refs.learnSymbols.demonstrateSymbols([...missedSymbols])
-    }
+watch(state, (state) => {
+  if (state === State.STARTING) {
+    addTimer(delayBeforeStarting, () => startTest())
+  } else if (state === State.SCORING) {
+    addTimer(delayAfterScoring, () => acceptResult())
   }
+})
+
+watch(penalty, (penalty) => {
+  if (!isNull(penalty) && isPass(penalty)) {
+    store.storeSuccess(currentLesson.value)
+  }
+})
+
+store.$subscribe(() => newLesson())
 </script>

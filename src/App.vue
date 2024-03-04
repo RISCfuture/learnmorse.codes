@@ -4,27 +4,19 @@
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import Home from '@/views/Home.vue'
+<script setup lang="ts">
+import Home from '@/views/Home.vue'
 
-  /**
-   * Root view for the application.
-   */
-
-  @Component({
-    components: { Home }
-  })
-  export default class App extends Vue {
-  }
+/**
+ * Root view for the application.
+ */
 </script>
 
 <style lang="scss">
-  #app {
-    align-items: center;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-  }
+#app {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
 </style>
