@@ -1,6 +1,4 @@
-import {
-  has, isUndefined, memoize, minBy
-} from 'lodash-es'
+import { has, isUndefined, memoize, minBy } from 'lodash-es'
 
 /**
  * Represents a character that was not changed between the expected and actual.
@@ -97,21 +95,21 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
   if (expected === actual) {
     return {
       penalty: 0,
-      changes: expected.split('').map(c => ({ unchanged: c }))
+      changes: expected.split('').map((c) => ({ unchanged: c }))
     }
   }
 
   if (expected === '') {
     return {
       penalty: penaltyForString(actual),
-      changes: actual.split('').map(c => ({ remove: c }))
+      changes: actual.split('').map((c) => ({ remove: c }))
     }
   }
 
   if (actual === '') {
     return {
       penalty: penaltyForString(expected),
-      changes: expected.split('').map(c => ({ add: c }))
+      changes: expected.split('').map((c) => ({ add: c }))
     }
   }
 
@@ -122,41 +120,29 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
     const diffRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
     return {
       penalty: diffRest.penalty,
-      changes: [
-        { unchanged: expected[0] },
-        ...diffRest.changes
-      ]
+      changes: [{ unchanged: expected[0] }, ...diffRest.changes]
     }
   }
 
   const deletionRest = calculateDiff(expected, actualMinusFirst)
   const deletion: Diff = {
     penalty: deletionRest.penalty + penaltyFor(actual[0]),
-    changes: [
-      { remove: actual[0] },
-      ...deletionRest.changes
-    ]
+    changes: [{ remove: actual[0] }, ...deletionRest.changes]
   }
 
   const insertionRest = calculateDiff(expectedMinusFirst, actual)
   const insertion: Diff = {
     penalty: insertionRest.penalty + penaltyFor(expected[0]),
-    changes: [
-      { add: expected[0] },
-      ...insertionRest.changes
-    ]
+    changes: [{ add: expected[0] }, ...insertionRest.changes]
   }
 
   const substitutionRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
   const substitution: Diff = {
     penalty: substitutionRest.penalty + penaltyFor(expected[0], actual[0]),
-    changes: [
-      { replace: actual[0], with: expected[0] },
-      ...substitutionRest.changes
-    ]
+    changes: [{ replace: actual[0], with: expected[0] }, ...substitutionRest.changes]
   }
 
-  return minBy([substitution, deletion, insertion], diff => diff.penalty)!
+  return minBy([substitution, deletion, insertion], (diff) => diff.penalty)!
 }
 
 /**

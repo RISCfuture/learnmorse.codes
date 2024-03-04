@@ -1,151 +1,70 @@
 <template>
   <div>
-    <p
-      id="score"
-      :class="{ pass, perfect }"
-      data-cy="score"
-    >
+    <p id="score" :class="{ pass, perfect }" data-testid="score">
       {{ score }}
     </p>
-    <p
-      v-if="pass && extraCredit"
-      data-cy="extraCredit"
-    >
+    <p v-if="pass && credit" data-testid="extraCredit">
       {{ extraCreditString }}
     </p>
 
-    <diff
-      v-if="showDiff"
-      :diff="diff"
-    />
+    <diff-view v-if="showDiff" :diff="diff" />
     <tip v-else-if="showTip" />
-    <platitude
-      v-else
-      :pass="pass"
-    />
+    <platitude v-else :pass="pass" />
 
-    <div
-      id="confetti-source"
-      ref="confettiSource"
-    />
+    <div id="confetti-source" ref="confettiSource" />
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Prop, Watch } from 'vue-property-decorator'
-  import { confetti } from 'dom-confetti'
-  import { clamp, random } from 'lodash-es'
-  import { Diff, extraCredit, isPass } from '@/util/test/scoring'
-  import Platitude from '@/views/home/lesson/result/Platitude.vue'
-  import Tip from '@/views/home/lesson/result/Tip.vue'
-  import DiffComponent from '@/components/diff/Diff.vue'
+<script setup lang="ts">
+import Tip from '@/views/home/lesson/result/Tip.vue'
+import Platitude from '@/views/home/lesson/result/Platitude.vue'
+import DiffView from '@/components/diff/Diff.vue'
+import { type Diff, extraCredit, isPass } from '@/util/test/scoring'
+import { computed, ref, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { clamp, random } from 'lodash-es'
+import { confetti } from 'dom-confetti'
 
-  /**
-   * Displays the user's results following a test, including a tip or a platitude.
-   * Spouts confetti for a 100% score.
-   *
-   * For tests as part of a {@link Practice} (and not a {@link Lesson}), also displays the
-   * {@link Diff}.
-   */
+/**
+ * Displays the user's results following a test, including a tip or a platitude.
+ * Spouts confetti for a 100% score.
+ *
+ * For tests as part of a {@link Practice} (and not a {@link Lesson}), also displays the
+ * {@link Diff}.
+ */
 
-  @Component({
-    components: { Diff: DiffComponent, Tip, Platitude }
-  })
-  export default class Result extends Vue {
-    readonly $refs!: {
-      confettiSource: HTMLDivElement
-    }
+const { n, t } = useI18n()
 
-    @Prop({ type: Number, required: true }) penalty!: number
-
-    @Prop({ type: Object, required: true }) diff!: Diff
-
-    @Prop({ type: Boolean, default: false }) showDiff!: boolean
-
-    showTip = false
-
-    get score(): string {
-      const clampedScore = clamp(this.penalty, 0.0, 1.0)
-      return this.$n(1 - clampedScore, 'percent')
-    }
-
-    get pass(): boolean {
-      return isPass(this.penalty)
-    }
-
-    get perfect(): boolean {
-      return this.penalty <= 0.0
-    }
-
-    get extraCredit(): number {
-      return extraCredit(this.diff)
-    }
-
-    get extraCreditString(): string {
-      return <string> this.$tc(
-        'lesson.copy.extraCredit',
-        this.extraCredit,
-        { points: this.$n(this.extraCredit, 'integer') }
-      )
-    }
-
-    mounted(): void {
-      this.refresh()
-    }
-
-    @Watch('diff')
-    private onDiffChanged() {
-      this.refresh()
-    }
-
-    private refresh() {
-      this.showTip = (random(10) === 0)
-      if (this.perfect) confetti(this.$refs.confettiSource)
-    }
+const props = withDefaults(
+  defineProps<{
+    penalty: number
+    diff: Diff
+    showDiff: boolean
+  }>(),
+  {
+    showDiff: false
   }
+)
+
+const showTip = ref(false)
+const confettiSource = ref<HTMLDivElement | null>(null)
+
+const score = computed(() => {
+  const clampedScore = clamp(props.penalty, 0.0, 1.0)
+  return n(1 - clampedScore, 'percent')
+})
+
+const pass = computed(() => isPass(props.penalty))
+const perfect = computed(() => props.penalty <= 0.0)
+const credit = computed(() => extraCredit(props.diff))
+const extraCreditString = computed(() =>
+  t('lesson.copy.extraCredit', { points: n(credit.value, 'integer') }, credit.value)
+)
+
+function refresh() {
+  showTip.value = random(10) === 0
+  if (perfect.value && confettiSource.value) confetti(confettiSource.value)
+}
+
+watchEffect(() => refresh())
 </script>
-
-<style lang="scss" scoped>
-  @use "src/assets/styles/colors";
-  @use "src/assets/styles/fonts";
-  @use "src/assets/styles/responsive";
-
-  #score {
-    @include fonts.Kreon-Black;
-    @include responsive.font-size-huge;
-
-    margin: 0;
-    padding: 0;
-
-    &.pass:not(.perfect) {
-      @include colors.theme using ($theme) {
-        color: colors.get($theme, "pass");
-      }
-    }
-
-    &.perfect {
-      background:
-        linear-gradient(
-          135deg,
-          #a864fd 0%,
-          #29cdff 25%,
-          #78ff44 50%,
-          #ff718d 75%,
-          #fdff6a 100%
-        );
-      -webkit-background-clip: text;
-      display: inline-block;
-      -webkit-text-fill-color: transparent;
-    }
-  }
-
-  #confetti-source {
-    height: 1px;
-    left: 50vw;
-    position: fixed;
-    top: 50vh;
-    width: 1px;
-  }
-</style>

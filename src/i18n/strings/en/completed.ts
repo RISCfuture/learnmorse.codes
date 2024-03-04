@@ -1,6 +1,6 @@
-import { LocaleMessageObject } from 'vue-i18n'
+import type { LocaleMessage } from '@intlify/core-base'
 
-const completed: LocaleMessageObject = {
+const completed: LocaleMessage = {
   header: 'You did it!',
   body: 'You completed all the lessons and learned Morse code! You’re a hero!',
   resetButton: 'Reset Progress',
