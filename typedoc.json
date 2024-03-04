@@ -1,11 +1,18 @@
 {
-  "inputFiles": ["./src"],
-  "mode": "modules",
-  "out": "./docs",
-  "excludeExternals": true,
-  "excludePrivate": true,
-  "readme": "README.md",
-  "exclude": ["./src/assets", "./src/i18n"],
-  "name": "Learn Morse Code",
+  "$schema":              "https://typedoc.org/schema.json",
+  "entryPoints":          [
+    "src/main.ts"
+  ],
+  "entryPointStrategy":   "expand",
+  "out":                  "./docs",
+  "excludeExternals":     true,
+  "excludePrivate":       true,
+  "readme":               "README.md",
+  "exclude":              [
+    "./src/assets",
+    "./src/i18n",
+    "./**/*/__tests__"
+  ],
+  "name":                 "Learn Morse Code",
   "excludeNotDocumented": true
 }

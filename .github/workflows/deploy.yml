@@ -30,10 +30,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Enable Corepack
-      run: corepack enable
     - name: Setup pages
       uses: actions/configure-pages@v4
+    - name: Enable Corepack
+      run: corepack enable
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
@@ -48,7 +48,6 @@ jobs:
       with:
         path: "dist/"
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages

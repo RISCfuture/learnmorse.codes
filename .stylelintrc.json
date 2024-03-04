@@ -1,11 +1,7 @@
 {
   "extends": [
     "stylelint-config-standard-scss",
-    "stylelint-config-recommended-vue/scss"
-  ],
-  "rules":   {
-    "max-nesting-depth": null,
-    "property-no-vendor-prefix": null,
-    "selector-max-id":   null
-  }
+    "stylelint-config-recommended-vue/scss",
+    "stylelint-config-recess-order"
+  ]
 }

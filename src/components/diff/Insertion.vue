@@ -1,53 +1,46 @@
 <template>
   <div>
     <p class="symbol">
-      {{ change.add | symbol }}
+      {{ $filters.symbol(change.add) }}
     </p>
-    <img
-      class="correction"
-      src="@/assets/images/Insert.svg"
-      :alt="$t('lesson.practice.insert')"
-    >
+    <img class="correction" src="@/assets/images/Insert.svg" :alt="t('lesson.practice.insert')" />
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Prop } from 'vue-property-decorator'
-  import { Insertion as InsertionChange } from '@/util/test/scoring'
+<script setup lang="ts">
+import type { Insertion } from '@/util/test/scoring'
+import { useI18n } from 'vue-i18n'
 
-  @Component
-  export default class Insertion extends Vue {
-    @Prop({ type: Object, required: true }) change!: InsertionChange
-  }
+const { t } = useI18n()
+
+defineProps<{ change: Insertion }>()
 </script>
 
 <style scoped lang="scss">
-  @use "src/assets/styles/colors";
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/colors';
+@use '@/assets/styles/responsive';
 
-  div {
-    position: relative;
-  }
+div {
+  position: relative;
+}
 
-  // p {
-  //   @include colors.theme using ($theme) {
-  //     color: colors.get($theme, 'fail')
-  //   }
-  // }
+// p {
+//   @include colors.theme using ($theme) {
+//     color: colors.get($theme, 'fail')
+//   }
+// }
 
-  img {
-    bottom: -15px;
-    display: block;
+img {
+  position: absolute;
+  bottom: -15px;
+  left: 10px;
+  display: block;
+
+  @include responsive.small {
+    bottom: -10px;
     left: 10px;
-    position: absolute;
-
-    @include responsive.small {
-      bottom: -10px;
-      height: 50%;
-      left: 10px;
-      width: 50%;
-    }
+    width: 50%;
+    height: 50%;
   }
+}
 </style>
