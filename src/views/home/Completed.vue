@@ -1,123 +1,106 @@
 <template>
-  <div data-cy="completed">
-    <h1>{{ $t('completed.header') }}</h1>
-    <p>{{ $t('completed.body') }}</p>
+  <div>
+    <h1>{{ t('completed.header') }}</h1>
+    <p>{{ t('completed.body') }}</p>
 
     <div id="buttons">
-      <a
-        href="#"
-        class="button"
-        data-cy="resetButton"
-        @click.prevent="resetLesson"
-      >
-        {{ $t('completed.resetButton') }}
+      <a href="#" class="button" @click.prevent="resetLesson">
+        {{ t('completed.resetButton') }}
       </a>
-      <a
-        href="#"
-        class="button"
-        data-cy="practiceButton"
-        @click.prevent="practiceMode"
-      >
-        {{ $t('completed.practiceButton') }}
+      <a href="#" class="button" @click.prevent="practiceMode">
+        {{ t('completed.practiceButton') }}
       </a>
     </div>
 
-    <div
-      id="confetti-1"
-      ref="confetti1"
-      class="confetti"
-    />
-    <div
-      id="confetti-2"
-      ref="confetti2"
-      class="confetti"
-    />
-    <div
-      id="confetti-3"
-      ref="confetti3"
-      class="confetti"
-    />
+    <div id="confetti-1" ref="confetti1" class="confetti" />
+    <div id="confetti-2" ref="confetti2" class="confetti" />
+    <div id="confetti-3" ref="confetti3" class="confetti" />
   </div>
 </template>
 
-<script lang="ts">
-  import Component, { mixins } from 'vue-class-component'
-  import { Action } from 'vuex-class'
-  import { confetti } from 'dom-confetti'
-  import Timers from '@/mixins/timers'
-  import { sharedAudioContext } from '@/util/morse/audio'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import useTimers from '@/mixins/timers'
+import { confetti } from 'dom-confetti'
+import { sharedAudioContext } from '@/util/morse/audio'
+import { isUndefined } from 'lodash-es'
+import { useI18n } from 'vue-i18n'
+import { useLessonStore } from '@/stores/lesson'
 
-  /**
-   * Displays the "Completed" page, shown when a user completes all tests in the syllabus. Shoots
-   * three confetti bursts from three different parts of the page. Gives the user the option to
-   * either restart their progress or continue to practice transcribing Morse code.
-   */
+/**
+ * Displays the "Completed" page, shown when a user completes all tests in the syllabus. Shoots
+ * three confetti bursts from three different parts of the page. Gives the user the option to
+ * either restart their progress or continue to practice transcribing Morse code.
+ */
 
-  @Component
-  export default class Completed extends mixins(Timers) {
-    readonly $refs!: {
-      confetti1: HTMLDivElement
-      confetti2: HTMLDivElement
-      confetti3: HTMLDivElement
-    }
+const emit = defineEmits<{
+  practice: []
+}>()
+const { t } = useI18n()
+const { addTimer } = useTimers()
+const { resetLesson } = useLessonStore()
 
-    @Action resetLesson!: () => Promise<void>
+const confetti1 = ref<HTMLDivElement>()
+const confetti2 = ref<HTMLDivElement>()
+const confetti3 = ref<HTMLDivElement>()
 
-    mounted(): void {
-      this.addTimer(500, () => confetti(this.$refs.confetti1))
-      this.addTimer(800, () => confetti(this.$refs.confetti2))
-      this.addTimer(1600, () => confetti(this.$refs.confetti3))
-    }
+onMounted(() => {
+  const c1 = confetti1.value
+  if (!isUndefined(c1)) addTimer(500, () => confetti(c1))
+  const c2 = confetti2.value
+  if (!isUndefined(c2)) addTimer(800, () => confetti(c2))
+  const c3 = confetti3.value
+  if (!isUndefined(c3)) addTimer(1600, () => confetti(c3))
+})
 
-    practiceMode(): void {
-      sharedAudioContext().resume()
-      this.$emit('practice')
-    }
-  }
+function practiceMode() {
+  sharedAudioContext().resume()
+  emit('practice')
+}
 </script>
 
 <style lang="scss" scoped>
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/responsive';
 
-  h1 {
-    @include responsive.font-size-very-large;
+h1 {
+  @include responsive.font-size-very-large;
 
-    font-weight: 700;
-  }
+  font-weight: 700;
+}
 
-  p {
-    @include responsive.bottom-margin-large;
+p {
+  @include responsive.bottom-margin-large;
+  @include responsive.font-size-regular;
+}
+
+#buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+
+  a {
     @include responsive.font-size-regular;
   }
+}
 
-  #buttons {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
+.confetti {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+}
 
-    a {
-      @include responsive.font-size-regular;
-    }
-  }
+#confetti-1 {
+  top: responsive.vh(50);
+  left: 20vw;
+}
 
-  .confetti {
-    height: 1px;
-    position: fixed;
-    width: 1px;
-  }
+#confetti-2 {
+  top: responsive.vh(70);
+  left: 80vw;
+}
 
-  #confetti-1 {
-    left: 20vw;
-    top: responsive.vh(50);
-  }
-
-  #confetti-2 {
-    left: 80vw;
-    top: responsive.vh(70);
-  }
-
-  #confetti-3 {
-    left: 50vw;
-    top: responsive.vh(90);
-  }
+#confetti-3 {
+  top: responsive.vh(90);
+  left: 50vw;
+}
 </style>

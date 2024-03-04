@@ -1,29 +1,23 @@
 <template>
   <div>
     <p class="symbol">
-      {{ change.unchanged | symbol }}
+      {{ $filters.symbol(change.unchanged) }}
     </p>
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Prop } from 'vue-property-decorator'
-  import { Unchanged as UnchangedChange } from '@/util/test/scoring'
+<script setup lang="ts">
+import type { Unchanged } from '@/util/test/scoring'
 
-  @Component
-  export default class Unchanged extends Vue {
-    @Prop({ type: Object, required: true }) change!: UnchangedChange
-  }
+defineProps<{ change: Unchanged }>()
 </script>
 
 <style scoped lang="scss">
-  @use "src/assets/styles/colors";
+@use '@/assets/styles/colors';
 
-  p {
-    @include colors.theme using ($theme) {
-      color: colors.get($theme, "pass");
-    }
+p {
+  @include colors.theme using ($theme) {
+    color: colors.get($theme, 'pass');
   }
+}
 </style>

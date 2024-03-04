@@ -1,9 +1,9 @@
-import VueI18n from 'vue-i18n'
 import lesson from './lesson'
 import website from './website'
 import completed from './completed'
+import type { LocaleMessage } from '@intlify/core-base'
 
-const en: VueI18n.LocaleMessages = {
+const en: LocaleMessage = {
   completed,
   lesson,
   website

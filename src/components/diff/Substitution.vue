@@ -1,56 +1,49 @@
 <template>
   <div>
     <p class="symbol">
-      {{ change.replace | symbol }}
+      {{ $filters.symbol(change.replace) }}
     </p>
     <p class="replacement">
-      {{ change.with | symbol }}
+      {{ $filters.symbol(change.with) }}
     </p>
-    <img
-      class="correction"
-      src="@/assets/images/Elide.svg"
-      :alt="$t('lesson.practice.elide')"
-    >
+    <img class="correction" src="@/assets/images/Elide.svg" :alt="t('lesson.practice.elide')" />
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Prop } from 'vue-property-decorator'
-  import { Replacement } from '@/util/test/scoring'
+<script setup lang="ts">
+import type { Replacement } from '@/util/test/scoring'
+import { useI18n } from 'vue-i18n'
 
-  @Component
-  export default class Substitution extends Vue {
-    @Prop({ type: Object, required: true }) change!: Replacement
-  }
+const { t } = useI18n()
+
+defineProps<{ change: Replacement }>()
 </script>
 
 <style scoped lang="scss">
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/responsive';
 
-  div {
-    position: relative;
+div {
+  position: relative;
+}
+
+img {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  display: block;
+}
+
+.replacement {
+  position: absolute;
+  top: -30px;
+  right: -15px;
+  padding: 0;
+  margin: 0;
+  color: #f00;
+
+  @include responsive.small {
+    top: -20px;
+    right: -5px;
   }
-
-  img {
-    display: block;
-    left: 5px;
-    position: absolute;
-    top: 0;
-  }
-
-  .replacement {
-    color: #f00;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: -15px;
-    top: -30px;
-
-    @include responsive.small {
-      right: -5px;
-      top: -20px;
-    }
-  }
+}
 </style>

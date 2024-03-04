@@ -1,90 +1,72 @@
 <template>
   <div class="test-symbols">
-    <transition
-      appear
-      mode="out-in"
-      name="in-grow-out-grow-linear"
-    >
-      <start-typing
-        v-if="startTyping"
-        key="startTyping"
-      />
-      <test-field
+    <transition appear mode="out-in" name="in-grow-out-grow-linear">
+      <start-typing v-if="showStartTyping" key="startTyping" />
+      <field
         v-else
         key="test"
         :lesson="lesson"
-        @abandon="$emit('abandon')"
+        @abandon="emit('abandon')"
         @finished="onFinished($event)"
         @finishing="onFinishing"
       />
     </transition>
 
-    <transition
-      appear
-      name="in-grow-out-fade"
-    >
-      <pencils-down v-if="pencilsDown" />
+    <transition appear name="in-grow-out-fade">
+      <pencils-down v-if="showPencilsDown" />
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-  import Component, { mixins } from 'vue-class-component'
-  import { Prop, Watch } from 'vue-property-decorator'
-  import TestField from '@/views/home/lesson/test/Field.vue'
-  import { delayBeforeScoring, delayBeforeTyping } from '@/components/animation'
-  import PencilsDown from '@/views/home/lesson/test/PencilsDown.vue'
-  import { Diff } from '@/util/test/scoring'
-  import StartTyping from '@/views/home/lesson/test/StartTyping.vue'
-  import Timers from '@/mixins/timers'
-  import { stopAllAudio } from '@/util/morse/audio'
-  import { isMobile } from '@/util/etc'
+<script setup lang="ts">
+import StartTyping from '@/views/home/lesson/test/StartTyping.vue'
+import PencilsDown from '@/views/home/lesson/test/PencilsDown.vue'
+import Field from '@/views/home/lesson/test/Field.vue'
+import { isMobile } from '@/util/etc'
+import { onMounted, ref, watch } from 'vue'
+import useTimers from '@/mixins/timers'
+import { delayBeforeScoring, delayBeforeTyping } from '@/components/animation'
+import type { Diff } from '@/util/test/scoring'
+import { stopAllAudio } from '@/util/morse/audio'
 
-  /**
-   * Runs the test portion of the lesson flow. Displays the "Start typing!" prompt, then shows the
-   * test field. Displays the "Pencils down" prompt as the test finishes.
-   */
+/**
+ * Runs the test portion of the lesson flow. Displays the "Start typing!" prompt, then shows the
+ * test field. Displays the "Pencils down" prompt as the test finishes.
+ */
 
-  @Component({
-    components: {
-      StartTyping, PencilsDown, TestField
-    }
-  })
-  export default class Test extends mixins(Timers) {
-    @Prop({ type: Number, required: true }) lesson!: number
+const { addTimer, cancelTimers } = useTimers()
 
-    startTyping = !isMobile
+const props = defineProps<{ lesson: number }>()
 
-    pencilsDown = false
+const emit = defineEmits<{
+  abandon: []
+  finished: [{ diff: Diff; penalty: number }]
+}>()
 
-    mounted(): void {
-      this.reset()
-    }
+const showStartTyping = ref(!isMobile)
+const showPencilsDown = ref(false)
 
-    onFinishing(): void {
-      this.cancelTimers()
-      this.pencilsDown = true
-      this.addTimer(delayBeforeScoring, () => {
-        this.pencilsDown = false
-      })
-    }
+function onFinishing() {
+  cancelTimers()
+  showPencilsDown.value = true
+  addTimer(delayBeforeScoring, () => (showPencilsDown.value = false))
+}
 
-    onFinished({ diff, penalty }: { diff: Diff, penalty: number }): void {
-      stopAllAudio()
-      this.$emit('finished', { diff, penalty })
-    }
+function onFinished({ diff, penalty }: { diff: Diff; penalty: number }) {
+  stopAllAudio()
+  emit('finished', { diff, penalty })
+}
 
-    @Watch('lesson')
-    private onLessonChanged() {
-      this.reset()
-    }
+function reset() {
+  cancelTimers()
+  showStartTyping.value = !isMobile
+  addTimer(delayBeforeTyping, () => (showStartTyping.value = false))
+}
 
-    private reset() {
-      this.cancelTimers()
-      this.startTyping = !isMobile
-      this.addTimer(delayBeforeTyping, () => {
-        this.startTyping = false
-      })
-    }
-  }
+onMounted(() => reset())
+
+watch(
+  () => props.lesson,
+  () => reset()
+)
 </script>

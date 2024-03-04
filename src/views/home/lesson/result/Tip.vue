@@ -2,30 +2,27 @@
   <p>{{ tip }}</p>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { sample } from 'lodash-es'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { sample } from 'lodash-es'
+import { useI18n } from 'vue-i18n'
 
-  /**
-   * Displays a tip to help the user learn. Tips are displayed occasionally in place of
-   * {@link Platitude}s.
-   */
+/**
+ * Displays a tip to help the user learn. Tips are displayed occasionally in place of
+ * {@link Platitude}s.
+ */
 
-  @Component
-  export default class Tip extends Vue {
-    get tip(): string {
-      return sample(<string[]> <unknown> this.$t('lesson.tips'))!
-    }
-  }
+const { tm } = useI18n()
+
+const tip = computed(() => sample(tm('lesson.tips') as string[])!)
 </script>
 
 <style scoped lang="scss">
-  @use "src/assets/styles/colors";
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/colors';
+@use '@/assets/styles/responsive';
 
-  p {
-    @include responsive.top-margin-large;
-    @include colors.muted;
-  }
+p {
+  @include responsive.top-margin-large;
+  @include colors.muted;
+}
 </style>

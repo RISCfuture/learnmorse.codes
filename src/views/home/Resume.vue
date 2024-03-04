@@ -1,57 +1,43 @@
 <template>
-  <div
-    id="resume"
-    data-cy="resume"
-  >
-    <transition
-      appear
-      mode="out-in"
-      name="in-fade-1"
-    >
-      <h1>{{ $t('website.resume.text') }}</h1>
+  <div id="resume">
+    <transition appear mode="out-in" name="in-fade-1">
+      <h1>{{ t('website.resume.text') }}</h1>
     </transition>
-    <transition
-      appear
-      mode="out-in"
-      name="in-fade-1"
-    >
-      <a
-        href="#"
-        class="button"
-        data-cy="resumeButton"
-        @click.prevent="resume"
-      >
-        {{ $t('website.resume.button') }}
+    <transition appear mode="out-in" name="in-fade-1">
+      <a href="#" class="button" @click.prevent="resume">
+        {{ t('website.resume.button') }}
       </a>
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { sharedAudioContext } from '@/util/morse/audio'
+<script setup lang="ts">
+import { sharedAudioContext } from '@/util/morse/audio'
+import { useI18n } from 'vue-i18n'
 
-  /**
-   * Displayed to a user who visits the website who has recorded progress in their local storage.
-   * Allows them to continue where they left off. Clicking the "Resume" button begins the learning
-   * and testing flow, and resumes the audio context.
-   */
+/**
+ * Displayed to a user who visits the website who has recorded progress in their local storage.
+ * Allows them to continue where they left off. Clicking the "Resume" button begins the learning
+ * and testing flow, and resumes the audio context.
+ */
 
-  @Component
-  export default class Resume extends Vue {
-    resume(): void {
-      sharedAudioContext().resume()
-      this.$emit('started')
-    }
-  }
+const { t } = useI18n()
+
+const emit = defineEmits<{
+  started: []
+}>()
+
+function resume() {
+  sharedAudioContext().resume()
+  emit('started')
+}
 </script>
 
 <style lang="scss" scoped>
-  @use "src/assets/styles/colors";
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/colors';
+@use '@/assets/styles/responsive';
 
-  h1 {
-    @include responsive.bottom-margin-huge;
-  }
+h1 {
+  @include responsive.bottom-margin-huge;
+}
 </style>

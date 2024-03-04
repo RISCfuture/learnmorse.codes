@@ -2,35 +2,32 @@
   <p>{{ platitude }}</p>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Prop } from 'vue-property-decorator'
-  import { LocaleMessageArray } from 'vue-i18n'
-  import { sample } from 'lodash-es'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { sample } from 'lodash-es'
+import { useI18n } from 'vue-i18n'
 
-  /**
-   * Displays an encouraging message to the user if they failed the test, or an affirming message if
-   * they succeeded.
-   */
+/**
+ * Displays an encouraging message to the user if they failed the test, or an affirming message if
+ * they succeeded.
+ */
 
-  @Component
-  export default class Platitude extends Vue {
-    @Prop({ type: Boolean, required: true }) pass!: boolean
+const { tm } = useI18n()
 
-    get platitude(): string {
-      const path = `lesson.platitudes.${this.pass ? 'congratulations' : 'encouragement'}`
-      const strings = <string[]><LocaleMessageArray> this.$t(path)
-      return sample(strings)!
-    }
-  }
+const props = defineProps<{ pass: boolean }>()
+
+const platitude = computed(() => {
+  const path = `lesson.platitudes.${props.pass ? 'congratulations' : 'encouragement'}`
+  const strings = tm(path) as string[]
+  return sample(strings)!
+})
 </script>
 
 <style scoped lang="scss">
-  @use "src/assets/styles/colors";
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/colors';
+@use '@/assets/styles/responsive';
 
-  p {
-    @include responsive.font-size-large;
-  }
+p {
+  @include responsive.font-size-large;
+}
 </style>

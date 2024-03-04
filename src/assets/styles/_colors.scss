@@ -1,4 +1,5 @@
-@use "sass:map";
+@use 'sass:map';
+@use 'sass:color';
 
 /* the basics */
 
@@ -17,11 +18,11 @@ $fail: #f00;
   @media all and (prefers-color-scheme: dark) {
     @content ((
       "background": $dark,
-      "border-color": lighten($dark, 10%),
-      "button-background-color": lighten($dark, 10%),
-      "button-background-hover-color": lighten($dark, 20%),
+      "border-color": color.adjust($dark, $lightness: 10%),
+      "button-background-color": color.adjust($dark, $lightness: 10%),
+      "button-background-hover-color": color.adjust($dark, $lightness: 20%),
       "fail": $fail,
-      "link-color": lighten($color, 20%),
+      "link-color": color.adjust($color, $lightness: 20%),
       "muted-color": $medium,
       "pass": $pass,
       "text-color": $light
@@ -30,13 +31,13 @@ $fail: #f00;
 
   @content ((
     "background": $light,
-    "border-color": darken($light, 10%),
-    "button-background-color": darken($light, 10%),
-    "button-background-hover-color": darken($light, 20%),
-    "fail": lighten($fail, 20%),
+    "border-color": color.adjust($light, $lightness: -10%),
+    "button-background-color": color.adjust($light, $lightness: -10%),
+    "button-background-hover-color": color.adjust($light, $lightness: -20%),
+    "fail": color.adjust($fail, $lightness: 20%),
     "link-color": $color,
-    "muted-color": darken($medium, 20%),
-    "pass": lighten($pass, 20%),
+    "muted-color": color.adjust($medium, $lightness: -20%),
+    "pass": color.adjust($pass, $lightness: 20%),
     "text-color": $dark
   ));
 }
@@ -51,6 +52,6 @@ $fail: #f00;
 
 @mixin muted {
   @include theme using($theme) {
-    color: get($theme, "muted-color");
+    color: get($theme, 'muted-color');
   }
 }

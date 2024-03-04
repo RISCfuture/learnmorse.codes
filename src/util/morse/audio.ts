@@ -9,9 +9,12 @@ const allNodes: AudioNode[] = []
  * Stops all in-progress and pending audio tasks.
  */
 
-export function stopAllAudio(): void {
+export function stopAllAudio() {
   let node: AudioNode | undefined
-  while (node = allNodes.pop()) { node.disconnect() }
+
+  while ((node = allNodes.pop())) {
+    node.disconnect()
+  }
 }
 
 let globalContext: AudioContext | null = null
@@ -35,7 +38,8 @@ function segmentDuration(segment: Segment) {
     case Segment.DAH:
     case Segment.INTRA_SEGMENT:
       return ditDurationPulse * segmentUnitWidth[segment]
-    default: return 0
+    default:
+      return 0
   }
 }
 
@@ -48,10 +52,7 @@ function segmentDuration(segment: Segment) {
  */
 
 export function sequenceDuration(sequence: Segment[]): number {
-  return sequence.reduce(
-    (duration, segment) => duration + segmentDuration(segment),
-    0
-  )
+  return sequence.reduce((duration, segment) => duration + segmentDuration(segment), 0)
 }
 
 /**
@@ -84,11 +85,11 @@ export default class MorseCodeAudio {
     this.gainNode.connect(this.context.destination)
   }
 
-  private playSequence(sequence: Segment[], startDelay: number): void {
+  private playSequence(sequence: Segment[], startDelay: number) {
     stopAllAudio()
 
     let time = this.context.currentTime + startDelay
-    sequence.forEach(segment => {
+    sequence.forEach((segment) => {
       switch (segment) {
         case Segment.INTRA_SEGMENT:
         case Segment.SHORT_SPACE:
@@ -121,7 +122,7 @@ export default class MorseCodeAudio {
    * @param startDelay The amount of time to delay prior to playing the audio (seconds).
    */
 
-  play(startDelay = 0.5): void {
+  play(startDelay = 0.5) {
     this.playSequence(this.sequence, startDelay)
   }
 

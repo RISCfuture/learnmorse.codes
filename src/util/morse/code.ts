@@ -34,28 +34,25 @@ function isSpace(segment: string) {
  */
 
 export function messageToSequence(message: string): Segment[] {
-  return message.split('').reduce<Segment[]>(
-    (sequence, segment, index) => {
-      switch (segment) {
-        case '.':
-          if (index < message.length - 1 && !isSpace(message[index + 1])) {
-            return [...sequence, Segment.DIT, Segment.INTRA_SEGMENT]
-          }
-          return [...sequence, Segment.DIT]
-        case '-':
-          if (index < message.length - 1 && !isSpace(message[index + 1])) {
-            return [...sequence, Segment.DAH, Segment.INTRA_SEGMENT]
-          }
-          return [...sequence, Segment.DAH]
-        case ' ':
-          return [...sequence, Segment.SHORT_SPACE]
-        case '\t':
-          return [...sequence, Segment.LONG_SPACE]
-      }
-      return sequence
-    },
-    []
-  )
+  return message.split('').reduce<Segment[]>((sequence, segment, index) => {
+    switch (segment) {
+      case '.':
+        if (index < message.length - 1 && !isSpace(message[index + 1])) {
+          return [...sequence, Segment.DIT, Segment.INTRA_SEGMENT]
+        }
+        return [...sequence, Segment.DIT]
+      case '-':
+        if (index < message.length - 1 && !isSpace(message[index + 1])) {
+          return [...sequence, Segment.DAH, Segment.INTRA_SEGMENT]
+        }
+        return [...sequence, Segment.DAH]
+      case ' ':
+        return [...sequence, Segment.SHORT_SPACE]
+      case '\t':
+        return [...sequence, Segment.LONG_SPACE]
+    }
+    return sequence
+  }, [])
 }
 
 /**
@@ -68,9 +65,10 @@ export function messageToSequence(message: string): Segment[] {
  */
 
 export function textToMessage(text: string): string {
-  return text.split('').
-    map(symbol => symbolToSequence[symbol.toLowerCase()]).
-    join(' ').
-    replace(/\s*\t\s*/, '\t').
-    replace(/ +/, ' ')
+  return text
+    .split('')
+    .map((symbol) => symbolToSequence[symbol.toLowerCase()])
+    .join(' ')
+    .replace(/\s*\t\s*/, '\t')
+    .replace(/ +/, ' ')
 }
