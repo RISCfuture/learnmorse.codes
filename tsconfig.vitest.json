@@ -1,0 +1,21 @@
+{
+  "extends":         "./tsconfig.app.json",
+  "include": [
+    "./cypress/support/**/*.ts",
+    "./cypress/fixtures/**/*.ts",
+    "./src/**/*",
+    "env.d.ts"
+  ],
+  "exclude":         [],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "lib":             [],
+    "types":           [
+      "node",
+      "jsdom"
+    ]
+  },
+  "include":         [
+    "tests/unit/vitest.d.ts"
+  ]
+}

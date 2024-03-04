@@ -1,24 +1,28 @@
-import './config/bugsnag'
-
-import Vue from 'vue'
-import App from './App.vue'
-import store from './store'
-import i18n from './i18n'
+import bugsnagVue from '@/config/bugsnag'
 
 import 'scroll-behavior-polyfill'
-
-import './config/filters'
 import './config/css'
-
 import 'normalize.css/normalize.css'
 import '@/assets/styles/font-faces.scss'
 import '@/assets/styles/global.scss'
 import '@/assets/styles/transitions.scss'
 
-Vue.config.productionTip = false
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-new Vue({
-  store,
-  i18n,
-  render: h => h(App)
-}).$mount('#app')
+import i18n from '@/i18n'
+import App from './App.vue'
+
+const app = createApp(App)
+
+app.use(createPinia())
+app.use(i18n)
+if (bugsnagVue) app.use(bugsnagVue)
+
+app.config.globalProperties.$filters = {
+  symbol(char: string) {
+    return char === ' ' ? ' ' : char
+  }
+}
+
+app.mount('#app')
