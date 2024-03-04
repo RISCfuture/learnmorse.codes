@@ -18,10 +18,7 @@ export const segmentUnitWidth = {
 }
 
 function unitsInSequence(segments: Segment[]): number {
-  return segments.reduce(
-    (units, segment) => units + segmentUnitWidth[segment],
-    0
-  )
+  return segments.reduce((units, segment) => units + segmentUnitWidth[segment], 0)
 }
 
 function spacesInSequence(segments: Segment[]): number {
@@ -52,7 +49,5 @@ const durationBetweenWords = uncompressedSecondsPerWord - secondsPerWord
  * The duration of a dit, in seconds, used when calculating the duration of spaces. The different
  * dit lengths for pulses and spaces is how Farnsworth compression is achieved.
  */
-export const ditDurationSpace = ditDurationPulse + round(
-  durationBetweenWords / spacesInSequence(benchmarkSequence),
-  2
-)
+export const ditDurationSpace =
+  ditDurationPulse + round(durationBetweenWords / spacesInSequence(benchmarkSequence), 2)

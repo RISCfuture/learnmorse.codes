@@ -1,37 +1,30 @@
 <template>
   <div>
     <p class="symbol">
-      {{ change.remove | symbol }}
+      {{ $filters.symbol(change.remove) }}
     </p>
-    <img
-      class="correction"
-      src="@/assets/images/Elide.svg"
-      :alt="$t('lesson.practice.elide')"
-    >
+    <img class="correction" src="@/assets/images/Elide.svg" :alt="t('lesson.practice.elide')" />
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Prop } from 'vue-property-decorator'
-  import { Deletion as DeletionChange } from '@/util/test/scoring'
+<script setup lang="ts">
+import type { Deletion } from '@/util/test/scoring'
+import { useI18n } from 'vue-i18n'
 
-  @Component
-  export default class Deletion extends Vue {
-    @Prop({ type: Object, required: true }) change!: DeletionChange
-  }
+const { t } = useI18n()
+
+defineProps<{ change: Deletion }>()
 </script>
 
 <style scoped lang="scss">
-  div {
-    position: relative;
-  }
+div {
+  position: relative;
+}
 
-  img {
-    display: block;
-    left: 0;
-    position: absolute;
-    top: 0;
-  }
+img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
 </style>

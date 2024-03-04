@@ -1,123 +1,86 @@
 <template>
   <div id="container">
     <transition name="out-move-up">
-      <practice v-if="showPractice" />
-      <completed
-        v-else-if="showCompleted"
-        @practice="practice = true"
-      />
-      <resume
-        v-else-if="showResume"
-        @started="started = true"
-      />
-      <lesson v-else-if="showLesson" />
-      <start
-        v-else
-        @started="started = true"
-      />
+      <practice-view v-if="showPractice" />
+      <completed-view v-else-if="showCompleted" @practice="practice = true" />
+      <resume-view v-else-if="showResume" @started="started = true" />
+      <lesson-view v-else-if="showLesson" />
+      <start-view v-else @started="started = true" />
     </transition>
 
-    <transition
-      appear
-      name="in-fade-3"
-    >
-      <copyright-info />
+    <transition appear name="in-fade-3">
+      <footer-view />
     </transition>
   </div>
 </template>
 
-<script lang="ts">
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import { Action, Getter } from 'vuex-class'
-  import CopyrightInfo from '@/views/Footer.vue'
-  import Lesson from '@/views/home/Lesson.vue'
-  import Start from '@/views/home/Start.vue'
-  import Resume from '@/views/home/Resume.vue'
-  import { lastLessonNumber } from '@/data/koch'
-  import Completed from '@/views/home/Completed.vue'
-  import Practice from '@/views/home/Practice.vue'
+<script setup lang="ts">
+import PracticeView from '@/views/home/Practice.vue'
+import CompletedView from '@/views/home/Completed.vue'
+import ResumeView from '@/views/home/Resume.vue'
+import StartView from '@/views/home/Start.vue'
+import LessonView from '@/views/home/Lesson.vue'
+import FooterView from '@/views/FooterView.vue'
+import { computed, onMounted, ref } from 'vue'
+import { useLessonStore } from '@/stores/lesson'
+import { lastLessonNumber } from '@/data/koch'
+import { storeToRefs } from 'pinia'
 
-  /**
-   * The root content container for the application. This Vue manages the transitions between each
-   * of the top-level states. Sub-Vues handle rendering for each state.
-   */
+/**
+ * The root content container for the application. This Vue manages the transitions between each
+ * of the top-level states. Sub-Vues handle rendering for each state.
+ */
 
-  @Component({
-    components: {
-      Practice,
-      Completed,
-      Resume,
-      Start,
-      Lesson,
-      CopyrightInfo
-    }
-  })
-  export default class Home extends Vue {
-    started = false
+const started = ref(false)
+const practice = ref(false)
 
-    practice = false
+const lessonStore = useLessonStore()
+const { currentLesson } = storeToRefs(lessonStore)
 
-    @Getter currentLesson!: number
+const showResume = computed(() => !started.value && currentLesson.value > 0)
+const showLesson = computed(
+  () => started.value && currentLesson.value <= lastLessonNumber && !practice.value
+)
+const showPractice = computed(() => practice.value)
+const showCompleted = computed(() => currentLesson.value > lastLessonNumber)
 
-    @Action restore!: () => Promise<boolean>
-
-    get showResume(): boolean {
-      return !this.started && this.currentLesson > 0
-    }
-
-    get showLesson(): boolean {
-      return this.started && this.currentLesson <= lastLessonNumber && !this.practice
-    }
-
-    get showPractice(): boolean {
-      return this.practice
-    }
-
-    get showCompleted(): boolean {
-      return this.currentLesson > lastLessonNumber
-    }
-
-    mounted(): void {
-      this.restore()
-    }
-  }
+onMounted(() => lessonStore.restore())
 </script>
 
 <style lang="scss">
-  @use "src/assets/styles/responsive";
+@use '@/assets/styles/responsive';
 
-  #container {
-    @include responsive.fill-height;
+#container {
+  @include responsive.fill-height;
 
-    flex: 0 0 auto;
-    max-width: 800px;
-    width: 90vw;
+  flex: 0 0 auto;
+  width: 90vw;
+  max-width: 800px;
 
-    @include responsive.large {
-      margin-top: responsive.vh(10);
-      min-height: responsive.vh(90);
-    }
-
-    @include responsive.small {
-      min-height: responsive.vh(100);
-    }
+  @include responsive.large {
+    min-height: responsive.vh(90);
+    margin-top: responsive.vh(10);
   }
+
+  @include responsive.small {
+    min-height: responsive.vh(100);
+  }
+}
 </style>
 
 <style lang="scss">
-  #container {
-    display: flex;
-    flex-flow: column nowrap;
-  }
+#container {
+  display: flex;
+  flex-flow: column nowrap;
+}
 </style>
 
 <style lang="scss">
-  #container > article {
-    flex: 1 1 auto;
-  }
+#container > article {
+  flex: 1 1 auto;
+}
 
-  #container > footer {
-    flex: 0 0 auto;
-  }
+#container > footer {
+  flex: 0 0 auto;
+}
 </style>
