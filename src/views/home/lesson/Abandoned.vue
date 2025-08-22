@@ -35,8 +35,8 @@ p {
 }
 
 .button {
-  @include responsive.font-size-large;
-
   display: inline-block;
+
+  @include responsive.font-size-large;
 }
 </style>

@@ -42,14 +42,14 @@ defineProps<{ diff: Diff }>()
 
 .diff-character {
   @include fonts.Podkova-Bold;
+  flex: 0 0 auto;
+  width: 40px;
+
   @include responsive.font-size-large;
 
   @include responsive.small {
     width: 30px;
   }
-
-  flex: 0 0 auto;
-  width: 40px;
 }
 </style>
 

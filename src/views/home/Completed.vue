@@ -63,14 +63,14 @@ function practiceMode() {
 @use '@/assets/styles/responsive';
 
 h1 {
-  @include responsive.font-size-very-large;
-
   font-weight: 700;
+
+  @include responsive.font-size-very-large;
 }
 
 p {
-  @include responsive.bottom-margin-large;
   @include responsive.font-size-regular;
+  @include responsive.bottom-margin-large;
 }
 
 #buttons {

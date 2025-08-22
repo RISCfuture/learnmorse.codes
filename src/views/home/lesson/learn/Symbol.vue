@@ -122,9 +122,9 @@ defineExpose({ demoDuration, demonstrate, symbol: props.symbol })
 
 p {
   @include fonts.Podkova-SemiBold;
-  @include responsive.font-size-very-large;
-
   transition: transform 0.5s;
+
+  @include responsive.font-size-very-large;
 }
 
 .learn-symbol {

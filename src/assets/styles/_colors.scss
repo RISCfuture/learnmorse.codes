@@ -15,6 +15,18 @@ $fail: #f00;
    to your content block a map of named colors to use. */
 
 @mixin theme {
+  @content ((
+    "background": $light,
+    "border-color": color.adjust($light, $lightness: -10%),
+    "button-background-color": color.adjust($light, $lightness: -10%),
+    "button-background-hover-color": color.adjust($light, $lightness: -20%),
+    "fail": color.adjust($fail, $lightness: 20%),
+    "link-color": $color,
+    "muted-color": color.adjust($medium, $lightness: -20%),
+    "pass": color.adjust($pass, $lightness: 20%),
+    "text-color": $dark
+  ));
+
   @media all and (prefers-color-scheme: dark) {
     @content ((
       "background": $dark,
@@ -28,18 +40,6 @@ $fail: #f00;
       "text-color": $light
     ));
   }
-
-  @content ((
-    "background": $light,
-    "border-color": color.adjust($light, $lightness: -10%),
-    "button-background-color": color.adjust($light, $lightness: -10%),
-    "button-background-hover-color": color.adjust($light, $lightness: -20%),
-    "fail": color.adjust($fail, $lightness: 20%),
-    "link-color": $color,
-    "muted-color": color.adjust($medium, $lightness: -20%),
-    "pass": color.adjust($pass, $lightness: 20%),
-    "text-color": $dark
-  ));
 }
 
 /* Convenience method for getting named colors from the map given to you by
@@ -52,6 +52,8 @@ $fail: #f00;
 
 @mixin muted {
   @include theme using($theme) {
-    color: get($theme, 'muted-color');
+    & {
+      color: get($theme, 'muted-color');
+    }
   }
 }

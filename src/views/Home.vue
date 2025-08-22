@@ -51,11 +51,11 @@ onMounted(() => lessonStore.restore())
 @use '@/assets/styles/responsive';
 
 #container {
-  @include responsive.fill-height;
-
   flex: 0 0 auto;
   width: 90vw;
   max-width: 800px;
+
+  @include responsive.fill-height;
 
   @include responsive.large {
     min-height: responsive.vh(90);

@@ -12,33 +12,35 @@ body {
 * {
   @include fonts.Kreon-Regular;
 
+  font-weight: normal;
+  text-align: center;
+
   @include colors.theme using($theme) {
     color: colors.get($theme, 'text-color');
   }
-
-  font-weight: normal;
-  text-align: center;
 }
 
 a {
+  text-decoration: none;
+  cursor: pointer;
+
   @include colors.theme using($theme) {
     color: colors.get($theme, 'link-color');
   }
-
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .button {
+  padding: 20px;
+  border-radius: 20px;
+
   @include responsive.font-size-very-large;
 
   @include colors.theme using ($theme) {
-    color: colors.get($theme, 'text-color');
-    background-color: colors.get($theme, 'button-background-color');
+    & {
+      color: colors.get($theme, 'text-color');
+      background-color: colors.get($theme, 'button-background-color');
+    }
   }
-
-  padding: 20px;
-  border-radius: 20px;
 
   &:hover {
     @include colors.theme using ($theme) {
@@ -53,23 +55,24 @@ strong {
 
 footer {
   @include fonts.Kreon-Light;
-  @include responsive.font-size-tiny;
-  @include colors.muted;
 
   padding: 10px 0;
+
+  @include responsive.font-size-tiny;
+  @include colors.muted;
 }
 
 [type='text'] {
-  @include colors.theme using($theme) {
-    border: 1px solid colors.get($theme, 'border-color');
-  }
-
   box-sizing: border-box;
   width: 100%;
   padding: 20px;
   margin: 0;
   appearance: none;
   background-color: transparent;
+
+  @include colors.theme using($theme) {
+    border: 1px solid colors.get($theme, 'border-color');
+  }
 
   &:focus {
     outline: none;
