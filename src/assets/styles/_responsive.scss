@@ -16,9 +16,7 @@
 /* Some pre-fab font sizes, including their reduced mobile sizes. */
 
 @mixin font-size-huge {
-  & {
-    font-size: 128px;
-  }
+  font-size: 128px;
 
   @include small {
     font-size: 48px;
@@ -26,9 +24,7 @@
 }
 
 @mixin font-size-very-large {
-  & {
-    font-size: 48px;
-  }
+  font-size: 48px;
 
   @include small {
     font-size: 36px;
@@ -36,9 +32,7 @@
 }
 
 @mixin font-size-large {
-  & {
-    font-size: 36px;
-  }
+  font-size: 36px;
 
   @include small {
     font-size: 24px;
@@ -46,9 +40,7 @@
 }
 
 @mixin font-size-regular {
-  & {
-    font-size: 24px;
-  }
+  font-size: 24px;
 
   @include small {
     font-size: 18px;
@@ -56,9 +48,7 @@
 }
 
 @mixin font-size-small {
-  & {
-    font-size: 18px;
-  }
+  font-size: 18px;
 
   @include small {
     font-size: 14px;
@@ -78,9 +68,7 @@
 /* Some pre-fab margins, including their reduced mobile sizes. */
 
 @mixin top-margin {
-  & {
-    margin-top: 40px;
-  }
+  margin-top: 40px;
 
   @include small {
     margin-top: 25px;
@@ -88,9 +76,7 @@
 }
 
 @mixin top-margin-large {
-  & {
-    margin-top: 80px;
-  }
+  margin-top: 80px;
 
   @include small {
     margin-top: 50px;
@@ -98,9 +84,7 @@
 }
 
 @mixin bottom-margin {
-  & {
-    margin-bottom: 40px;
-  }
+  margin-bottom: 40px;
 
   @include small {
     margin-bottom: 25px;
@@ -108,9 +92,7 @@
 }
 
 @mixin bottom-margin-large {
-  & {
-    margin-bottom: 80px;
-  }
+  margin-bottom: 80px;
 
   @include small {
     margin-bottom: 50px;
@@ -118,9 +100,7 @@
 }
 
 @mixin bottom-margin-huge {
-  & {
-    margin-bottom: 160px;
-  }
+  margin-bottom: 160px;
 
   @include small {
     margin-bottom: 50px;

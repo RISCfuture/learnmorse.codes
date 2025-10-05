@@ -52,8 +52,6 @@ $fail: #f00;
 
 @mixin muted {
   @include theme using($theme) {
-    & {
-      color: get($theme, 'muted-color');
-    }
+    color: get($theme, 'muted-color');
   }
 }

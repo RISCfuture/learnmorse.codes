@@ -36,10 +36,8 @@ a {
   @include responsive.font-size-very-large;
 
   @include colors.theme using ($theme) {
-    & {
-      color: colors.get($theme, 'text-color');
-      background-color: colors.get($theme, 'button-background-color');
-    }
+    color: colors.get($theme, 'text-color');
+    background-color: colors.get($theme, 'button-background-color');
   }
 
   &:hover {

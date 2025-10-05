@@ -116,30 +116,30 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
   const expectedMinusFirst = expected.slice(1)
   const actualMinusFirst = actual.slice(1)
 
-  if (expected.startsWith(actual[0])) {
+  if (expected.startsWith(actual[0]!)) {
     const diffRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
     return {
       penalty: diffRest.penalty,
-      changes: [{ unchanged: expected[0] }, ...diffRest.changes]
+      changes: [{ unchanged: expected[0]! }, ...diffRest.changes]
     }
   }
 
   const deletionRest = calculateDiff(expected, actualMinusFirst)
   const deletion: Diff = {
-    penalty: deletionRest.penalty + penaltyFor(actual[0]),
-    changes: [{ remove: actual[0] }, ...deletionRest.changes]
+    penalty: deletionRest.penalty + penaltyFor(actual[0]!),
+    changes: [{ remove: actual[0]! }, ...deletionRest.changes]
   }
 
   const insertionRest = calculateDiff(expectedMinusFirst, actual)
   const insertion: Diff = {
-    penalty: insertionRest.penalty + penaltyFor(expected[0]),
-    changes: [{ add: expected[0] }, ...insertionRest.changes]
+    penalty: insertionRest.penalty + penaltyFor(expected[0]!),
+    changes: [{ add: expected[0]! }, ...insertionRest.changes]
   }
 
   const substitutionRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
   const substitution: Diff = {
-    penalty: substitutionRest.penalty + penaltyFor(expected[0], actual[0]),
-    changes: [{ replace: actual[0], with: expected[0] }, ...substitutionRest.changes]
+    penalty: substitutionRest.penalty + penaltyFor(expected[0]!, actual[0]!),
+    changes: [{ replace: actual[0]!, with: expected[0]! }, ...substitutionRest.changes]
   }
 
   return minBy([substitution, deletion, insertion], (diff) => diff.penalty)!

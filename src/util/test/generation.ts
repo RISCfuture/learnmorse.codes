@@ -18,9 +18,9 @@ const messageLengths = [14, 18]
  */
 
 export default function generateAnswer(lesson: number): string {
-  const wordsToGenerate = random(messageLengths[0], messageLengths[1])
+  const wordsToGenerate = random(messageLengths[0]!, messageLengths[1]!)
   const words = times(wordsToGenerate, () => {
-    const wordLength = random(wordLengths[0], wordLengths[1])
+    const wordLength = random(wordLengths[0]!, wordLengths[1]!)
     const symbols = times(wordLength, () => sample(symbolsInLesson(lesson)))
     return symbols.join('')
   })

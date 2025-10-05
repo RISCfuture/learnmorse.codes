@@ -99,7 +99,7 @@ function scrollIntoView(smooth: boolean): Promise<void> {
     }
 
     const intersectionObserver = new IntersectionObserver(([el]) => {
-      if (el.isIntersecting) {
+      if (el?.isIntersecting) {
         intersectionObserver.disconnect()
         resolve()
       }
