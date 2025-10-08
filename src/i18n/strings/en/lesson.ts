@@ -7,13 +7,18 @@ const lesson: LocaleMessage = {
     startTyping: 'Start typing!',
     grading: 'Pencils down!',
     extraCredit:
-      '...plus an extra point for typing that space! | ...plus {points} extra points for typing those spaces!',
+      '…plus an extra point for typing that space! | ...plus {points} extra points for typing those spaces!',
     abandoned: {
       header: 'Did it get away from you?',
       body: 'Looks like things maybe fell apart for a bit there. Take a breath, review the symbols above if you need to, and when you’re ready, press the big gray button below.',
       retryButton: 'OK. Let’s go again.'
     },
-    fieldLabel: 'type here'
+    fieldLabel: 'type here',
+    navigation: {
+      label: 'Lesson navigation',
+      instructions:
+        'Use left and right arrow keys to navigate between lessons, or swipe left and right on mobile devices.'
+    }
   },
   platitudes: {
     encouragement: [

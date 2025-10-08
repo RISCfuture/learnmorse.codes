@@ -1,5 +1,13 @@
 <template>
-  <div id="lesson">
+  <div
+    id="lesson"
+    ref="lessonEl"
+    role="region"
+    :aria-label="t('lesson.copy.navigation.label')"
+    :aria-keyshortcuts="ariaKeyshortcuts"
+  >
+    <span class="sr-only">{{ t('lesson.copy.navigation.instructions') }}</span>
+
     <learn
       ref="learnSymbols"
       :audio="symbolGuidePlaysAudio"
@@ -41,6 +49,8 @@ import { isNull } from 'lodash-es'
 import { newSymbolsInLesson } from '@/data/koch'
 import { storeToRefs } from 'pinia'
 import { useTestFlow, TestFlowState } from '@/composables/useTestFlow'
+import { useSwipe } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
 /**
  * Displays the Lesson view, which handles all of the following:
@@ -65,10 +75,12 @@ enum State {
   ABANDONED
 }
 
+const { t } = useI18n()
 const { cancelTimers } = useTimers()
 const store = useLessonStore()
 const { currentLesson } = storeToRefs(store)
 
+const lessonEl = ref<HTMLElement | null>(null)
 const learnSymbols = ref<InstanceType<typeof Learn> | null>(null)
 
 const localState = ref(State.LEARNING)
@@ -82,7 +94,6 @@ const {
   showResult,
   onTestingFinished: handleTestingFinished
 } = useTestFlow({
-  initialState: TestFlowState.STARTING,
   onScoringComplete: acceptResult
 })
 
@@ -90,6 +101,24 @@ const isAbandoned = computed(() => localState.value === State.ABANDONED)
 
 const symbolGuideIsInteractive = computed(() => localState.value !== State.LEARNING)
 const symbolGuidePlaysAudio = computed(() => !isTesting.value)
+
+// ARIA keyboard shortcuts attribute
+const ariaKeyshortcuts = computed(() => 'ArrowLeft ArrowRight')
+
+// Swipe gesture support for mobile navigation
+useSwipe(lessonEl, {
+  onSwipeEnd: (_e, direction) => {
+    // Only handle swipes when not in text input
+    if (document.activeElement?.tagName === 'INPUT') return
+
+    if (direction === 'left') {
+      store.incrementLesson()
+    } else if (direction === 'right') {
+      store.decrementLesson()
+    }
+  },
+  threshold: 50 // Minimum distance for swipe detection (in pixels)
+})
 
 function readyToTest() {
   testFlowState.value = isMobile ? TestFlowState.TESTING : TestFlowState.STARTING

@@ -13,6 +13,7 @@ declare global {
       shouldMatchText(text: RegExp): Chainable<Element>
 
       setLocalStorage(key: string, value: string): Chainable<Element>
+
     }
   }
 }
