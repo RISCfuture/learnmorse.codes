@@ -36,11 +36,11 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { type Diff, isInsertion, isPass, isSubstitution } from '@/util/test/scoring'
 import { useLessonStore } from '@/stores/lesson'
 import { isMobile } from '@/util/etc'
-import { delayAfterScoring, delayBeforeStarting } from '@/components/animation'
 import useTimers from '@/mixins/timers'
 import { isNull } from 'lodash-es'
 import { newSymbolsInLesson } from '@/data/koch'
 import { storeToRefs } from 'pinia'
+import { useTestFlow, TestFlowState } from '@/composables/useTestFlow'
 
 /**
  * Displays the Lesson view, which handles all of the following:
@@ -62,38 +62,37 @@ import { storeToRefs } from 'pinia'
 
 enum State {
   LEARNING,
-  STARTING,
-  TESTING,
-  SCORING,
   ABANDONED
 }
 
-const { addTimer, cancelTimers } = useTimers()
+const { cancelTimers } = useTimers()
 const store = useLessonStore()
 const { currentLesson } = storeToRefs(store)
 
 const learnSymbols = ref<InstanceType<typeof Learn> | null>(null)
 
-const state = ref(State.LEARNING)
-const diff = ref<Diff | null>(null)
-const penalty = ref<number | null>(null)
+const localState = ref(State.LEARNING)
 
-const isStarting = computed(() => state.value === State.STARTING)
-const isTesting = computed(() => state.value === State.TESTING)
-const isScoring = computed(() => state.value === State.SCORING)
-const isAbandoned = computed(() => state.value === State.ABANDONED)
+const {
+  state: testFlowState,
+  diff,
+  penalty,
+  isStarting,
+  isTesting,
+  showResult,
+  onTestingFinished: handleTestingFinished
+} = useTestFlow({
+  initialState: TestFlowState.STARTING,
+  onScoringComplete: acceptResult
+})
 
-const symbolGuideIsInteractive = computed(() => state.value !== State.LEARNING)
-const symbolGuidePlaysAudio = computed(() => state.value !== State.TESTING)
+const isAbandoned = computed(() => localState.value === State.ABANDONED)
 
-const showResult = computed(() => isScoring.value && !isNull(diff.value) && !isNull(penalty))
+const symbolGuideIsInteractive = computed(() => localState.value !== State.LEARNING)
+const symbolGuidePlaysAudio = computed(() => !isTesting.value)
 
 function readyToTest() {
-  state.value = isMobile ? State.TESTING : State.STARTING
-}
-
-function startTest() {
-  state.value = State.TESTING
+  testFlowState.value = isMobile ? TestFlowState.TESTING : TestFlowState.STARTING
 }
 
 function onKeyPress(event: KeyboardEvent) {
@@ -110,29 +109,27 @@ function onKeyPress(event: KeyboardEvent) {
 }
 
 function onTestingFinished({ diff: d, penalty: p }: { diff: Diff; penalty: number }) {
-  state.value = State.SCORING
-  diff.value = d
-  penalty.value = p
+  handleTestingFinished({ diff: d, penalty: p })
 }
 
 function onAbandoned() {
-  if (state.value === State.TESTING) state.value = State.ABANDONED
+  if (isTesting.value) localState.value = State.ABANDONED
 }
 
 function acceptResult() {
-  if (isNull(penalty.value)) state.value = State.LEARNING
+  if (isNull(penalty.value)) localState.value = State.LEARNING
   else if (isPass(penalty.value)) store.incrementLesson()
   else repeatLesson()
 }
 
 function newLesson() {
   cancelTimers()
-  state.value = State.LEARNING
+  localState.value = State.LEARNING
   demoNewSymbols()
 }
 
 function repeatLesson() {
-  state.value = State.LEARNING
+  localState.value = State.LEARNING
   demoMissedSymbols()
 }
 
@@ -163,14 +160,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keyup', onKeyPress)
-})
-
-watch(state, (state) => {
-  if (state === State.STARTING) {
-    addTimer(delayBeforeStarting, () => startTest())
-  } else if (state === State.SCORING) {
-    addTimer(delayAfterScoring, () => acceptResult())
-  }
 })
 
 watch(penalty, (penalty) => {

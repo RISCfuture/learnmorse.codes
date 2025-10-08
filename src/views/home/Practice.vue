@@ -25,13 +25,9 @@
 import GetReady from '@/views/home/lesson/GetReady.vue'
 import Result from '@/views/home/lesson/Result.vue'
 import Test from '@/views/home/lesson/Test.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import { isMobile } from '@/util/etc'
-import type { Diff } from '@/util/test/scoring'
+import { computed } from 'vue'
 import { lastLessonNumber } from '@/data/koch'
-import useTimers from '@/mixins/timers'
-import { delayAfterScoring, delayBeforeStarting } from '@/components/animation'
-import { isNull } from 'lodash-es'
+import { useTestFlow } from '@/composables/useTestFlow'
 
 /**
  * This view allows a user who has completed all lessons to continue to test him/herself. Very
@@ -44,44 +40,9 @@ import { isNull } from 'lodash-es'
  * shown.
  */
 
-const { addTimer } = useTimers()
-
-enum State {
-  STARTING,
-  TESTING,
-  SCORING
-}
-
-const state = ref<State>(isMobile ? State.TESTING : State.STARTING)
-const diff = ref<Diff | null>(null)
-const penalty = ref<number | null>(null)
+const { isStarting, isTesting, showResult, diff, penalty, onTestingFinished } = useTestFlow()
 
 const lesson = computed(() => lastLessonNumber)
-const isStarting = computed(() => state.value === State.STARTING)
-const isTesting = computed(() => state.value === State.TESTING)
-const isScoring = computed(() => state.value === State.SCORING)
-const showResult = computed(() => isScoring.value && !isNull(diff.value) && !isNull(penalty))
-
-function onTestingFinished({ diff: d, penalty: p }: { diff: Diff; penalty: number }) {
-  state.value = State.SCORING
-  diff.value = d
-  penalty.value = p
-}
-
-function onStateChange() {
-  if (state.value === State.STARTING) {
-    addTimer(delayBeforeStarting, () => {
-      state.value = State.TESTING
-    })
-  } else if (state.value === State.SCORING) {
-    addTimer(delayAfterScoring, () => {
-      state.value = isMobile ? State.TESTING : State.STARTING
-    })
-  }
-}
-
-onMounted(() => onStateChange())
-watch(state, () => onStateChange())
 </script>
 
 <style lang="scss">
