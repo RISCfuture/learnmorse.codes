@@ -21,3 +21,9 @@ const props = defineProps<{
 
 const sequence = computed(() => messageToSequence(textToMessage(props.text)))
 </script>
+
+<style scoped>
+.morse-code {
+  white-space: nowrap;
+}
+</style>
