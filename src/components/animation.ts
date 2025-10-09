@@ -24,6 +24,7 @@ export const delayAroundAudio = 0.5
 
 /**
  * The amount of time that must pass with no user input before the user is considered to have
- * abandoned the test.
+ * abandoned the test. In E2E testing, this is increased significantly to allow automated typing.
  */
-export const delayBeforeAbandoned = 5000
+const testMode = import.meta.env.VITE_E2E_TESTING === 'true'
+export const delayBeforeAbandoned = testMode ? 60000 : 5000
