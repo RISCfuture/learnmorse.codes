@@ -402,117 +402,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bugsnag/browser-performance@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@bugsnag/browser-performance@npm:3.0.0"
-  dependencies:
-    "@bugsnag/core-performance": "npm:^3.0.0"
-    "@bugsnag/cuid": "npm:^3.1.1"
-    "@bugsnag/delivery-fetch-performance": "npm:^3.0.0"
-    "@bugsnag/request-tracker-performance": "npm:^3.0.0"
-  checksum: 10c0/7a08d9b2cf7fbd58cfba92e102896d0f2873815a8a2060dca75a5d24f1cd293c38befa58200090a92b2bc362f80f7371b372c28189c67907fd2edf43ab6357cb
-  languageName: node
-  linkType: hard
-
-"@bugsnag/browser@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "@bugsnag/browser@npm:8.6.0"
-  dependencies:
-    "@bugsnag/core": "npm:^8.6.0"
-  checksum: 10c0/9a2e914c0d362b8f1fc4f4c510517bfb72c5c5d6f6314c1c3dd0b7f945385e5f2ce5aed6dd559c48f1dd7d4d956ff917c5ac18555440bcc0a1036fee82c463cc
-  languageName: node
-  linkType: hard
-
-"@bugsnag/core-performance@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@bugsnag/core-performance@npm:3.0.0"
-  dependencies:
-    "@bugsnag/cuid": "npm:^3.1.1"
-  checksum: 10c0/c8764f00be88e8236d4f880e1c6a08c58a1a6e5798e669d6145a8e2ef84be03299fb63d659727e5325d4e2bf8cf475633e24238b1b699939a0b4bcbbdeff76a6
-  languageName: node
-  linkType: hard
-
-"@bugsnag/core@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "@bugsnag/core@npm:8.6.0"
-  dependencies:
-    "@bugsnag/cuid": "npm:^3.0.0"
-    "@bugsnag/safe-json-stringify": "npm:^6.0.0"
-    error-stack-parser: "npm:^2.0.3"
-    iserror: "npm:^0.0.2"
-    stack-generator: "npm:^2.0.3"
-  checksum: 10c0/3b0e15fcad52244c8828e87013081fe8b9c54d7547da09025c73df80436e9ff0d05a65059c77a8f2487fedff1e14cb4a7508a5f187b642c25f7b704bccdbc45c
-  languageName: node
-  linkType: hard
-
-"@bugsnag/cuid@npm:^3.0.0, @bugsnag/cuid@npm:^3.1.1":
-  version: 3.2.1
-  resolution: "@bugsnag/cuid@npm:3.2.1"
-  checksum: 10c0/f2da80e922a3ed14bcede1e8257ce02974fdce91f2b6ecfc25846f70c250f2909b2a19f898e309cf564c882b39ac685df99e8fe498db45071d3019db5ea03e6a
-  languageName: node
-  linkType: hard
-
-"@bugsnag/delivery-fetch-performance@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@bugsnag/delivery-fetch-performance@npm:3.0.0"
-  dependencies:
-    "@bugsnag/core-performance": "npm:^3.0.0"
-  checksum: 10c0/d86081f96e9c431265cf27ad69967364c73d3f9b4786fb8701b68092093a27a03f2dc488c5c4d68f8fd8c33a722f1d4fe0bd2e5ff92d2d237800da28ef7b6706
-  languageName: node
-  linkType: hard
-
-"@bugsnag/js@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "@bugsnag/js@npm:8.6.0"
-  dependencies:
-    "@bugsnag/browser": "npm:^8.6.0"
-    "@bugsnag/node": "npm:^8.6.0"
-  checksum: 10c0/57c6fca3406f0da710811fccf1a2f712389ad619bc7fca0b2b3461f8ce23e73bd90c39cd693131705b39872b7fec628c8f375e5afd6f547d8544cf4be2623686
-  languageName: node
-  linkType: hard
-
-"@bugsnag/node@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "@bugsnag/node@npm:8.6.0"
-  dependencies:
-    "@bugsnag/core": "npm:^8.6.0"
-    byline: "npm:^5.0.0"
-    error-stack-parser: "npm:^2.0.3"
-    iserror: "npm:^0.0.2"
-    pump: "npm:^3.0.0"
-    stack-generator: "npm:^2.0.3"
-  checksum: 10c0/94d831ac22c6695128ae66d862e024bd56177084adef5f2f0e199e08f28c60ff9d8d071289b3e227a556c9bd9b2b4bc490380e357d8e22e4f973bd99ac4ac145
-  languageName: node
-  linkType: hard
-
-"@bugsnag/plugin-vue@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "@bugsnag/plugin-vue@npm:8.6.0"
-  peerDependencies:
-    "@bugsnag/core": ^8.0.0
-  peerDependenciesMeta:
-    "@bugsnag/core":
-      optional: true
-  checksum: 10c0/4ebdb473777f28c10e7dbda95897f32205ae5cc59ec93121467023b089d58d6d404f2a6e746e22776bf61d82897aaddd9c3ed3a261881a04c69758cbc5a5c4a8
-  languageName: node
-  linkType: hard
-
-"@bugsnag/request-tracker-performance@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@bugsnag/request-tracker-performance@npm:3.0.0"
-  dependencies:
-    "@bugsnag/core-performance": "npm:^3.0.0"
-  checksum: 10c0/9be63f59981ab8727e7ee0907dea9cece58df4666c5a2c5f944e80bb3dd2fa66965dbcf21c47e3a2505cb39c583d0c57d5aee2803406cae073bb09b1a22e91b3
-  languageName: node
-  linkType: hard
-
-"@bugsnag/safe-json-stringify@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@bugsnag/safe-json-stringify@npm:6.0.0"
-  checksum: 10c0/817945431d269dc74e6cc6cd6e615b151a71ffc048ba428ab9eefea40e659631543be4a5c307aa37ed20c643344ff980c13b1fd604821a9c945b8508ecb0902b
-  languageName: node
-  linkType: hard
-
 "@cacheable/memoize@npm:^2.0.3":
   version: 2.0.3
   resolution: "@cacheable/memoize@npm:2.0.3"
@@ -1687,6 +1576,80 @@ __metadata:
   version: 0.4.1
   resolution: "@sec-ant/readable-stream@npm:0.4.1"
   checksum: 10c0/64e9e9cf161e848067a5bf60cdc04d18495dc28bb63a8d9f8993e4dd99b91ad34e4b563c85de17d91ffb177ec17a0664991d2e115f6543e73236a906068987af
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/browser-utils@npm:10.18.0":
+  version: 10.18.0
+  resolution: "@sentry-internal/browser-utils@npm:10.18.0"
+  dependencies:
+    "@sentry/core": "npm:10.18.0"
+  checksum: 10c0/4d0e5cade64c3615016b46c935d480d764cddde40a0838cb70e9a3457b789db5d54aa477ae3b4e6ea5656d90078d38a5f379d8b3f7baaf2baa5026ededfbdcc9
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/feedback@npm:10.18.0":
+  version: 10.18.0
+  resolution: "@sentry-internal/feedback@npm:10.18.0"
+  dependencies:
+    "@sentry/core": "npm:10.18.0"
+  checksum: 10c0/43558add41905602f07dbbe95c862f733095346537e65be5f92862c367dc387866186ef66c0117744ac5e6a31ad80115b9d52fbb98ab907e13160069a79b6b4d
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/replay-canvas@npm:10.18.0":
+  version: 10.18.0
+  resolution: "@sentry-internal/replay-canvas@npm:10.18.0"
+  dependencies:
+    "@sentry-internal/replay": "npm:10.18.0"
+    "@sentry/core": "npm:10.18.0"
+  checksum: 10c0/3e5679355b8137754be2c5d00a1faab507ddfd713dc4da62f106db7c411d658f1cc17dc2f1ffa141fd28a2ea564f452e788a5ac5fcbd6ad7c3a962a3bf14e6bb
+  languageName: node
+  linkType: hard
+
+"@sentry-internal/replay@npm:10.18.0":
+  version: 10.18.0
+  resolution: "@sentry-internal/replay@npm:10.18.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:10.18.0"
+    "@sentry/core": "npm:10.18.0"
+  checksum: 10c0/d872cc44ce49493a87f86c79a126287a4cf9f17b091d96976a9c294b2bcf171bb7f458bf7c05a65fbde6d7e09b8c0be1354e6486acd3518b83dea074d56ec461
+  languageName: node
+  linkType: hard
+
+"@sentry/browser@npm:10.18.0":
+  version: 10.18.0
+  resolution: "@sentry/browser@npm:10.18.0"
+  dependencies:
+    "@sentry-internal/browser-utils": "npm:10.18.0"
+    "@sentry-internal/feedback": "npm:10.18.0"
+    "@sentry-internal/replay": "npm:10.18.0"
+    "@sentry-internal/replay-canvas": "npm:10.18.0"
+    "@sentry/core": "npm:10.18.0"
+  checksum: 10c0/3a430e46b38c238cb546454b299a2d4945619d2a9ac9b432fbf7ca9e5d0a9870113641b2dd2d9e7a9656d7c665f5ccfa7b0f64ccbd7ce941c4f1943dd27e7d8a
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:10.18.0":
+  version: 10.18.0
+  resolution: "@sentry/core@npm:10.18.0"
+  checksum: 10c0/4a5c8cbac4010308721df053cc510d49250888c6f70fcfe6fc6b285d79527de40d69a99b2d81e82eaa0d7fec23d82b886aeff898075d1400cd72a0834a2a1472
+  languageName: node
+  linkType: hard
+
+"@sentry/vue@npm:^10.18.0":
+  version: 10.18.0
+  resolution: "@sentry/vue@npm:10.18.0"
+  dependencies:
+    "@sentry/browser": "npm:10.18.0"
+    "@sentry/core": "npm:10.18.0"
+  peerDependencies:
+    pinia: 2.x || 3.x
+    vue: 2.x || 3.x
+  peerDependenciesMeta:
+    pinia:
+      optional: true
+  checksum: 10c0/8817fdf8fbfbb26e851d930c83cf3295fb22dd886bfdc01c93828d8b40808de7d157ba7fe31867871ceb27c5648ec698464cf4d207f8521cbfd98ebb1227ad2c
   languageName: node
   linkType: hard
 
@@ -3232,13 +3195,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"byline@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "byline@npm:5.0.0"
-  checksum: 10c0/33fb64cd84440b3652a99a68d732c56ef18a748ded495ba38e7756a242fab0d4654b9b8ce269fd0ac14c5f97aa4e3c369613672b280a1f60b559b34223105c85
-  languageName: node
-  linkType: hard
-
 "cac@npm:^6.7.14":
   version: 6.7.14
   resolution: "cac@npm:6.7.14"
@@ -4076,15 +4032,6 @@ __metadata:
   version: 1.0.5
   resolution: "error-stack-parser-es@npm:1.0.5"
   checksum: 10c0/040665eb87a42fe068c0da501bc258f3d15d3a03963c0723d7a2741e251d400c9776a52d2803afdc5709def99554cdb5a5d99c203c7eaf4885d3fbc217e2e8f7
-  languageName: node
-  linkType: hard
-
-"error-stack-parser@npm:^2.0.3":
-  version: 2.1.4
-  resolution: "error-stack-parser@npm:2.1.4"
-  dependencies:
-    stackframe: "npm:^1.3.4"
-  checksum: 10c0/7679b780043c98b01fc546725484e0cfd3071bf5c906bbe358722972f04abf4fc3f0a77988017665bab367f6ef3fc2d0185f7528f45966b83e7c99c02d5509b9
   languageName: node
   linkType: hard
 
@@ -5633,13 +5580,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iserror@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "iserror@npm:0.0.2"
-  checksum: 10c0/f51982cb8ccbd9481b542f101441018d501eb60cd5ee17ee7c4a1d6bef499472db47f4a61d5b2233ac444d99491a67daa261771443244b75a573e2c98ce718d1
-  languageName: node
-  linkType: hard
-
 "isexe@npm:^2.0.0":
   version: 2.0.0
   resolution: "isexe@npm:2.0.0"
@@ -5941,12 +5881,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "learnmorse.codes@workspace:."
   dependencies:
-    "@bugsnag/browser-performance": "npm:^3.0.0"
-    "@bugsnag/js": "npm:^8.6.0"
-    "@bugsnag/plugin-vue": "npm:^8.6.0"
     "@intlify/core-base": "npm:^11.1.12"
     "@pinia/testing": "npm:^1.0.2"
     "@rushstack/eslint-patch": "npm:^1.13.0"
+    "@sentry/vue": "npm:^10.18.0"
     "@testing-library/cypress": "npm:^10.1.0"
     "@testing-library/vue": "npm:^8.1.0"
     "@tsconfig/node22": "npm:^22.0.2"
@@ -7840,26 +7778,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stack-generator@npm:^2.0.3":
-  version: 2.0.10
-  resolution: "stack-generator@npm:2.0.10"
-  dependencies:
-    stackframe: "npm:^1.3.4"
-  checksum: 10c0/c3f6f6c580488e65c0fee806a57f6ae4b79e6435f144be471c1f20328a8d9d8492d4f3beed31840f6dae03e2633325e2764fd3aca5c3126a0639e7c9ddfa45ce
-  languageName: node
-  linkType: hard
-
 "stackback@npm:0.0.2":
   version: 0.0.2
   resolution: "stackback@npm:0.0.2"
   checksum: 10c0/89a1416668f950236dd5ac9f9a6b2588e1b9b62b1b6ad8dff1bfc5d1a15dbf0aafc9b52d2226d00c28dffff212da464eaeebfc6b7578b9d180cef3e3782c5983
-  languageName: node
-  linkType: hard
-
-"stackframe@npm:^1.3.4":
-  version: 1.3.4
-  resolution: "stackframe@npm:1.3.4"
-  checksum: 10c0/18410f7a1e0c5d211a4effa83bdbf24adbe8faa8c34db52e1cd3e89837518c592be60b60d8b7270ac53eeeb8b807cd11b399a41667f6c9abb41059c3ccc8a989
   languageName: node
   linkType: hard
 

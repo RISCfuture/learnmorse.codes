@@ -20,10 +20,8 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
-    "@bugsnag/browser-performance": "^3.0.0",
-    "@bugsnag/js": "^8.6.0",
-    "@bugsnag/plugin-vue": "^8.6.0",
     "@intlify/core-base": "^11.1.12",
+    "@sentry/vue": "^10.18.0",
     "@vueuse/core": "^13.9.0",
     "dom-confetti": "^0.2.2",
     "lodash-es": "^4.17.21",
