@@ -20,12 +20,30 @@ export function stopAllAudio() {
 let globalContext: AudioContext | null = null
 
 /**
+ * Custom error class for audio context unavailability.
+ * This error is user-facing and should not be logged to Sentry.
+ */
+export class AudioContextUnavailableError extends Error {
+  constructor() {
+    super('Audio playback is not supported in your browser')
+    this.name = 'AudioContextUnavailableError'
+  }
+}
+
+/**
  * Returns the shared AudioContext used throughout the website. This AudioContext will be resumed
  * once the user has clicked the button and to begin or resume learning.
+ *
+ * @throws {AudioContextUnavailableError} If AudioContext is not available in the browser
  */
-
 export function sharedAudioContext(): AudioContext {
-  if (!globalContext) globalContext = new AudioContext()
+  if (!globalContext) {
+    // Check if AudioContext is available (some browsers, particularly older iOS Safari, don't support it)
+    if (typeof AudioContext === 'undefined') {
+      throw new AudioContextUnavailableError()
+    }
+    globalContext = new AudioContext()
+  }
   return globalContext
 }
 

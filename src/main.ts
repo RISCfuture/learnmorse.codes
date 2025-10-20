@@ -31,7 +31,17 @@ if (sentryDSN) {
     tracesSampleRate: 1.0,
     enableLogs: true,
     replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0
+    replaysOnErrorSampleRate: 1.0,
+    beforeSend(event) {
+      // Filter out known user-facing errors that shouldn't be logged to Sentry
+      if (
+        event.exception?.values?.[0]?.type === 'AudioContextUnavailableError' ||
+        event.exception?.values?.[0]?.value?.includes('Audio playback is not supported')
+      ) {
+        return null // Don't send to Sentry
+      }
+      return event
+    }
   })
 }
 
