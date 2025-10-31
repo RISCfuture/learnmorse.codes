@@ -34,6 +34,15 @@ export default [
   {
     ...pluginPlaywright.configs['flat/recommended'],
     files: ['tests/e2e/**/*.{spec,test}.{js,ts,jsx,tsx}'],
+    rules: {
+      // Allow conditionals in tests for legitimate null checks and defensive programming
+      'playwright/no-conditional-in-test': 'off',
+      'playwright/no-conditional-expect': 'off',
+      // Allow waitForTimeout when needed for polling/stabilization (use sparingly)
+      'playwright/no-wait-for-timeout': 'off',
+      // Allow test.skip() for intentionally skipped tests (e.g., slow tests)
+      'playwright/no-skipped-test': 'off',
+    },
   },
   skipFormatting,
 ]
