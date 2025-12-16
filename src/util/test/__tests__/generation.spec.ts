@@ -53,19 +53,19 @@ describe('generateAnswer', () => {
       }
     }
 
-    // If we found a lesson with enough words, verify it uses them
-    if (lessonWithWords >= 0) {
-      const answer = generateAnswer(lessonWithWords)
-      const words = answer.split(' ')
-      const availableWords = getWordsForLesson(lessonWithWords)
-      const availableWordsSet = new Set(availableWords.map((w) => w.toLowerCase()))
+    // Ensure we found a lesson with enough words
+    expect(lessonWithWords).toBeGreaterThanOrEqual(0)
 
-      // At least some of the words should be from our dictionary
-      // (allowing for the 10% replacement of new symbols which may corrupt words)
-      const matchedWords = words.filter((word) => availableWordsSet.has(word.toLowerCase()))
+    const answer = generateAnswer(lessonWithWords)
+    const words = answer.split(' ')
+    const availableWords = getWordsForLesson(lessonWithWords)
+    const availableWordsSet = new Set(availableWords.map((w) => w.toLowerCase()))
 
-      expect(matchedWords.length).toBeGreaterThan(0)
-    }
+    // At least some of the words should be from our dictionary
+    // (allowing for the 10% replacement of new symbols which may corrupt words)
+    const matchedWords = words.filter((word) => availableWordsSet.has(word.toLowerCase()))
+
+    expect(matchedWords.length).toBeGreaterThan(0)
   })
 
   it('generates answers with reasonable word count', () => {
