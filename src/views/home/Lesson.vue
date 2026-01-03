@@ -40,6 +40,7 @@ import GetReady from '@/views/home/lesson/GetReady.vue'
 import Result from '@/views/home/lesson/Result.vue'
 import Test from '@/views/home/lesson/Test.vue'
 import Learn from '@/views/home/lesson/Learn.vue'
+import * as Sentry from '@sentry/vue'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { type Diff, isInsertion, isPass, isSubstitution } from '@/util/test/scoring'
 import { useLessonStore } from '@/stores/lesson'
@@ -142,7 +143,13 @@ function onTestingFinished({ diff: d, penalty: p }: { diff: Diff; penalty: numbe
 }
 
 function onAbandoned() {
-  if (isTesting.value) localState.value = State.ABANDONED
+  if (isTesting.value) {
+    localState.value = State.ABANDONED
+
+    Sentry.metrics.count('test.abandoned', 1, {
+      attributes: { lesson: currentLesson.value.toString() }
+    })
+  }
 }
 
 function acceptResult() {

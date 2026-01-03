@@ -21,6 +21,7 @@ if (sentryDSN) {
     dsn: sentryDSN,
     sendDefaultPii: true,
     integrations: [
+      Sentry.browserTracingIntegration(),
       Sentry.vueIntegration({
         tracingOptions: {
           trackComponents: true

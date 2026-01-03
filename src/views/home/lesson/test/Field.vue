@@ -27,6 +27,7 @@ import { useI18n } from 'vue-i18n'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { isMobile } from '@/util/etc'
 import { isNull } from 'lodash-es'
+import * as Sentry from '@sentry/vue'
 import {
   delayAroundAudio,
   delayBeforeAbandoned,
@@ -121,6 +122,16 @@ function finishTest() {
 function scoreTest() {
   const diff = calculateDiff(answer.value, testInput.value)
   const penalty = scoreLossForAnswer(answer.value, diff)
+
+  const scorePercent = Math.round((1 - penalty) * 100)
+  Sentry.metrics.distribution('test.score', scorePercent, {
+    unit: 'percent',
+    attributes: {
+      lesson: props.lesson.toString(),
+      passed: (penalty <= 0.1).toString()
+    }
+  })
+
   emit('finished', { diff, penalty })
 }
 
