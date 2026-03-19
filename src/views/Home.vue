@@ -39,7 +39,7 @@ const { currentLesson } = storeToRefs(lessonStore)
 
 const showResume = computed(() => !started.value && currentLesson.value > 0)
 const showLesson = computed(
-  () => started.value && currentLesson.value <= lastLessonNumber && !practice.value
+  () => started.value && currentLesson.value <= lastLessonNumber && !practice.value,
 )
 const showPractice = computed(() => practice.value)
 const showCompleted = computed(() => currentLesson.value > lastLessonNumber)

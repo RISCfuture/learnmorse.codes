@@ -9,5 +9,5 @@ export default createI18n({
   silentFallbackWarn: true,
   legacy: false,
   messages,
-  numberFormats
+  numberFormats,
 })

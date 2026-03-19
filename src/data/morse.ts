@@ -61,6 +61,6 @@ const symbolToSequence: Record<string, string> = {
   ':': '---...',
   '=': '-...-',
   '?': '..--..',
-  '@': '.--.-.'
+  '@': '.--.-.',
 }
 export default symbolToSequence

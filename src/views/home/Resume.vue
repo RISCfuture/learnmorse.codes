@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 function resume() {
   try {
-    sharedAudioContext().resume()
+    void sharedAudioContext().resume()
     emit('started')
   } catch (error) {
     if (error instanceof AudioContextUnavailableError) {

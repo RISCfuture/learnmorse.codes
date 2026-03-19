@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { symbolOrder } from '@/data/koch'
-import { isNull } from 'lodash-es'
 import * as Sentry from '@sentry/vue'
 
 export interface State {
@@ -44,26 +43,26 @@ export const useLessonStore = defineStore('lesson', {
       localStorage.setItem('lastAchievedLesson', lesson.toString())
 
       Sentry.metrics.count('lesson.completed', 1, {
-        attributes: { lesson: lesson.toString() }
+        attributes: { lesson: lesson.toString() },
       })
     },
 
     /** Reads local storage and sets the current lesson accordingly. */
     restore() {
       const lastAchievedLesson = localStorage.getItem('lastAchievedLesson')
-      if (!isNull(lastAchievedLesson)) {
+      if (lastAchievedLesson !== null) {
         const lessonNum = Number.parseInt(lastAchievedLesson)
         this.$patch({ currentLesson: lessonNum + 1 })
 
         const progressPercent = Math.round((lessonNum / MAX_LESSON) * 100)
         Sentry.metrics.gauge('curriculum.progress', progressPercent, {
           unit: 'percent',
-          attributes: { lesson: (lessonNum + 1).toString() }
+          attributes: { lesson: (lessonNum + 1).toString() },
         })
 
         return true
       }
       return false
-    }
-  }
+    },
+  },
 })

@@ -24,7 +24,9 @@ const emit = defineEmits<{
   retry: []
 }>()
 
-onMounted(() => stopAllAudio())
+onMounted(() => {
+  stopAllAudio()
+})
 </script>
 
 <style lang="scss" scoped>

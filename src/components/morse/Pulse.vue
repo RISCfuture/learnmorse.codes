@@ -14,8 +14,8 @@ const props = withDefaults(
   }>(),
   {
     color: 'transparent',
-    width: 1
-  }
+    width: 1,
+  },
 )
 
 const widthPixels = computed(() => props.width * 10)

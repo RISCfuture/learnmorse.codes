@@ -14,7 +14,7 @@ import { useI18n } from 'vue-i18n'
 
 const { tm } = useI18n()
 
-const tip = computed(() => sample(tm('lesson.tips') as string[])!)
+const tip = computed(() => sample(tm('lesson.tips'))!)
 </script>
 
 <style scoped lang="scss">

@@ -26,13 +26,12 @@
 import { useI18n } from 'vue-i18n'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { isMobile } from '@/util/etc'
-import { isNull } from 'lodash-es'
 import * as Sentry from '@sentry/vue'
 import {
   delayAroundAudio,
   delayBeforeAbandoned,
   delayBeforeScoring,
-  delayBeforeTyping
+  delayBeforeTyping,
 } from '@/components/animation'
 import useTimers, { type Timer } from '@/mixins/timers'
 import generateAnswer from '@/util/test/generation'
@@ -76,8 +75,10 @@ function onActivity(event?: KeyboardEvent) {
   if (isMobile && !startedOnMobile.value) return
   if (event?.key === 'Enter') finishTest()
 
-  if (!isNull(activityTimer.value)) clearTimeout(activityTimer.value)
-  activityTimer.value = setTimeout(() => emit('abandon'), delayBeforeAbandoned)
+  if (activityTimer.value !== null) clearTimeout(activityTimer.value)
+  activityTimer.value = setTimeout(() => {
+    emit('abandon')
+  }, delayBeforeAbandoned)
 }
 
 function startOnMobile() {
@@ -89,9 +90,12 @@ function startOnMobile() {
 
 function reset() {
   cancelTimers()
-  if (!isMobile) addTimer(delayBeforeTyping, () => startTest())
+  if (!isMobile)
+    addTimer(delayBeforeTyping, () => {
+      startTest()
+    })
 
-  if (!isNull(activityTimer.value)) {
+  if (activityTimer.value !== null) {
     clearTimeout(activityTimer.value)
     activityTimer.value = null
   }
@@ -116,7 +120,9 @@ function startTest() {
 
 function finishTest() {
   emit('finishing')
-  addTimer(delayBeforeScoring, () => scoreTest())
+  addTimer(delayBeforeScoring, () => {
+    scoreTest()
+  })
 }
 
 function scoreTest() {
@@ -128,8 +134,8 @@ function scoreTest() {
     unit: 'percent',
     attributes: {
       lesson: props.lesson.toString(),
-      passed: (penalty <= 0.1).toString()
-    }
+      passed: (penalty <= 0.1).toString(),
+    },
   })
 
   emit('finished', { diff, penalty })
@@ -140,11 +146,15 @@ onMounted(() => {
   document.addEventListener('focus', updateStartedOnMobile)
 })
 
-onUnmounted(() => document.removeEventListener('focus', updateStartedOnMobile))
+onUnmounted(() => {
+  document.removeEventListener('focus', updateStartedOnMobile)
+})
 
 watch(
   () => props.lesson,
-  () => reset()
+  () => {
+    reset()
+  },
 )
 </script>
 

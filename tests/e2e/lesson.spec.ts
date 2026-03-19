@@ -54,7 +54,7 @@ async function shouldMatchText(locator: ReturnType<Page['getByTestId']>, rx: Reg
 // Helper to create a page with localStorage set
 async function createPageWithStorage(
   context: BrowserContext,
-  storage: Record<string, string>
+  storage: Record<string, string>,
 ): Promise<Page> {
   // Create a new page in the context
   const page = await context.newPage()
@@ -122,7 +122,7 @@ test.describe('Lesson', () => {
       await shouldMatchText(page.getByTestId('score'), /9\d%/)
       await shouldMatchText(
         page.getByTestId('extraCredit'),
-        /^\.\.\.plus (an|\d+) extra points? for typing those spaces!$/
+        /^\.\.\.plus (an|\d+) extra points? for typing those spaces!$/,
       )
 
       await page.close()

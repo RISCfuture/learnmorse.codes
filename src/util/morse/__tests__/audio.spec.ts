@@ -6,7 +6,7 @@ class OscillatorNode {
   _context: AudioContext
 
   frequency = {
-    setValueAtTime: vi.fn()
+    setValueAtTime: vi.fn(),
   }
 
   constructor(context: AudioContext) {
@@ -91,7 +91,7 @@ describe('MorseCodeAudio', () => {
         ['start', 3.14],
         ['stop', 3.2],
         ['start', 3.26],
-        ['stop', 3.32]
+        ['stop', 3.32],
       ])
     })
 

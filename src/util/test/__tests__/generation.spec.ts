@@ -19,7 +19,9 @@ describe('generateAnswer', () => {
     symbolOrder
       .slice(2)
       .split('')
-      .forEach((c) => expect(set).not.toContain(c))
+      .forEach((c) => {
+        expect(set).not.toContain(c)
+      })
   })
 
   it('generates answers using the appropriate symbol set for lesson #10', () => {
@@ -28,7 +30,9 @@ describe('generateAnswer', () => {
     symbolOrder
       .slice(12)
       .split('')
-      .forEach((c) => expect(set).not.toContain(c))
+      .forEach((c) => {
+        expect(set).not.toContain(c)
+      })
   })
 
   it('ensures at least 10% of the symbols are the newest one learned', () => {

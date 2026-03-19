@@ -1,17 +1,29 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ],
   "compilerOptions": {
-    "module": "NodeNext"
-  }
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["node", "jsdom"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "env.d.ts",
+    "tests/unit/vitest.d.ts",
+    "tests/unit/setup.ts"
+  ],
+  "exclude": ["node_modules", "dist", "tests/e2e"]
 }

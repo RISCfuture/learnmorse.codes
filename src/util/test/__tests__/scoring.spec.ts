@@ -5,14 +5,14 @@ describe('calculateDiff', () => {
   it('returns an empty diff for empty strings', () => {
     expect(calculateDiff('', '')).toEqual({
       penalty: 0,
-      changes: []
+      changes: [],
     })
   })
 
   it('returns an unchanged diff for identical strings', () => {
     expect(calculateDiff('foo', 'foo')).toEqual({
       penalty: 0,
-      changes: [{ unchanged: 'f' }, { unchanged: 'o' }, { unchanged: 'o' }]
+      changes: [{ unchanged: 'f' }, { unchanged: 'o' }, { unchanged: 'o' }],
     })
   })
 
@@ -25,8 +25,8 @@ describe('calculateDiff', () => {
         { unchanged: 'o' },
         { add: 'b' },
         { add: 'a' },
-        { add: 'r' }
-      ]
+        { add: 'r' },
+      ],
     })
   })
 
@@ -39,8 +39,8 @@ describe('calculateDiff', () => {
         { unchanged: 'o' },
         { remove: 'b' },
         { remove: 'a' },
-        { remove: 'r' }
-      ]
+        { remove: 'r' },
+      ],
     })
   })
 
@@ -53,8 +53,8 @@ describe('calculateDiff', () => {
         { add: 'o' },
         { unchanged: 'b' },
         { unchanged: 'a' },
-        { unchanged: 'r' }
-      ]
+        { unchanged: 'r' },
+      ],
     })
   })
 
@@ -67,8 +67,8 @@ describe('calculateDiff', () => {
         { remove: 'o' },
         { unchanged: 'b' },
         { unchanged: 'a' },
-        { unchanged: 'r' }
-      ]
+        { unchanged: 'r' },
+      ],
     })
   })
 
@@ -83,8 +83,8 @@ describe('calculateDiff', () => {
         { replace: 'n', with: 'r' },
         { unchanged: 'd' },
         { unchanged: 'a' },
-        { unchanged: 'y' }
-      ]
+        { unchanged: 'y' },
+      ],
     })
   })
 
@@ -99,8 +99,8 @@ describe('calculateDiff', () => {
         { replace: 'n', with: 'r' },
         { unchanged: 'd' },
         { unchanged: 'a' },
-        { unchanged: 'y' }
-      ]
+        { unchanged: 'y' },
+      ],
     })
   })
 
@@ -116,8 +116,8 @@ describe('calculateDiff', () => {
         { remove: ' ' },
         { unchanged: 'd' },
         { unchanged: 'a' },
-        { unchanged: 'y' }
-      ]
+        { unchanged: 'y' },
+      ],
     })
 
     expect(calculateDiff(' foobar', 'bar')).toEqual({
@@ -129,8 +129,8 @@ describe('calculateDiff', () => {
         { add: 'o' },
         { unchanged: 'b' },
         { unchanged: 'a' },
-        { unchanged: 'r' }
-      ]
+        { unchanged: 'r' },
+      ],
     })
   })
 })
@@ -155,8 +155,8 @@ describe('extraCredit', () => {
         { unchanged: 'b' },
         { unchanged: ' ' },
         { remove: 'b' },
-        { replace: 'b', with: 'c' }
-      ]
+        { replace: 'b', with: 'c' },
+      ],
     }
     expect(extraCredit(diff)).toEqual(4)
   })
@@ -166,7 +166,7 @@ describe('scoreLossForAnswer', () => {
   it('returns the percentage of correct characters, not including spaces', () => {
     const diff: Diff = {
       penalty: 3,
-      changes: []
+      changes: [],
     }
     expect(scoreLossForAnswer('foo', diff)).toEqual(1)
     expect(scoreLossForAnswer('foobar', diff)).toEqual(0.5)

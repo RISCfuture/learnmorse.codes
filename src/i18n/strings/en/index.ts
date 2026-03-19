@@ -8,6 +8,6 @@ const en: LocaleMessage = {
   completed,
   errors,
   lesson,
-  website
+  website,
 }
 export default en

@@ -1,4 +1,3 @@
-import { isUndefined } from 'lodash-es'
 import { onUnmounted } from 'vue'
 
 export type Timer = ReturnType<typeof setTimeout>
@@ -25,13 +24,15 @@ export default function useTimers() {
    */
   const cancelTimers = () => {
     let timer: Timer | undefined
-    while (!isUndefined((timer = timers.pop()))) clearTimeout(timer)
+    while ((timer = timers.pop()) !== undefined) clearTimeout(timer)
   }
 
-  onUnmounted(() => cancelTimers())
+  onUnmounted(() => {
+    cancelTimers()
+  })
 
   return {
     addTimer,
-    cancelTimers
+    cancelTimers,
   }
 }

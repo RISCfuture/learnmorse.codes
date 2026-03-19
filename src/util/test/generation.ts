@@ -47,7 +47,7 @@ export default function generateAnswer(lesson: number): string {
  * @return Answer string composed of real words
  */
 function generateAnswerFromWords(lesson: number): string {
-  const wordsToGenerate = random(messageLengths[0]!, messageLengths[1]!)
+  const wordsToGenerate = random(messageLengths[0], messageLengths[1])
   const availableSymbols = symbolsInLesson(lesson)
 
   // Check which punctuation marks are available
@@ -62,7 +62,7 @@ function generateAnswerFromWords(lesson: number): string {
     const wordsWithPunctuation: string[] = []
 
     for (let i = 0; i < selectedWords.length; i++) {
-      let word = selectedWords[i]!
+      let word = selectedWords[i]
 
       // Add punctuation after some words (not the last word, ~30% chance)
       // Attach punctuation directly to the word without spaces
@@ -87,9 +87,9 @@ function generateAnswerFromWords(lesson: number): string {
  * @return Answer string of random characters
  */
 function generateRandomAnswer(lesson: number): string {
-  const wordsToGenerate = random(messageLengths[0]!, messageLengths[1]!)
+  const wordsToGenerate = random(messageLengths[0], messageLengths[1])
   const words = times(wordsToGenerate, () => {
-    const wordLength = random(wordLengths[0]!, wordLengths[1]!)
+    const wordLength = random(wordLengths[0], wordLengths[1])
     const symbols = times(wordLength, () => sample(symbolsInLesson(lesson)))
     return symbols.join('')
   })
@@ -109,9 +109,9 @@ function generateRandomAnswer(lesson: number): string {
  * @param isWordBased Whether the answer is composed of real words
  * @return Modified answer with new symbols inserted
  */
-function ensureNewSymbols(answer: string, lesson: number, isWordBased: boolean = false): string {
+function ensureNewSymbols(answer: string, lesson: number, isWordBased = false): string {
   const newSymbols = newSymbolsInLesson(lesson)
-  const newSymbol = newSymbols[0]! // Usually just one symbol per lesson
+  const newSymbol = newSymbols[0] // Usually just one symbol per lesson
 
   // Calculate target number of new symbols (10% of total alphanumeric length)
   // Don't count spaces or standalone punctuation in the length
@@ -132,7 +132,7 @@ function ensureNewSymbols(answer: string, lesson: number, isWordBased: boolean =
         let wordsSubstituted = 0
 
         for (let i = 0; i < words.length && charsToAdd > 0; i++) {
-          const replacementWord = wordsWithNewSymbol[wordsSubstituted % wordsWithNewSymbol.length]!
+          const replacementWord = wordsWithNewSymbol[wordsSubstituted % wordsWithNewSymbol.length]
           const newSymbolCount = replacementWord.split('').filter((c) => c === newSymbol).length
 
           if (newSymbolCount > 0) {

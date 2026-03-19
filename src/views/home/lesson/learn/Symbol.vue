@@ -19,7 +19,6 @@ import MorseCode from '@/components/morse/MorseCode.vue'
 import { computed, ref, watch } from 'vue'
 import useTimers from '@/mixins/timers'
 import MorseCodeAudio from '@/util/morse/audio'
-import { isUndefined } from 'lodash-es'
 import { delayAroundAudio } from '@/components/animation'
 import inView from '@/util/inView'
 
@@ -42,8 +41,8 @@ const props = withDefaults(
   }>(),
   {
     interactive: true,
-    audio: true
-  }
+    audio: true,
+  },
 )
 
 const mouseHover = ref(false)
@@ -53,7 +52,6 @@ const root = ref<HTMLDivElement | null>(null)
 const testId = computed(() => `symbolKey-${props.symbol}`)
 const hover = computed(() => (mouseHover.value && props.interactive) || codeHover.value)
 const displaySymbol = computed(() => {
-  if (isUndefined(props.symbol)) return ''
   return props.symbol.toLocaleUpperCase()
 })
 const audioGenerator = computed(() => new MorseCodeAudio(displaySymbol.value))
@@ -88,7 +86,7 @@ async function demonstrate(smooth = false) {
 }
 
 watch(mouseHover, (hover) => {
-  if (hover && props.interactive) demonstrate()
+  if (hover && props.interactive) void demonstrate()
 })
 
 function scrollIntoView(smooth: boolean): Promise<void> {
@@ -99,7 +97,7 @@ function scrollIntoView(smooth: boolean): Promise<void> {
     }
 
     const intersectionObserver = new IntersectionObserver(([el]) => {
-      if (el?.isIntersecting) {
+      if (el.isIntersecting) {
         intersectionObserver.disconnect()
         resolve()
       }
@@ -108,7 +106,7 @@ function scrollIntoView(smooth: boolean): Promise<void> {
     intersectionObserver.observe(root.value)
     root.value.scrollIntoView({
       inline: 'center',
-      behavior: smooth ? 'smooth' : 'auto'
+      behavior: smooth ? 'smooth' : 'auto',
     })
   })
 }

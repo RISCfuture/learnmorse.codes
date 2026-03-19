@@ -17,7 +17,7 @@ export enum Segment {
   DIT = 1,
 
   /** A long pulse, equal in duration to 3 dits. */
-  DAH = 111
+  DAH = 111,
 }
 
 function isSpace(segment: string) {
@@ -37,12 +37,12 @@ export function messageToSequence(message: string): Segment[] {
   return message.split('').reduce<Segment[]>((sequence, segment, index) => {
     switch (segment) {
       case '.':
-        if (index < message.length - 1 && !isSpace(message[index + 1]!)) {
+        if (index < message.length - 1 && !isSpace(message[index + 1])) {
           return [...sequence, Segment.DIT, Segment.INTRA_SEGMENT]
         }
         return [...sequence, Segment.DIT]
       case '-':
-        if (index < message.length - 1 && !isSpace(message[index + 1]!)) {
+        if (index < message.length - 1 && !isSpace(message[index + 1])) {
           return [...sequence, Segment.DAH, Segment.INTRA_SEGMENT]
         }
         return [...sequence, Segment.DAH]

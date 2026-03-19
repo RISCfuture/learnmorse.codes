@@ -42,8 +42,8 @@ const props = withDefaults(
     showDiff: boolean
   }>(),
   {
-    showDiff: false
-  }
+    showDiff: false,
+  },
 )
 
 const showTip = ref(false)
@@ -58,7 +58,7 @@ const pass = computed(() => isPass(props.penalty))
 const perfect = computed(() => props.penalty <= 0.0)
 const credit = computed(() => extraCredit(props.diff))
 const extraCreditString = computed(() =>
-  t('lesson.copy.extraCredit', { points: n(credit.value, 'integer') }, credit.value)
+  t('lesson.copy.extraCredit', { points: n(credit.value, 'integer') }, credit.value),
 )
 
 function refresh() {
@@ -66,5 +66,7 @@ function refresh() {
   if (perfect.value && confettiSource.value) confetti(confettiSource.value)
 }
 
-watchEffect(() => refresh())
+watchEffect(() => {
+  refresh()
+})
 </script>

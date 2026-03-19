@@ -15,7 +15,7 @@ import {
   isDeletion,
   isInsertion,
   isSubstitution,
-  isUnchanged
+  isUnchanged,
 } from '@/util/test/scoring'
 import Unchanged from '@/components/diff/Unchanged.vue'
 import Insertion from '@/components/diff/Insertion.vue'

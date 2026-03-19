@@ -20,7 +20,7 @@ function showError() {
 }
 
 defineExpose({
-  showError
+  showError,
 })
 </script>
 

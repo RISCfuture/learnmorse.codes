@@ -12,9 +12,10 @@ import { createSentryPiniaPlugin } from '@sentry/vue'
 import i18n from '@/i18n'
 import App from './App.vue'
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- Vue SFC default export type
 const app = createApp(App)
 
-const sentryDSN = import.meta.env.VITE_SENTRY_DSN
+const sentryDSN = import.meta.env.VITE_SENTRY_DSN as string | undefined
 if (sentryDSN) {
   Sentry.init({
     app,
@@ -24,10 +25,10 @@ if (sentryDSN) {
       Sentry.browserTracingIntegration(),
       Sentry.vueIntegration({
         tracingOptions: {
-          trackComponents: true
-        }
+          trackComponents: true,
+        },
       }),
-      Sentry.replayIntegration()
+      Sentry.replayIntegration(),
     ],
     tracesSampleRate: 1.0,
     enableLogs: true,
@@ -42,7 +43,7 @@ if (sentryDSN) {
         return null // Don't send to Sentry
       }
       return event
-    }
+    },
   })
 }
 
@@ -57,7 +58,7 @@ app.use(i18n)
 app.config.globalProperties.$filters = {
   symbol(char: string) {
     return char === ' ' ? ' ' : char
-  }
+  },
 }
 
 app.mount('#app')

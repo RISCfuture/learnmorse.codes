@@ -1,4 +1,4 @@
-import { has, isUndefined, memoize, minBy } from 'lodash-es'
+import { memoize, minBy } from 'lodash-es'
 
 /**
  * Represents a character that was not changed between the expected and actual.
@@ -45,22 +45,22 @@ export type Change = Unchanged | Insertion | Deletion | Replacement
 
 /** Returns `true` if the {@link Change} is an {@link Unchanged}. */
 export function isUnchanged(change: Change): change is Unchanged {
-  return has(change, 'unchanged')
+  return 'unchanged' in change
 }
 
 /** Returns `true` if the {@link Change} is an {@link Insertion}. */
 export function isInsertion(change: Change): change is Insertion {
-  return has(change, 'add')
+  return 'add' in change
 }
 
 /** Returns `true` if the {@link Change} is a {@link Deletion}. */
 export function isDeletion(change: Change): change is Deletion {
-  return has(change, 'remove')
+  return 'remove' in change
 }
 
 /** Returns `true` if the {@link Change} is a {@link Replacement}. */
 export function isSubstitution(change: Change): change is Replacement {
-  return has(change, 'replace')
+  return 'replace' in change
 }
 
 /**
@@ -83,7 +83,7 @@ export interface Diff {
 }
 
 function penaltyFor(char1: string, char2?: string) {
-  if (isUndefined(char2)) return char1 === ' ' ? 0 : 1
+  if (char2 === undefined) return char1 === ' ' ? 0 : 1
   return char1.toLowerCase() === char2.toLowerCase() ? 0 : 1
 }
 
@@ -95,51 +95,51 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
   if (expected === actual) {
     return {
       penalty: 0,
-      changes: expected.split('').map((c) => ({ unchanged: c }))
+      changes: expected.split('').map((c) => ({ unchanged: c })),
     }
   }
 
   if (expected === '') {
     return {
       penalty: penaltyForString(actual),
-      changes: actual.split('').map((c) => ({ remove: c }))
+      changes: actual.split('').map((c) => ({ remove: c })),
     }
   }
 
   if (actual === '') {
     return {
       penalty: penaltyForString(expected),
-      changes: expected.split('').map((c) => ({ add: c }))
+      changes: expected.split('').map((c) => ({ add: c })),
     }
   }
 
   const expectedMinusFirst = expected.slice(1)
   const actualMinusFirst = actual.slice(1)
 
-  if (expected.startsWith(actual[0]!)) {
+  if (expected.startsWith(actual[0])) {
     const diffRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
     return {
       penalty: diffRest.penalty,
-      changes: [{ unchanged: expected[0]! }, ...diffRest.changes]
+      changes: [{ unchanged: expected[0] }, ...diffRest.changes],
     }
   }
 
   const deletionRest = calculateDiff(expected, actualMinusFirst)
   const deletion: Diff = {
-    penalty: deletionRest.penalty + penaltyFor(actual[0]!),
-    changes: [{ remove: actual[0]! }, ...deletionRest.changes]
+    penalty: deletionRest.penalty + penaltyFor(actual[0]),
+    changes: [{ remove: actual[0] }, ...deletionRest.changes],
   }
 
   const insertionRest = calculateDiff(expectedMinusFirst, actual)
   const insertion: Diff = {
-    penalty: insertionRest.penalty + penaltyFor(expected[0]!),
-    changes: [{ add: expected[0]! }, ...insertionRest.changes]
+    penalty: insertionRest.penalty + penaltyFor(expected[0]),
+    changes: [{ add: expected[0] }, ...insertionRest.changes],
   }
 
   const substitutionRest = calculateDiff(expectedMinusFirst, actualMinusFirst)
   const substitution: Diff = {
-    penalty: substitutionRest.penalty + penaltyFor(expected[0]!, actual[0]!),
-    changes: [{ replace: actual[0]!, with: expected[0]! }, ...substitutionRest.changes]
+    penalty: substitutionRest.penalty + penaltyFor(expected[0], actual[0]),
+    changes: [{ replace: actual[0], with: expected[0] }, ...substitutionRest.changes],
   }
 
   return minBy([substitution, deletion, insertion], (diff) => diff.penalty)!
@@ -153,7 +153,7 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
  * @return The difference between the two.
  */
 
-export const calculateDiff = memoize(rawCalculateDiff, (a, b) => JSON.stringify([a, b]))
+export const calculateDiff = memoize(rawCalculateDiff, (a, b) => `${a}\0${b}`)
 
 /**
  * Returns `true` if the user's score is better than 90%.

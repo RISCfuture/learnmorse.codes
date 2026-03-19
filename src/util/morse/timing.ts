@@ -14,7 +14,7 @@ export const segmentUnitWidth = {
   [Segment.SHORT_SPACE]: 3,
   [Segment.LONG_SPACE]: 7,
   [Segment.DIT]: 1,
-  [Segment.DAH]: 3
+  [Segment.DAH]: 3,
 }
 
 function unitsInSequence(segments: Segment[]): number {

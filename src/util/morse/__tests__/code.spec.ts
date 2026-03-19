@@ -5,7 +5,7 @@ describe('textToMessage', () => {
   it('converts a string into Morse code', () => {
     expect(textToMessage('paris ')).toEqual('.--. .- .-. .. ...\t')
     expect(textToMessage('Hello, world!')).toEqual(
-      '.... . .-.. .-.. --- --..--\t.-- --- .-. .-.. -.. -.-.--'
+      '.... . .-.. .-.. --- --..--\t.-- --- .-. .-.. -.. -.-.--',
     )
     expect(textToMessage('')).toEqual('')
     expect(textToMessage('a')).toEqual('.-')
@@ -17,7 +17,7 @@ describe('messageToSegments', () => {
   it('converts a string into segments', () => {
     expect(messageToSequence('.--. .- .-. .. ...\t')).toEqual([
       1, 0, 111, 0, 111, 0, 1, 10, 1, 0, 111, 10, 1, 0, 111, 0, 1, 10, 1, 0, 1, 10, 1, 0, 1, 0, 1,
-      100
+      100,
     ])
     expect(messageToSequence('')).toEqual([])
     expect(messageToSequence('.')).toEqual([1])

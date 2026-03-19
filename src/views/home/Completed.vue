@@ -25,7 +25,6 @@ import { onMounted, ref } from 'vue'
 import useTimers from '@/mixins/timers'
 import { confetti } from 'dom-confetti'
 import { sharedAudioContext, AudioContextUnavailableError } from '@/util/morse/audio'
-import { isUndefined } from 'lodash-es'
 import { useI18n } from 'vue-i18n'
 import { useLessonStore } from '@/stores/lesson'
 import AudioErrorGuard from '@/components/AudioErrorGuard.vue'
@@ -50,16 +49,25 @@ const confetti3 = ref<HTMLDivElement>()
 
 onMounted(() => {
   const c1 = confetti1.value
-  if (!isUndefined(c1)) addTimer(500, () => confetti(c1))
+  if (c1)
+    addTimer(500, () => {
+      confetti(c1)
+    })
   const c2 = confetti2.value
-  if (!isUndefined(c2)) addTimer(800, () => confetti(c2))
+  if (c2)
+    addTimer(800, () => {
+      confetti(c2)
+    })
   const c3 = confetti3.value
-  if (!isUndefined(c3)) addTimer(1600, () => confetti(c3))
+  if (c3)
+    addTimer(1600, () => {
+      confetti(c3)
+    })
 })
 
 function practiceMode() {
   try {
-    sharedAudioContext().resume()
+    void sharedAudioContext().resume()
     emit('practice')
   } catch (error) {
     if (error instanceof AudioContextUnavailableError) {

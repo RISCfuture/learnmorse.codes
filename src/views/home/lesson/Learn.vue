@@ -28,7 +28,13 @@ const emit = defineEmits<{
   finished: []
 }>()
 
-const symbolElements = ref<InstanceType<typeof SymbolView>[]>([])
+interface SymbolElement {
+  symbol: string
+  demoDuration: number
+  demonstrate: (smooth: boolean) => Promise<void>
+}
+
+const symbolElements = ref<SymbolElement[]>([])
 const root = ref<HTMLDivElement | null>(null)
 
 const props = withDefaults(
@@ -39,8 +45,8 @@ const props = withDefaults(
   }>(),
   {
     interactive: true,
-    audio: true
-  }
+    audio: true,
+  },
 )
 
 const overflowing = ref(false)
@@ -73,9 +79,13 @@ function demonstrateSymbols(symbols: string[]) {
 
       // ... highlight a letter ...
       if (firstSymbol) {
-        addTimer(time, () => element.demonstrate(false))
+        addTimer(time, () => {
+          void element.demonstrate(false)
+        })
       } else {
-        addTimer(time, () => element.demonstrate(true))
+        addTimer(time, () => {
+          void element.demonstrate(true)
+        })
       }
       // ... then wait another 1/2 second for the next letter ...
       time = time + element.demoDuration + 1500
@@ -84,7 +94,9 @@ function demonstrateSymbols(symbols: string[]) {
     })
 
     // ... then wait a full second before telling the parent we're done with the demo
-    addTimer(time + 500, () => emit('finished'))
+    addTimer(time + 500, () => {
+      emit('finished')
+    })
   })
 }
 

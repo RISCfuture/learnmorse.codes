@@ -36,13 +36,13 @@ Simply check out the website and run `yarn install` to install all dependencies.
 
 Yarn scripts are provided to accomplish all common development tasks:
 
-* `yarn serve`: Launches a development server on port 8080. This server supports
+- `yarn serve`: Launches a development server on port 8080. This server supports
   both hot-redrawing and hot-reloading.
-* `yarn build`: Builds the production website into the `dist/` directory.
-* `yarn test:unit`: Runs unit tests.
-* `yarn test:e2e`: Launches the Cypress app for running end-to-end tests.
-* `yarn docs:generate`: Generates HTML API documentation into `doc/`.
-* `yarn lint`: Runs all linters. Normally this is done automatically upon
+- `yarn build`: Builds the production website into the `dist/` directory.
+- `yarn test:unit`: Runs unit tests.
+- `yarn test:e2e`: Launches the Cypress app for running end-to-end tests.
+- `yarn docs:generate`: Generates HTML API documentation into `doc/`.
+- `yarn lint`: Runs all linters. Normally this is done automatically upon
   commit.
 
 ## Architecture
@@ -127,9 +127,9 @@ transitions between the different lesson sub-states (see above).
 Each of these views selects between many different subviews. The subviews are
 named after the states they handle. There are also a few utility views:
 
-* {@link MorseCode} is a Vue that renders a pictograph of a Morse code message 
+- {@link MorseCode} is a Vue that renders a pictograph of a Morse code message
   as an SVG image.
-* {@link Diff} is a Vue that renders a diff in a somewhat-playful "copy-editor"
+- {@link Diff} is a Vue that renders a diff in a somewhat-playful "copy-editor"
   format.
 
 ### Morse Code Conversion
@@ -182,7 +182,7 @@ Mocha as the test framework and Chai as the expectation framework. Sinon is used
 for fakes, etc.
 
 A shim `AudioContext` is provided for the testing environment (which doesn't
-have an actual `AudioContext`, and is dependency-injected into 
+have an actual `AudioContext`, and is dependency-injected into
 `MorseCodeAudio`).
 
 End-to-end tests can be run with `yarn test:e2e`. The tests are run using

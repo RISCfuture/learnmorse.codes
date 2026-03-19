@@ -46,7 +46,6 @@ import { type Diff, isInsertion, isPass, isSubstitution } from '@/util/test/scor
 import { useLessonStore } from '@/stores/lesson'
 import { isMobile } from '@/util/etc'
 import useTimers from '@/mixins/timers'
-import { isNull } from 'lodash-es'
 import { newSymbolsInLesson } from '@/data/koch'
 import { storeToRefs } from 'pinia'
 import { useTestFlow, TestFlowState } from '@/composables/useTestFlow'
@@ -73,7 +72,7 @@ import { useI18n } from 'vue-i18n'
 
 enum State {
   LEARNING,
-  ABANDONED
+  ABANDONED,
 }
 
 const { t } = useI18n()
@@ -82,7 +81,7 @@ const store = useLessonStore()
 const { currentLesson } = storeToRefs(store)
 
 const lessonEl = ref<HTMLElement | null>(null)
-const learnSymbols = ref<InstanceType<typeof Learn> | null>(null)
+const learnSymbols = ref<{ demonstrateSymbols: (symbols: string[]) => void } | null>(null)
 
 const localState = ref(State.LEARNING)
 
@@ -93,9 +92,9 @@ const {
   isStarting,
   isTesting,
   showResult,
-  onTestingFinished: handleTestingFinished
+  onTestingFinished: handleTestingFinished,
 } = useTestFlow({
-  onScoringComplete: acceptResult
+  onScoringComplete: acceptResult,
 })
 
 const isAbandoned = computed(() => localState.value === State.ABANDONED)
@@ -118,7 +117,7 @@ useSwipe(lessonEl, {
       store.decrementLesson()
     }
   },
-  threshold: 50 // Minimum distance for swipe detection (in pixels)
+  threshold: 50, // Minimum distance for swipe detection (in pixels)
 })
 
 function readyToTest() {
@@ -147,13 +146,13 @@ function onAbandoned() {
     localState.value = State.ABANDONED
 
     Sentry.metrics.count('test.abandoned', 1, {
-      attributes: { lesson: currentLesson.value.toString() }
+      attributes: { lesson: currentLesson.value.toString() },
     })
   }
 }
 
 function acceptResult() {
-  if (isNull(penalty.value)) localState.value = State.LEARNING
+  if (penalty.value === null) localState.value = State.LEARNING
   else if (isPass(penalty.value)) store.incrementLesson()
   else repeatLesson()
 }
@@ -175,7 +174,7 @@ function demoNewSymbols() {
 }
 
 function demoMissedSymbols() {
-  if (isNull(diff.value)) return
+  if (diff.value === null) return
 
   const missedSymbols = new Set<string>()
   diff.value.changes.forEach((c) => {
@@ -199,10 +198,12 @@ onUnmounted(() => {
 })
 
 watch(penalty, (penalty) => {
-  if (!isNull(penalty) && isPass(penalty)) {
+  if (penalty !== null && isPass(penalty)) {
     store.storeSuccess(currentLesson.value)
   }
 })
 
-store.$subscribe(() => newLesson())
+store.$subscribe(() => {
+  newLesson()
+})
 </script>

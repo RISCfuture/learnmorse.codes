@@ -63,10 +63,14 @@ function reset() {
   addTimer(delayBeforeTyping, () => (showStartTyping.value = false))
 }
 
-onMounted(() => reset())
+onMounted(() => {
+  reset()
+})
 
 watch(
   () => props.lesson,
-  () => reset()
+  () => {
+    reset()
+  },
 )
 </script>

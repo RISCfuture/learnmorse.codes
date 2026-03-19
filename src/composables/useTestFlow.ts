@@ -3,7 +3,6 @@ import { isMobile } from '@/util/etc'
 import type { Diff } from '@/util/test/scoring'
 import useTimers from '@/mixins/timers'
 import { delayAfterScoring, delayBeforeStarting } from '@/components/animation'
-import { isNull } from 'lodash-es'
 
 /**
  * Common state management for test flows (Practice and Lesson modes).
@@ -13,7 +12,7 @@ import { isNull } from 'lodash-es'
 export enum TestFlowState {
   STARTING,
   TESTING,
-  SCORING
+  SCORING,
 }
 
 export interface TestFlowOptions {
@@ -31,7 +30,7 @@ export function useTestFlow(options: TestFlowOptions = {}) {
   const { addTimer } = useTimers()
 
   const state = ref<TestFlowState>(
-    options.initialState ?? (isMobile ? TestFlowState.TESTING : TestFlowState.STARTING)
+    options.initialState ?? (isMobile ? TestFlowState.TESTING : TestFlowState.STARTING),
   )
   const diff = ref<Diff | null>(null)
   const penalty = ref<number | null>(null)
@@ -41,7 +40,7 @@ export function useTestFlow(options: TestFlowOptions = {}) {
   const isTesting = computed(() => state.value === TestFlowState.TESTING)
   const isScoring = computed(() => state.value === TestFlowState.SCORING)
   const showResult = computed(
-    () => isScoring.value && !isNull(diff.value) && !isNull(penalty.value)
+    () => isScoring.value && diff.value !== null && penalty.value !== null,
   )
 
   function onTestingFinished({ diff: d, penalty: p }: { diff: Diff; penalty: number }) {
@@ -66,7 +65,7 @@ export function useTestFlow(options: TestFlowOptions = {}) {
       })
     } else if (state.value === TestFlowState.SCORING) {
       addTimer(delayAfterScoring, () => {
-        if (!isNull(diff.value) && !isNull(penalty.value)) {
+        if (diff.value !== null && penalty.value !== null) {
           options.onScoringComplete?.(diff.value, penalty.value)
         }
         resetToStart()
@@ -74,8 +73,12 @@ export function useTestFlow(options: TestFlowOptions = {}) {
     }
   }
 
-  onMounted(() => handleStateChange())
-  watch(state, () => handleStateChange())
+  onMounted(() => {
+    handleStateChange()
+  })
+  watch(state, () => {
+    handleStateChange()
+  })
 
   return {
     // State
@@ -91,6 +94,6 @@ export function useTestFlow(options: TestFlowOptions = {}) {
 
     // Methods
     onTestingFinished,
-    resetToStart
+    resetToStart,
   }
 }

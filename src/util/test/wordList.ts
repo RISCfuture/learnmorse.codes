@@ -32,7 +32,7 @@ function filterWordsByCharacterSet(wordList: string[], allowedChars: Set<string>
  * Cache of filtered word lists by lesson number.
  * Computed once on first access for performance.
  */
-const wordListCache: Map<number, string[]> = new Map()
+const wordListCache = new Map<number, string[]>()
 
 /**
  * Gets the list of words that can be used for a given lesson.
@@ -103,7 +103,7 @@ export function selectRandomWords(lesson: number, count: number, mustContain?: s
     const weightedRandom = randomValue * randomValue // Square to heavily favor common words
     const index = Math.floor(weightedRandom * wordList.length)
 
-    selectedWords.push(wordList[index]!)
+    selectedWords.push(wordList[index])
   }
 
   return selectedWords
