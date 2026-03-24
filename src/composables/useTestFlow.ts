@@ -29,7 +29,7 @@ export interface TestFlowOptions {
 export function useTestFlow(options: TestFlowOptions = {}) {
   const { addTimer } = useTimers()
 
-  const state = ref<TestFlowState>(
+  const state = ref(
     options.initialState ?? (isMobile ? TestFlowState.TESTING : TestFlowState.STARTING),
   )
   const diff = ref<Diff | null>(null)
