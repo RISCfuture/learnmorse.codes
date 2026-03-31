@@ -44,8 +44,12 @@ jobs:
           node-version-file: .nvmrc
       - name: Install dependencies
         run: yarn install
+      - name: Install Playwright system dependencies
+        run: yarn playwright install-deps chromium
+        timeout-minutes: 3
       - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps chromium
+        run: yarn playwright install chromium
+        timeout-minutes: 3
       - name: Build project
         run: yarn build
       - name: Run E2E tests
