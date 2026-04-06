@@ -1,68 +1,56 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './fixtures/fixtures'
 
 test.describe('Audio Error Guard', () => {
-  test('should display fullscreen error when AudioContext is unavailable', async ({ page }) => {
-    // Navigate to the page and block AudioContext before it loads
-    await page.addInitScript(() => {
-      // Remove AudioContext to simulate browsers that don't support it
-      // @ts-expect-error - We're intentionally removing AudioContext
-      delete window.AudioContext
-      // @ts-expect-error - Also remove webkit prefixed version
-      delete window.webkitAudioContext
-    })
-
-    await page.goto('/')
+  test('should display fullscreen error when AudioContext is unavailable', async ({
+    startPage,
+  }) => {
+    // Block AudioContext before navigating
+    await startPage.blockAudioContext()
+    await startPage.goto()
 
     // Wait for the page to load and click the "OK, I guess" button
-    const getStartedButton = page.getByRole('link', { name: /ok, i guess/i })
-    await expect(getStartedButton).toBeVisible({ timeout: 10000 })
-    await getStartedButton.click()
+    await expect(startPage.getStartedButton).toBeVisible({ timeout: 10000 })
+    await startPage.clickGetStarted()
 
     // Wait for the error guard to appear
-    const errorGuard = page.locator('.audio-error-guard')
-    await expect(errorGuard).toBeVisible()
+    const { audioErrorGuard } = startPage
+    await expect(audioErrorGuard.container).toBeVisible()
 
     // Check that the error content is displayed
-    const errorTitle = errorGuard.locator('h1')
-    await expect(errorTitle).toContainText('Audio Not Supported')
-
-    const errorMessage = errorGuard.locator('p')
-    await expect(errorMessage).toContainText('Your browser does not support audio playback')
+    await expect(audioErrorGuard.title).toContainText('Audio Not Supported')
+    await expect(audioErrorGuard.message).toContainText(
+      'Your browser does not support audio playback',
+    )
 
     // Take a screenshot of the error state
-    await page.screenshot({ path: 'tests/e2e/screenshots/audio-error-guard.png', fullPage: true })
+    await startPage.takeScreenshot('audio-error-guard')
 
     // Verify that the error guard takes over the full screen
-    const boundingBox = await errorGuard.boundingBox()
+    const boundingBox = await audioErrorGuard.boundingBox()
     expect(boundingBox).toBeTruthy()
 
     // The error guard should cover the entire viewport
-    const viewport = page.viewportSize()
+    const viewport = startPage.page.viewportSize()
     if (boundingBox && viewport) {
       expect(boundingBox.width).toBeGreaterThanOrEqual(viewport.width * 0.99)
       expect(boundingBox.height).toBeGreaterThanOrEqual(viewport.height * 0.99)
     }
   })
 
-  test('should work normally when AudioContext is available', async ({ page }) => {
+  test('should work normally when AudioContext is available', async ({ startPage }) => {
     // Navigate normally without blocking AudioContext
-    await page.goto('/')
+    await startPage.goto()
 
     // Wait for the "OK, I guess" button to be visible (ensures page is loaded)
-    const getStartedButton = page.getByRole('link', { name: /ok, i guess/i })
-    await expect(getStartedButton).toBeVisible({ timeout: 10000 })
+    await expect(startPage.getStartedButton).toBeVisible({ timeout: 10000 })
 
     // Take a screenshot of the normal start page
-    await page.screenshot({ path: 'tests/e2e/screenshots/normal-start-page.png', fullPage: true })
+    await startPage.takeScreenshot('normal-start-page')
 
     // Click the button
-    await getStartedButton.click()
+    await startPage.clickGetStarted()
 
     // The error guard should NOT be visible
-    const errorGuard = page.locator('.audio-error-guard')
-    await expect(errorGuard).toBeHidden()
-
-    // The lesson should start normally
-    // (You can add more assertions here based on what happens after clicking "Get Started")
+    await expect(startPage.audioErrorGuard.container).toBeHidden()
   })
 })
