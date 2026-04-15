@@ -9,6 +9,25 @@
     <title>Learn Morse Code</title>
     <meta name="title" content="Learn Morse Code" />
     <meta name="description" content="The fun, fast way to learn Morse code" />
+    <meta name="author" content="Timothy Morgan" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://learnmorse.codes/" />
+
+    <!-- Security -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    />
+
+    <!-- PWA / Apple -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Morse" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -16,6 +35,8 @@
     <meta property="og:title" content="Learn Morse Code" />
     <meta property="og:description" content="The fun, fast way to learn Morse code" />
     <meta property="og:image" content="/icon-pinned-tab.svg" />
+    <meta property="og:site_name" content="Learn Morse Code" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary" />
@@ -25,7 +46,53 @@
     <meta property="twitter:image" content="/icon-pinned-tab.svg" />
 
     <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="mask-icon" href="/icon-pinned-tab.svg" color="black" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "Learn Morse Code",
+            "url": "https://learnmorse.codes/",
+            "description": "The fun, fast way to learn Morse code",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Timothy Morgan",
+              "url": "https://tim.codes"
+            }
+          },
+          {
+            "@type": "LearningResource",
+            "name": "Learn Morse Code",
+            "url": "https://learnmorse.codes/",
+            "description": "An interactive course that teaches Morse code using the Koch method.",
+            "learningResourceType": "Interactive Lesson",
+            "educationalUse": "instruction",
+            "teaches": "Morse code",
+            "inLanguage": "en",
+            "isAccessibleForFree": true,
+            "audience": {
+              "@type": "EducationalAudience",
+              "educationalRole": "student"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body>
@@ -34,7 +101,10 @@
       1836.</noscript
     >
 
-    <div id="app"></div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <main id="main-content">
+      <div id="app"></div>
+    </main>
 
     <script type="module" src="/src/main.ts"></script>
   </body>
