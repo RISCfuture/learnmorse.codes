@@ -24,7 +24,18 @@ export const delayAroundAudio = 0.5
 
 /**
  * The amount of time that must pass with no user input before the user is considered to have
- * abandoned the test. In E2E testing, this is increased significantly to allow automated typing.
+ * abandoned the test. In E2E testing, this is increased significantly to allow automated typing,
+ * but tests that exercise the abandonment flow itself can opt into a short delay by setting
+ * the `e2eShortAbandon` localStorage key to `"true"` before page load.
  */
-const testMode = import.meta.env.VITE_E2E_TESTING === 'true'
-export const delayBeforeAbandoned = testMode ? 60000 : 5000
+export const e2eMode = import.meta.env.VITE_E2E_TESTING === 'true'
+
+function resolveAbandonDelay(): number {
+  if (!e2eMode) return 5000
+  if (typeof localStorage !== 'undefined' && localStorage.getItem('e2eShortAbandon') === 'true') {
+    return 500
+  }
+  return 60000
+}
+
+export const delayBeforeAbandoned = resolveAbandonDelay()

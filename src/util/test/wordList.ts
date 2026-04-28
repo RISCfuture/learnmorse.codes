@@ -43,9 +43,8 @@ const wordListCache = new Map<number, string[]>()
  */
 export function getWordsForLesson(lesson: number): string[] {
   // Check cache first
-  if (wordListCache.has(lesson)) {
-    return wordListCache.get(lesson)!
-  }
+  const cached = wordListCache.get(lesson)
+  if (cached !== undefined) return cached
 
   // Get allowed characters for this lesson
   const allowedChars = new Set(symbolsInLesson(lesson))

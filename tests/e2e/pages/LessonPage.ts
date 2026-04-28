@@ -27,7 +27,7 @@ export class LessonPage {
     this.getReadyMessage = page.getByText('Get ready...')
     this.pencilsDownMessage = page.getByText('Pencils down!')
     this.abandonedMessage = page.getByText('Did it get away from you?')
-    this.retryButton = page.getByRole('button', { name: /OK.*Let.?s go again/ })
+    this.retryButton = page.getByRole('link', { name: /OK.*Let.?s go again/ })
     this.youDidItMessage = page.getByText('You did it!')
   }
 

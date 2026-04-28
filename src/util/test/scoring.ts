@@ -1,4 +1,4 @@
-import { memoize, minBy } from 'lodash-es'
+import { memoize } from 'lodash-es'
 
 /**
  * Represents a character that was not changed between the expected and actual.
@@ -142,7 +142,7 @@ function rawCalculateDiff(expected: string, actual: string): Diff {
     changes: [{ replace: actual[0], with: expected[0] }, ...substitutionRest.changes],
   }
 
-  return minBy([substitution, deletion, insertion], (diff) => diff.penalty)!
+  return [substitution, deletion, insertion].reduce((a, b) => (a.penalty <= b.penalty ? a : b))
 }
 
 /**

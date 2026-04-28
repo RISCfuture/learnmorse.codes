@@ -32,6 +32,7 @@ import {
   delayBeforeAbandoned,
   delayBeforeScoring,
   delayBeforeTyping,
+  e2eMode,
 } from '@/components/animation'
 import useTimers, { type Timer } from '@/mixins/timers'
 import generateAnswer from '@/util/test/generation'
@@ -101,7 +102,6 @@ function reset() {
   }
 
   answer.value = generateAnswer(props.lesson)
-  console.log(answer.value)
 
   onActivity()
 
@@ -112,6 +112,10 @@ function reset() {
 function startTest() {
   const audio = new MorseCodeAudio(answer.value)
   audio.play(delayAroundAudio)
+
+  // In E2E builds the auto-finish safety net is skipped so tests don't race the audio-end
+  // timer against simulated typing. Tests always submit via Enter.
+  if (e2eMode) return
 
   addTimer((audio.duration + delayAroundAudio * 2) * 1000, () => {
     finishTest()

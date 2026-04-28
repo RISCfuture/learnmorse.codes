@@ -67,7 +67,8 @@ function generateAnswerFromWords(lesson: number): string {
       // Add punctuation after some words (not the last word, ~30% chance)
       // Attach punctuation directly to the word without spaces
       if (i < selectedWords.length - 1 && Math.random() < 0.3) {
-        word += sample(availablePunctuation)!
+        const punct = sample(availablePunctuation)
+        if (punct) word += punct
       }
 
       wordsWithPunctuation.push(word)

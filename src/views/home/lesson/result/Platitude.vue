@@ -19,7 +19,7 @@ const props = defineProps<{ pass: boolean }>()
 const platitude = computed(() => {
   const path = `lesson.platitudes.${props.pass ? 'congratulations' : 'encouragement'}`
   const strings = tm(path)
-  return sample(strings)!
+  return sample(strings) ?? ''
 })
 </script>
 

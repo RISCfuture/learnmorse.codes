@@ -82,8 +82,11 @@ test.describe('Lesson', () => {
   })
 
   test.describe('Other testing', () => {
-    test.skip('times out a lesson', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({ lastAchievedLesson: '2' })
+    test('recovers from an abandoned test via retry', async ({ createPageWithStorage }) => {
+      const page = await createPageWithStorage({
+        lastAchievedLesson: '2',
+        e2eShortAbandon: 'true',
+      })
       const resumePage = new ResumePage(page)
       const lessonPage = new LessonPage(page)
 
@@ -93,11 +96,13 @@ test.describe('Lesson', () => {
         timeout: 10000,
       })
 
-      // Wait for the test to timeout (5 seconds)
-      await expect(lessonPage.abandonedMessage).toBeVisible({ timeout: 70000 })
+      await expect(lessonPage.abandonedMessage).toBeVisible({ timeout: 15000 })
       await lessonPage.retryButton.click()
 
       await expect(lessonPage.getReadyMessage).toBeVisible()
+      await expect(lessonPage.getReadyMessage).toBeHidden({ timeout: 10000 })
+      await expect(lessonPage.abandonedMessage).toBeHidden()
+      await expect(lessonPage.testField.textbox).toBeVisible()
     })
 
     test('returns to a lesson', async ({ createPageWithStorage }) => {

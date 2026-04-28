@@ -94,6 +94,7 @@ const {
   showResult,
   onTestingFinished: handleTestingFinished,
 } = useTestFlow({
+  initialState: TestFlowState.LEARNING,
   onScoringComplete: acceptResult,
 })
 
@@ -121,6 +122,7 @@ useSwipe(lessonEl, {
 })
 
 function readyToTest() {
+  localState.value = State.LEARNING
   testFlowState.value = isMobile ? TestFlowState.TESTING : TestFlowState.STARTING
 }
 
