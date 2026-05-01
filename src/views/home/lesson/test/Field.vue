@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { isMobile } from '@/util/etc'
 import * as Sentry from '@sentry/vue'
 import {
@@ -34,7 +34,7 @@ import {
   delayBeforeTyping,
   e2eMode,
 } from '@/components/animation'
-import useTimers, { type Timer } from '@/mixins/timers'
+import { useEventListener, useTimeoutFn } from '@vueuse/core'
 import generateAnswer from '@/util/test/generation'
 import MorseCodeAudio from '@/util/morse/audio'
 import { calculateDiff, type Diff, scoreLossForAnswer } from '@/util/test/scoring'
@@ -53,7 +53,6 @@ import { calculateDiff, type Diff, scoreLossForAnswer } from '@/util/test/scorin
  */
 
 const { t } = useI18n()
-const { addTimer, cancelTimers } = useTimers()
 const emit = defineEmits<{
   abandon: []
   finishing: []
@@ -65,8 +64,37 @@ const props = defineProps<{ lesson: number }>()
 const testInputEl = ref<HTMLInputElement | null>(null)
 const answer = ref('')
 const testInput = ref('')
-const activityTimer = ref<Timer | null>(null)
 const startedOnMobile = ref(!isMobile)
+
+const audioDurationMs = ref(0)
+const abandonTimer = useTimeoutFn(
+  () => {
+    emit('abandon')
+  },
+  delayBeforeAbandoned,
+  { immediate: false },
+)
+const startTypingTimer = useTimeoutFn(
+  () => {
+    startTest()
+  },
+  delayBeforeTyping,
+  { immediate: false },
+)
+const audioFinishTimer = useTimeoutFn(
+  () => {
+    finishTest()
+  },
+  audioDurationMs,
+  { immediate: false },
+)
+const scoreTimer = useTimeoutFn(
+  () => {
+    scoreTest()
+  },
+  delayBeforeScoring,
+  { immediate: false },
+)
 
 function updateStartedOnMobile() {
   startedOnMobile.value = document.activeElement === testInputEl.value
@@ -76,10 +104,7 @@ function onActivity(event?: KeyboardEvent) {
   if (isMobile && !startedOnMobile.value) return
   if (event?.key === 'Enter') finishTest()
 
-  if (activityTimer.value !== null) clearTimeout(activityTimer.value)
-  activityTimer.value = setTimeout(() => {
-    emit('abandon')
-  }, delayBeforeAbandoned)
+  abandonTimer.start()
 }
 
 function startOnMobile() {
@@ -90,16 +115,12 @@ function startOnMobile() {
 }
 
 function reset() {
-  cancelTimers()
-  if (!isMobile)
-    addTimer(delayBeforeTyping, () => {
-      startTest()
-    })
+  startTypingTimer.stop()
+  audioFinishTimer.stop()
+  scoreTimer.stop()
+  abandonTimer.stop()
 
-  if (activityTimer.value !== null) {
-    clearTimeout(activityTimer.value)
-    activityTimer.value = null
-  }
+  if (!isMobile) startTypingTimer.start()
 
   answer.value = generateAnswer(props.lesson)
 
@@ -117,16 +138,13 @@ function startTest() {
   // timer against simulated typing. Tests always submit via Enter.
   if (e2eMode) return
 
-  addTimer((audio.duration + delayAroundAudio * 2) * 1000, () => {
-    finishTest()
-  })
+  audioDurationMs.value = (audio.duration + delayAroundAudio * 2) * 1000
+  audioFinishTimer.start()
 }
 
 function finishTest() {
   emit('finishing')
-  addTimer(delayBeforeScoring, () => {
-    scoreTest()
-  })
+  scoreTimer.start()
 }
 
 function scoreTest() {
@@ -145,13 +163,10 @@ function scoreTest() {
   emit('finished', { diff, penalty })
 }
 
+useEventListener(document, 'focus', updateStartedOnMobile)
+
 onMounted(() => {
   reset()
-  document.addEventListener('focus', updateStartedOnMobile)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('focus', updateStartedOnMobile)
 })
 
 watch(

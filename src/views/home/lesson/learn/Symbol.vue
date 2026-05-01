@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import MorseCode from '@/components/morse/MorseCode.vue'
 import { computed, ref, watch } from 'vue'
-import useTimers from '@/mixins/timers'
+import { useIntersectionObserver, useTimeoutFn } from '@vueuse/core'
 import MorseCodeAudio from '@/util/morse/audio'
 import { delayAroundAudio } from '@/components/animation'
 import inView from '@/util/inView'
@@ -30,8 +30,6 @@ import inView from '@/util/inView'
  * You can programmatically simulate this hover behavior by calling {@link demonstrate}, which
  * will also scroll the symbol into view if necessary.
  */
-
-const { cancelTimers, addTimer } = useTimers()
 
 const props = withDefaults(
   defineProps<{
@@ -61,6 +59,21 @@ const audioGenerator = computed(() => new MorseCodeAudio(displaySymbol.value))
  */
 const demoDuration = computed(() => (audioGenerator.value.duration + delayAroundAudio * 2) * 1000)
 
+const audioPlayTimer = useTimeoutFn(
+  () => {
+    audioGenerator.value.play(delayAroundAudio)
+  },
+  delayAroundAudio,
+  { immediate: false },
+)
+const codeHoverEndTimer = useTimeoutFn(
+  () => {
+    codeHover.value = false
+  },
+  demoDuration,
+  { immediate: false },
+)
+
 /**
  * Highlights the symbol, displays its Morse code pictograph, and plays the Morse code audio.
  * Scrolls the symbol into view if it is off-screen.
@@ -73,16 +86,11 @@ async function demonstrate(smooth = false) {
 
   await scrollIntoView(smooth)
 
-  cancelTimers()
+  audioPlayTimer.stop()
+  codeHoverEndTimer.stop()
 
-  if (props.audio) {
-    addTimer(delayAroundAudio, () => {
-      audioGenerator.value.play(delayAroundAudio)
-    })
-  }
-  addTimer(demoDuration.value, () => {
-    codeHover.value = false
-  })
+  if (props.audio) audioPlayTimer.start()
+  codeHoverEndTimer.start()
 }
 
 watch(mouseHover, (hover) => {
@@ -96,14 +104,13 @@ function scrollIntoView(smooth: boolean): Promise<void> {
       return
     }
 
-    const intersectionObserver = new IntersectionObserver(([el]) => {
-      if (el.isIntersecting) {
-        intersectionObserver.disconnect()
+    const { stop } = useIntersectionObserver(root, ([entry]) => {
+      if (entry.isIntersecting) {
+        stop()
         resolve()
       }
     })
 
-    intersectionObserver.observe(root.value)
     root.value.scrollIntoView({
       inline: 'center',
       behavior: smooth ? 'smooth' : 'auto',

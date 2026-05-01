@@ -24,7 +24,7 @@ import PencilsDown from '@/views/home/lesson/test/PencilsDown.vue'
 import Field from '@/views/home/lesson/test/Field.vue'
 import { isMobile } from '@/util/etc'
 import { onMounted, ref, watch } from 'vue'
-import useTimers from '@/mixins/timers'
+import { useTimeoutFn } from '@vueuse/core'
 import { delayBeforeScoring, delayBeforeTyping } from '@/components/animation'
 import type { Diff } from '@/util/test/scoring'
 import { stopAllAudio } from '@/util/morse/audio'
@@ -33,8 +33,6 @@ import { stopAllAudio } from '@/util/morse/audio'
  * Runs the test portion of the lesson flow. Displays the "Start typing!" prompt, then shows the
  * test field. Displays the "Pencils down" prompt as the test finishes.
  */
-
-const { addTimer, cancelTimers } = useTimers()
 
 const props = defineProps<{ lesson: number }>()
 
@@ -46,10 +44,22 @@ const emit = defineEmits<{
 const showStartTyping = ref(!isMobile)
 const showPencilsDown = ref(false)
 
+const pencilsDownTimer = useTimeoutFn(
+  () => (showPencilsDown.value = false),
+  delayBeforeScoring,
+  { immediate: false },
+)
+const startTypingTimer = useTimeoutFn(
+  () => (showStartTyping.value = false),
+  delayBeforeTyping,
+  { immediate: false },
+)
+
 function onFinishing() {
-  cancelTimers()
+  startTypingTimer.stop()
+  pencilsDownTimer.stop()
   showPencilsDown.value = true
-  addTimer(delayBeforeScoring, () => (showPencilsDown.value = false))
+  pencilsDownTimer.start()
 }
 
 function onFinished({ diff, penalty }: { diff: Diff; penalty: number }) {
@@ -58,9 +68,10 @@ function onFinished({ diff, penalty }: { diff: Diff; penalty: number }) {
 }
 
 function reset() {
-  cancelTimers()
+  startTypingTimer.stop()
+  pencilsDownTimer.stop()
   showStartTyping.value = !isMobile
-  addTimer(delayBeforeTyping, () => (showStartTyping.value = false))
+  startTypingTimer.start()
 }
 
 onMounted(() => {

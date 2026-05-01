@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import useTimers from '@/mixins/timers'
+import { useTimeoutFn } from '@vueuse/core'
 import { confetti } from 'dom-confetti'
 import { sharedAudioContext, AudioContextUnavailableError } from '@/util/morse/audio'
 import { useI18n } from 'vue-i18n'
@@ -39,7 +39,6 @@ const emit = defineEmits<{
   practice: []
 }>()
 const { t } = useI18n()
-const { addTimer } = useTimers()
 const { resetLesson } = useLessonStore()
 const errorGuard = ref<InstanceType<typeof AudioErrorGuard>>()
 
@@ -49,20 +48,23 @@ const confetti3 = ref<HTMLDivElement>()
 
 onMounted(() => {
   const c1 = confetti1.value
-  if (c1)
-    addTimer(500, () => {
+  if (c1) {
+    useTimeoutFn(() => {
       confetti(c1)
-    })
+    }, 500)
+  }
   const c2 = confetti2.value
-  if (c2)
-    addTimer(800, () => {
+  if (c2) {
+    useTimeoutFn(() => {
       confetti(c2)
-    })
+    }, 800)
+  }
   const c3 = confetti3.value
-  if (c3)
-    addTimer(1600, () => {
+  if (c3) {
+    useTimeoutFn(() => {
       confetti(c3)
-    })
+    }, 1600)
+  }
 })
 
 function practiceMode() {

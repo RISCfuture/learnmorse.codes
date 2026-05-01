@@ -41,15 +41,14 @@ import Result from '@/views/home/lesson/Result.vue'
 import Test from '@/views/home/lesson/Test.vue'
 import Learn from '@/views/home/lesson/Learn.vue'
 import * as Sentry from '@sentry/vue'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { type Diff, isInsertion, isPass, isSubstitution } from '@/util/test/scoring'
 import { useLessonStore } from '@/stores/lesson'
 import { isMobile } from '@/util/etc'
-import useTimers from '@/mixins/timers'
 import { newSymbolsInLesson } from '@/data/koch'
 import { storeToRefs } from 'pinia'
 import { useTestFlow, TestFlowState } from '@/composables/useTestFlow'
-import { useSwipe } from '@vueuse/core'
+import { useEventListener, useSwipe } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
 /**
@@ -76,7 +75,6 @@ enum State {
 }
 
 const { t } = useI18n()
-const { cancelTimers } = useTimers()
 const store = useLessonStore()
 const { currentLesson } = storeToRefs(store)
 
@@ -160,7 +158,6 @@ function acceptResult() {
 }
 
 function newLesson() {
-  cancelTimers()
   localState.value = State.LEARNING
   demoNewSymbols()
 }
@@ -190,13 +187,10 @@ function demoMissedSymbols() {
   if (learnSymbols.value) learnSymbols.value.demonstrateSymbols([...missedSymbols])
 }
 
-onMounted(() => {
-  window.addEventListener('keyup', onKeyPress)
-  newLesson()
-})
+useEventListener(window, 'keyup', onKeyPress)
 
-onUnmounted(() => {
-  window.removeEventListener('keyup', onKeyPress)
+onMounted(() => {
+  newLesson()
 })
 
 watch(penalty, (penalty) => {

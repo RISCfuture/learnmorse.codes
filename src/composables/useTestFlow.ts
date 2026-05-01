@@ -1,7 +1,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { isMobile } from '@/util/etc'
 import type { Diff } from '@/util/test/scoring'
-import useTimers from '@/mixins/timers'
+import { useTimeoutFn } from '@vueuse/core'
 import { delayAfterScoring, delayBeforeStarting } from '@/components/animation'
 
 /**
@@ -32,8 +32,6 @@ export interface TestFlowOptions {
 }
 
 export function useTestFlow(options: TestFlowOptions = {}) {
-  const { addTimer } = useTimers()
-
   const defaultStart = isMobile ? TestFlowState.TESTING : TestFlowState.STARTING
   const initialState = options.initialState ?? defaultStart
   const postScoringState = options.resetState ?? initialState
@@ -48,6 +46,25 @@ export function useTestFlow(options: TestFlowOptions = {}) {
   const isScoring = computed(() => state.value === TestFlowState.SCORING)
   const showResult = computed(
     () => isScoring.value && diff.value !== null && penalty.value !== null,
+  )
+
+  const startingTimer = useTimeoutFn(
+    () => {
+      state.value = TestFlowState.TESTING
+      options.onTestingStart?.()
+    },
+    delayBeforeStarting,
+    { immediate: false },
+  )
+  const scoringTimer = useTimeoutFn(
+    () => {
+      if (diff.value !== null && penalty.value !== null) {
+        options.onScoringComplete?.(diff.value, penalty.value)
+      }
+      resetToStart()
+    },
+    delayAfterScoring,
+    { immediate: false },
   )
 
   function onTestingFinished({ diff: d, penalty: p }: { diff: Diff; penalty: number }) {
@@ -66,17 +83,9 @@ export function useTestFlow(options: TestFlowOptions = {}) {
 
   function handleStateChange() {
     if (state.value === TestFlowState.STARTING) {
-      addTimer(delayBeforeStarting, () => {
-        state.value = TestFlowState.TESTING
-        options.onTestingStart?.()
-      })
+      startingTimer.start()
     } else if (state.value === TestFlowState.SCORING) {
-      addTimer(delayAfterScoring, () => {
-        if (diff.value !== null && penalty.value !== null) {
-          options.onScoringComplete?.(diff.value, penalty.value)
-        }
-        resetToStart()
-      })
+      scoringTimer.start()
     }
   }
 

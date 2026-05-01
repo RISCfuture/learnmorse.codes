@@ -1,12 +1,20 @@
 import { defineStore } from 'pinia'
 import { symbolOrder } from '@/data/koch'
 import * as Sentry from '@sentry/vue'
+import { useLocalStorage } from '@vueuse/core'
 
 export interface State {
   currentLesson: number
 }
 
 export const MAX_LESSON = symbolOrder.length - 1
+
+const lastAchievedLesson = useLocalStorage<number | null>('lastAchievedLesson', null, {
+  serializer: {
+    read: (v) => Number.parseInt(v),
+    write: String,
+  },
+})
 
 export const useLessonStore = defineStore('lesson', {
   state: () => ({ currentLesson: 0 }) as State,
@@ -24,12 +32,12 @@ export const useLessonStore = defineStore('lesson', {
     },
 
     /**
-     * Clears the current lesson from local storage and moves the user to the un-started _welcome_
+     * Clears the recorded lesson progress and moves the user back to the un-started _welcome_
      * state.
      */
     resetLesson() {
       this.currentLesson = 0
-      localStorage.clear()
+      lastAchievedLesson.value = null
     },
 
     /**
@@ -40,18 +48,17 @@ export const useLessonStore = defineStore('lesson', {
      * @param lesson The lesson the user passed.
      */
     storeSuccess(lesson: number) {
-      localStorage.setItem('lastAchievedLesson', lesson.toString())
+      lastAchievedLesson.value = lesson
 
       Sentry.metrics.count('lesson.completed', 1, {
         attributes: { lesson: lesson.toString() },
       })
     },
 
-    /** Reads local storage and sets the current lesson accordingly. */
+    /** Reads stored progress and sets the current lesson accordingly. */
     restore() {
-      const lastAchievedLesson = localStorage.getItem('lastAchievedLesson')
-      if (lastAchievedLesson !== null) {
-        const lessonNum = Number.parseInt(lastAchievedLesson)
+      const lessonNum = lastAchievedLesson.value
+      if (lessonNum !== null) {
         this.$patch({ currentLesson: lessonNum + 1 })
 
         const progressPercent = Math.round((lessonNum / MAX_LESSON) * 100)

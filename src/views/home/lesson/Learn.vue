@@ -15,14 +15,22 @@
 import SymbolView from '@/views/home/lesson/learn/Symbol.vue'
 import { computed, ref, watchEffect } from 'vue'
 import { symbolsInLesson } from '@/data/koch'
-import useTimers from '@/mixins/timers'
+import { useTimeoutFn } from '@vueuse/core'
 
 /**
  * Handles the "learning" portion of a lesson. Displays all of the symbols covered so far in a
  * row. Can highlight new or missed symbols to the user with {@link demonstrateSymbols}.
  */
 
-const { cancelTimers, addTimer } = useTimers()
+const activeTimers: { stop: () => void }[] = []
+
+function scheduleTimer(delay: number, action: () => void) {
+  activeTimers.push(useTimeoutFn(action, delay))
+}
+
+function cancelTimers() {
+  while (activeTimers.length > 0) activeTimers.pop()?.stop()
+}
 
 const emit = defineEmits<{
   finished: []
@@ -71,7 +79,7 @@ function demonstrateSymbols(symbols: string[]) {
   const symbolSet = new Set(symbols)
 
   // 1/2 second after we load...
-  addTimer(500, () => {
+  scheduleTimer(500, () => {
     let time = 0
     let firstSymbol = true
     symbolElements.value.forEach((element) => {
@@ -79,11 +87,11 @@ function demonstrateSymbols(symbols: string[]) {
 
       // ... highlight a letter ...
       if (firstSymbol) {
-        addTimer(time, () => {
+        scheduleTimer(time, () => {
           void element.demonstrate(false)
         })
       } else {
-        addTimer(time, () => {
+        scheduleTimer(time, () => {
           void element.demonstrate(true)
         })
       }
@@ -94,7 +102,7 @@ function demonstrateSymbols(symbols: string[]) {
     })
 
     // ... then wait a full second before telling the parent we're done with the demo
-    addTimer(time + 500, () => {
+    scheduleTimer(time + 500, () => {
       emit('finished')
     })
   })
