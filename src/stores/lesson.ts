@@ -3,10 +3,6 @@ import { symbolOrder } from '@/data/koch'
 import * as Sentry from '@sentry/vue'
 import { useLocalStorage } from '@vueuse/core'
 
-export interface State {
-  currentLesson: number
-}
-
 export const MAX_LESSON = symbolOrder.length - 1
 
 const lastAchievedLesson = useLocalStorage<number | null>('lastAchievedLesson', null, {
@@ -17,7 +13,7 @@ const lastAchievedLesson = useLocalStorage<number | null>('lastAchievedLesson', 
 })
 
 export const useLessonStore = defineStore('lesson', {
-  state: () => ({ currentLesson: 0 }) as State,
+  state: () => ({ currentLesson: 0 }),
   actions: {
     /** Moves the user to the next lesson. */
     incrementLesson() {

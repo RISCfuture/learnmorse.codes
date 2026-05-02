@@ -12,4 +12,4 @@ export function replaceAt(string: string, index: number, replacement: string): s
   return string.slice(0, index) + replacement + string.slice(index + replacement.length)
 }
 
-export const isMobile = /(iPhone|iPad|Android)/.exec(window.navigator.userAgent) !== null
+export const isMobile = /(iPhone|iPad|Android)/u.test(window.navigator.userAgent)

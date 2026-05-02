@@ -3,50 +3,50 @@ import { last } from 'lodash-es'
 import MorseCodeAudio from '../audio'
 
 class OscillatorNode {
-  _context: AudioContext
+  public context: AudioContext
 
-  frequency = {
+  public frequency = {
     setValueAtTime: vi.fn(),
   }
 
-  constructor(context: AudioContext) {
-    this._context = context
+  public constructor(context: AudioContext) {
+    this.context = context
   }
 
-  start(time: number) {
-    this._context._events.push(['start', time])
+  public start(time: number) {
+    this.context.events.push(['start', time])
   }
 
-  stop(time: number) {
-    this._context._events.push(['stop', time])
+  public stop(time: number) {
+    this.context.events.push(['stop', time])
   }
 
-  connect() {}
+  public connect() {}
 
-  disconnect() {}
+  public disconnect() {}
 }
 
 class GainNode {
-  gain = { value: 1 }
+  public gain = { value: 1 }
 
-  connect() {}
+  public connect() {}
 
-  disconnect() {}
+  public disconnect() {}
 }
 
 class AudioContext {
-  _oscillators: OscillatorNode[] = []
+  public oscillators: OscillatorNode[] = []
 
-  _events: [string, number][] = []
+  public events: [string, number][] = []
 
-  currentTime = 0
+  public currentTime = 0
 
-  createOscillator(): OscillatorNode {
-    this._oscillators.push(new OscillatorNode(this))
-    return last(this._oscillators)!
+  public createOscillator(): OscillatorNode {
+    this.oscillators.push(new OscillatorNode(this))
+    return last(this.oscillators)!
   }
 
-  createGain(): GainNode {
+  public createGain(): GainNode {
     return new GainNode()
   }
 }
@@ -63,7 +63,7 @@ describe('MorseCodeAudio', () => {
       const subject = new MorseCodeAudio('paris ', context as never)
       subject.play()
 
-      expect(context._events).toHaveEvents([
+      expect(context.events).toHaveEvents([
         ['start', 0.5],
         ['stop', 0.56],
         ['start', 0.62],
@@ -97,7 +97,7 @@ describe('MorseCodeAudio', () => {
 
     it('does nothing given an empty message', () => {
       new MorseCodeAudio('', context as never).play()
-      expect(context._events).toEqual([])
+      expect(context.events).toEqual([])
     })
   })
 })

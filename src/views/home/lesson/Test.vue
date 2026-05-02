@@ -44,16 +44,12 @@ const emit = defineEmits<{
 const showStartTyping = ref(!isMobile)
 const showPencilsDown = ref(false)
 
-const pencilsDownTimer = useTimeoutFn(
-  () => (showPencilsDown.value = false),
-  delayBeforeScoring,
-  { immediate: false },
-)
-const startTypingTimer = useTimeoutFn(
-  () => (showStartTyping.value = false),
-  delayBeforeTyping,
-  { immediate: false },
-)
+const pencilsDownTimer = useTimeoutFn(() => (showPencilsDown.value = false), delayBeforeScoring, {
+  immediate: false,
+})
+const startTypingTimer = useTimeoutFn(() => (showStartTyping.value = false), delayBeforeTyping, {
+  immediate: false,
+})
 
 function onFinishing() {
   startTypingTimer.stop()

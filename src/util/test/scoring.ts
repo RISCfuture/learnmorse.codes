@@ -190,6 +190,6 @@ export function extraCredit(diff: Diff): number {
  */
 
 export function scoreLossForAnswer(answer: string, diff: Diff): number {
-  const answerChars = answer.replace(/ /g, '').length
+  const answerChars = answer.replace(/ /gu, '').length
   return diff.penalty / answerChars
 }

@@ -19,6 +19,7 @@
     "@pinia/testing",
     "@testing-library/vue",
     "@types/setimmediate",
+    "@vue/compiler-dom",
     "@vue/test-utils",
     "eslint",
     "jiti",

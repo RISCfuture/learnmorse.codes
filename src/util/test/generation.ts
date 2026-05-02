@@ -116,7 +116,7 @@ function ensureNewSymbols(answer: string, lesson: number, isWordBased = false): 
 
   // Calculate target number of new symbols (10% of total alphanumeric length)
   // Don't count spaces or standalone punctuation in the length
-  const alphanumericLength = answer.replace(/\s+/g, '').replace(/[.,?!]/g, '').length
+  const alphanumericLength = answer.replace(/\s+/gu, '').replace(/[.,?!]/gu, '').length
   const targetCount = Math.round(alphanumericLength / 10.0)
 
   if (targetCount > 0) {

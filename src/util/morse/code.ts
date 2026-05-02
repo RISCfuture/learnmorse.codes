@@ -69,6 +69,6 @@ export function textToMessage(text: string): string {
     .split('')
     .map((symbol) => symbolToSequence[symbol.toLowerCase()])
     .join(' ')
-    .replace(/\s*\t\s*/, '\t')
-    .replace(/ +/, ' ')
+    .replace(/\s*\t\s*/u, '\t')
+    .replace(/ +/u, ' ')
 }

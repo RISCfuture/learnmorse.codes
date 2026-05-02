@@ -39,7 +39,7 @@ describe('generateAnswer', () => {
     const answer = generateAnswer(20)
     const symbols = newSymbolsInLesson(20)
     // Calculate based on alphanumeric characters only (not spaces or standalone punctuation)
-    const alphanumericLength = answer.replace(/\s+/g, '').replace(/[.,?!]/g, '').length
+    const alphanumericLength = answer.replace(/\s+/gu, '').replace(/[.,?!]/gu, '').length
 
     // Word-based generation may not hit exactly 10% due to whole-word substitution,
     // so allow for some variance (at least 7% to account for word boundaries)
