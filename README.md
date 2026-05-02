@@ -1,5 +1,9 @@
 # Learn Morse Code
 
+[![CI](https://github.com/RISCfuture/learnmorse.codes/actions/workflows/ci.yml/badge.svg)](https://github.com/RISCfuture/learnmorse.codes/actions/workflows/ci.yml)
+[![Deploy](https://github.com/RISCfuture/learnmorse.codes/actions/workflows/deploy.yml/badge.svg)](https://github.com/RISCfuture/learnmorse.codes/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **Learn Morse Code** is a website that teaches Morse code in a way that's
 lighthearted, affirming, but also intentionally a little pushy. The website
 requires little user interaction other that transcribing the Morse code
