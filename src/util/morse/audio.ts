@@ -24,7 +24,7 @@ let globalContext: AudioContext | null = null
  * This error is user-facing and should not be logged to Sentry.
  */
 export class AudioContextUnavailableError extends Error {
-  constructor() {
+  public constructor() {
     super('Audio playback is not supported in your browser')
     this.name = 'AudioContextUnavailableError'
   }
@@ -94,7 +94,7 @@ export default class MorseCodeAudio {
    * @param context An audio context to use. (Leave as default except for testing.)
    */
 
-  constructor(text: string, context: AudioContext = sharedAudioContext()) {
+  public constructor(text: string, context: AudioContext = sharedAudioContext()) {
     this.text = text
     this.context = context
 
@@ -140,7 +140,7 @@ export default class MorseCodeAudio {
    * @param startDelay The amount of time to delay prior to playing the audio (seconds).
    */
 
-  play(startDelay = 0.5) {
+  public play(startDelay = 0.5) {
     this.playSequence(this.sequence, startDelay)
   }
 
@@ -153,7 +153,7 @@ export default class MorseCodeAudio {
    * either end.
    */
 
-  get duration(): number {
+  public get duration(): number {
     return sequenceDuration(this.sequence)
   }
 }
