@@ -21,9 +21,9 @@ calculated WPM rates.
 
 ### Technology Overview
 
-Learn Morse Code is written in Vue.js, and transpiled using Vue-CLI. Morse code
-audio is generated entirely programmatically using the AudioContext API, which
-is supported on virtually all modern browsers. Morse code pictographs are also
+Learn Morse Code is written in Vue.js and built using Vite. Morse code audio is
+generated entirely programmatically using the AudioContext API, which is
+supported on virtually all modern browsers. Morse code pictographs are also
 generated entirely programmatically as SVGs.
 
 The application is single-page, with Vue handling transitioning between its
@@ -32,22 +32,23 @@ can resume it upon revisiting the website.
 
 ## Installation and Usage
 
-To develop Learn Morse Code, you must have Node.js version 12 (or better) and
-Yarn installed. (End-to-end testing with Cypress will require additional
-platform dependencies.)
+To develop Learn Morse Code, you must have Node.js 26 (the version pinned in
+`.nvmrc`) and [pnpm](https://pnpm.io) installed.
 
-Simply check out the website and run `yarn install` to install all dependencies.
+Simply check out the website and run `pnpm install` to install all dependencies.
 
-Yarn scripts are provided to accomplish all common development tasks:
+pnpm scripts are provided to accomplish all common development tasks:
 
-- `yarn serve`: Launches a development server on port 8080. This server supports
-  both hot-redrawing and hot-reloading.
-- `yarn build`: Builds the production website into the `dist/` directory.
-- `yarn test:unit`: Runs unit tests.
-- `yarn test:e2e`: Launches the Cypress app for running end-to-end tests.
-- `yarn docs:generate`: Generates HTML API documentation into `doc/`.
-- `yarn lint`: Runs all linters. Normally this is done automatically upon
-  commit.
+- `pnpm dev`: Launches the Vite development server with hot-module reloading.
+- `pnpm build`: Type-checks and builds the production website into the `dist/`
+  directory.
+- `pnpm preview`: Serves the production build locally for previewing.
+- `pnpm test:unit`: Runs unit tests with Vitest.
+- `pnpm test:e2e`: Runs end-to-end tests with Playwright.
+- `pnpm lint`: Runs all linters.
+- `pnpm type-check`: Type-checks the project with `vue-tsc`.
+- `pnpm format`: Formats the codebase with Prettier.
+- `pnpm doc`: Generates HTML API documentation into `docs/`.
 
 ## Architecture
 
@@ -181,20 +182,16 @@ score from the diff (and thus whether s/he proceeds to the next lesson).
 ## Testing (…the code, not like, the testing that users do on the website)
 
 Unit tests are provided for core functionality (such as Morse code generation
-and diff generation); run with `yarn test:unit`. These tests are written using
-Mocha as the test framework and Chai as the expectation framework. Sinon is used
-for fakes, etc.
+and diff generation); run with `pnpm test:unit`. These tests are written using
+Vitest and run in a jsdom environment.
 
 A shim `AudioContext` is provided for the testing environment (which doesn't
 have an actual `AudioContext`, and is dependency-injected into
 `MorseCodeAudio`).
 
-End-to-end tests can be run with `yarn test:e2e`. The tests are run using
-Cypress. Note that animations are not suppressed during E2E tests, so they can
-take a bit of time to run. The E2E tests are stateful and interdependent: They
-must be run in the order they are written in order to properly succeed.
-
-There is a `.travis.yml` configuration for Travis CI as well.
+End-to-end tests can be run with `pnpm test:e2e`. The tests are run using
+Playwright, which automatically builds the site and serves the production
+preview while the tests run.
 
 ## Deployment
 
