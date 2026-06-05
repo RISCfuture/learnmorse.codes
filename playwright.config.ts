@@ -34,7 +34,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'VITE_E2E_TESTING=true yarn build && yarn vite preview --port 4173',
+    command: 'VITE_E2E_TESTING=true pnpm run build && pnpm exec vite preview --port 4173',
     port: 4173,
     reuseExistingServer: !process.env.CI,
   },
