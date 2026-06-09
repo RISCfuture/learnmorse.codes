@@ -19,7 +19,7 @@ To aid in learning, a slight amount of Farnsworth compression is used. The
 effective speed is 18 WPM at 20 Farns. The benchmark word "PARIS " is used for
 calculated WPM rates.
 
-### Technology Overview
+## Technology Overview
 
 Learn Morse Code is written in Vue.js and built using Vite. Morse code audio is
 generated entirely programmatically using the AudioContext API, which is
