@@ -1,6 +1,14 @@
 import type { LocaleMessage } from '@intlify/core-base'
 
 const website: LocaleMessage = {
+  meta: {
+    title: 'Learn Morse Code',
+    description: 'The fun, fast way to learn Morse code',
+  },
+  skipLink: 'Skip to main content',
+  localeSwitcher: {
+    label: 'Change language',
+  },
   getStarted: {
     line1: 'Are you ready to learn Morse code?',
     line2: 'Well too bad, because it’s happening, right now.',
