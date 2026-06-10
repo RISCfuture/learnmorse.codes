@@ -16,12 +16,6 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "env.d.ts",
-    "tests/unit/vitest.d.ts",
-    "tests/unit/setup.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.vue", "env.d.ts", "tests/unit/**/*.ts"],
   "exclude": ["node_modules", "dist", "tests/e2e"]
 }

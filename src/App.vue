@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+    <locale-switcher />
     <home />
   </div>
 </template>
 
 <script setup lang="ts">
 import Home from '@/views/Home.vue'
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue'
 
 /**
  * Root view for the application.

@@ -9,7 +9,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import * as Sentry from '@sentry/vue'
 import { createSentryPiniaPlugin } from '@sentry/vue'
-import i18n from '@/i18n'
+import i18n, { initLocale } from '@/i18n'
 import App from './App.vue'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- Vue SFC default export type
@@ -61,4 +61,10 @@ app.config.globalProperties.$filters = {
   },
 }
 
-app.mount('#app')
+// Resolve the stored/browser locale (and lazily load its catalog) before the
+// first paint so the UI never flashes the fallback language. A promise chain
+// (not top-level await) keeps the entry chunk free of top-level-await syntax.
+// oxlint-disable-next-line unicorn/prefer-top-level-await
+void initLocale().finally(() => {
+  app.mount('#app')
+})
