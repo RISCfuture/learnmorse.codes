@@ -12,9 +12,9 @@ export class AudioErrorGuard {
 
   constructor(page: Page) {
     this.page = page
-    this.container = page.locator('.audio-error-guard')
+    this.container = page.getByTestId('audioErrorGuard')
     this.title = this.container.getByRole('heading', { level: 1 })
-    this.message = this.container.locator('p')
+    this.message = this.container.getByTestId('audioErrorGuardMessage')
   }
 
   async boundingBox() {
