@@ -26,20 +26,18 @@ export class TestField {
     // Wait for the answer to be populated (it's set onMounted)
     await expect(this.answerKey).not.toHaveValue('', { timeout: 10000 })
 
-    // Wait for the answer to stabilize (Vue may regenerate it)
-    let answer = ''
-    let stableCount = 0
-    while (stableCount < 3) {
-      const currentAnswer = await this.answerKey.inputValue()
-      if (currentAnswer === answer) {
-        stableCount++
-      } else {
-        answer = currentAnswer
-        stableCount = 0
-      }
-      // Small polling interval for stability check
-      await this.page.waitForTimeout(100)
-    }
+    // Wait for the answer to stabilize (Vue may regenerate it). expect.poll
+    // auto-waits between attempts, so the value must read the same across
+    // consecutive polls before we proceed.
+    let previousAnswer = ''
+    let answer = await this.answerKey.inputValue()
+    await expect
+      .poll(async () => {
+        previousAnswer = answer
+        answer = await this.answerKey.inputValue()
+        return answer === previousAnswer
+      })
+      .toBe(true)
 
     const textToType = answerFunction(answer)
 
