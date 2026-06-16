@@ -1,9 +1,9 @@
 import { test, expect } from './fixtures/fixtures'
 import { repeat } from 'lodash-es'
 import { LessonPage } from './pages/LessonPage'
-import { ResumePage } from './pages/ResumePage'
 import { StartPage } from './pages/StartPage'
 import { CompletedPage } from './pages/CompletedPage'
+import { startSeededLesson } from './flows/startSeededLesson'
 
 test.describe('Lesson', () => {
   test.describe('Testing to completion', () => {
@@ -40,11 +40,9 @@ test.describe('Lesson', () => {
     })
 
     test('gets extra credit', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({ lastAchievedLesson: '0' })
-      const resumePage = new ResumePage(page)
-      const lessonPage = new LessonPage(page)
-
-      await resumePage.clickLetsDoIt()
+      const lessonPage = await startSeededLesson(createPageWithStorage, {
+        lastAchievedLesson: '0',
+      })
 
       await expect(lessonPage.symbolGuide.symbolKey('r')).toHaveClass(/hover/, {
         timeout: 10000,
@@ -62,11 +60,9 @@ test.describe('Lesson', () => {
     })
 
     test('gets a perfect score', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({ lastAchievedLesson: '1' })
-      const resumePage = new ResumePage(page)
-      const lessonPage = new LessonPage(page)
-
-      await resumePage.clickLetsDoIt()
+      const lessonPage = await startSeededLesson(createPageWithStorage, {
+        lastAchievedLesson: '1',
+      })
 
       await expect(lessonPage.symbolGuide.symbolKey('s')).toHaveClass(/hover/, {
         timeout: 10000,
@@ -83,14 +79,10 @@ test.describe('Lesson', () => {
 
   test.describe('Other testing', () => {
     test('recovers from an abandoned test via retry', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({
+      const lessonPage = await startSeededLesson(createPageWithStorage, {
         lastAchievedLesson: '2',
-        e2eShortAbandon: 'true',
+        storage: { e2eShortAbandon: 'true' },
       })
-      const resumePage = new ResumePage(page)
-      const lessonPage = new LessonPage(page)
-
-      await resumePage.clickLetsDoIt()
 
       await expect(lessonPage.symbolGuide.symbolKey('u')).toHaveClass(/hover/, {
         timeout: 10000,
@@ -106,22 +98,18 @@ test.describe('Lesson', () => {
     })
 
     test('returns to a lesson', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({ lastAchievedLesson: '2' })
-      const resumePage = new ResumePage(page)
-      const lessonPage = new LessonPage(page)
-
-      await expect(resumePage.heading).toBeVisible()
-      await resumePage.clickLetsDoIt()
+      const lessonPage = await startSeededLesson(createPageWithStorage, {
+        lastAchievedLesson: '2',
+        expectResumeHeading: true,
+      })
 
       await expect(lessonPage.symbolGuide.symbolKey('u')).toHaveClass(/hover/)
     })
 
     test('moves between lessons with the arrow key', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({ lastAchievedLesson: '2' })
-      const resumePage = new ResumePage(page)
-      const lessonPage = new LessonPage(page)
-
-      await resumePage.clickLetsDoIt()
+      const lessonPage = await startSeededLesson(createPageWithStorage, {
+        lastAchievedLesson: '2',
+      })
 
       await lessonPage.pressArrowLeft()
       await expect(lessonPage.symbolGuide.symbolKey('s')).toHaveClass(/hover/)
@@ -138,11 +126,9 @@ test.describe('Lesson', () => {
 
   test.describe('Completion', () => {
     test('completes the whole course', async ({ createPageWithStorage }) => {
-      const page = await createPageWithStorage({ lastAchievedLesson: '48' })
-      const resumePage = new ResumePage(page)
-      const lessonPage = new LessonPage(page)
-
-      await resumePage.clickLetsDoIt()
+      const lessonPage = await startSeededLesson(createPageWithStorage, {
+        lastAchievedLesson: '48',
+      })
 
       await expect(lessonPage.symbolGuide.symbolKey('@')).toHaveClass(/hover/, {
         timeout: 10000,

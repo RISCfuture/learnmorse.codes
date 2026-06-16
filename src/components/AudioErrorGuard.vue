@@ -1,8 +1,8 @@
 <template>
-  <div v-if="hasError" class="audio-error-guard">
+  <div v-if="hasError" class="audio-error-guard" data-testid="audioErrorGuard">
     <div class="error-content">
       <h1>{{ t('errors.audioUnavailable.title') }}</h1>
-      <p>{{ t('errors.audioUnavailable.message') }}</p>
+      <p data-testid="audioErrorGuardMessage">{{ t('errors.audioUnavailable.message') }}</p>
     </div>
   </div>
   <slot v-else />
