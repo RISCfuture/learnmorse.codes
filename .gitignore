@@ -17,6 +17,9 @@ coverage/
 # TypeScript
 *.tsbuildinfo
 
+# Wrangler
+.wrangler/
+
 # Playwright
 playwright-report/
 test-results/

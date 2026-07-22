@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "learnmorse-codes",
+  "account_id": "9edca68dc3e37bad6304e4bc0da34eca",
+  "compatibility_date": "2026-07-21",
+  // The site is reachable only through its custom domain, so the workers.dev
+  // hostname stays off and cannot serve a copy that bypasses the zone's
+  // security-header ruleset.
+  "workers_dev": false,
+  // `www` is not a Custom Domain: it is a proxied placeholder record plus a
+  // zone Redirect Rule that 301s to the apex before the request reaches here.
+  "routes": [{ "pattern": "learnmorse.codes", "custom_domain": true }],
+  "assets": {
+    "directory": "./dist",
+    // The app has no client-side router — it renders a single view at `/` — so
+    // unknown paths return 404 rather than falling back to `index.html`.
+    "not_found_handling": "404-page",
+  },
+  "observability": {
+    "enabled": true,
+  },
+}
