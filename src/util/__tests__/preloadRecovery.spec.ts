@@ -2,10 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const reload = vi.fn()
 
-let unregisterListener: (() => void) | undefined
+const unregisterListeners: (() => void)[] = []
 
-// The listener each copy of the module leaves on `window` is captured so it can't outlive the
-// test that installed it.
+// Every listener a copy of the module leaves on `window` is captured, so none outlives the test
+// that installed it — a test standing up two page loads installs two.
 async function loadPage(): Promise<void> {
   vi.resetModules()
   const { recoverFromPreloadErrors } = await import('../preloadRecovery')
@@ -15,8 +15,10 @@ async function loadPage(): Promise<void> {
   const [type, listener] = addEventListener.mock.lastCall ?? []
   addEventListener.mockRestore()
 
-  unregisterListener = () => {
-    if (type && listener) window.removeEventListener(type, listener)
+  if (type && listener) {
+    unregisterListeners.push(() => {
+      window.removeEventListener(type, listener)
+    })
   }
 }
 
@@ -36,7 +38,7 @@ describe('preloadRecovery', () => {
   })
 
   afterEach(() => {
-    unregisterListener?.()
+    for (const unregister of unregisterListeners.splice(0)) unregister()
     vi.useRealTimers()
     vi.unstubAllGlobals()
   })
