@@ -10,7 +10,10 @@ import { createPinia } from 'pinia'
 import * as Sentry from '@sentry/vue'
 import { createSentryPiniaPlugin } from '@sentry/vue'
 import i18n, { initLocale } from '@/i18n'
+import { recoverFromPreloadErrors } from '@/util/preloadRecovery'
 import App from './App.vue'
+
+recoverFromPreloadErrors()
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- Vue SFC default export type
 const app = createApp(App)
