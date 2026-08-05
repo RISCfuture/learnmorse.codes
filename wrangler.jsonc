@@ -13,7 +13,8 @@
   "assets": {
     "directory": "./dist",
     // The app has no client-side router — it renders a single view at `/` — so
-    // unknown paths return 404 rather than falling back to `index.html`.
+    // unknown paths return 404 rather than falling back to `index.html`. They
+    // are answered with the branded `404.html` shipped in `public/`.
     "not_found_handling": "404-page",
   },
   "observability": {

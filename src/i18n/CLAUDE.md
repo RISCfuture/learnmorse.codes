@@ -38,6 +38,8 @@ use:
   client-rendered SPA; per-locale manifests/OG aren't worth the plumbing.
 - The `<noscript>` fallback in `index.html` — JS is off, so runtime i18n can't
   reach it.
+- **`public/404.html`** — the edge serves it as a standalone document with no
+  Vue app and therefore no vue-i18n, so its copy is English only.
 
 ## Locale selection & lazy loading
 

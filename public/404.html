@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Page Not Found — Learn Morse Code</title>
+    <meta name="description" content="There is no page at this address." />
+    <meta name="robots" content="noindex" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/icon-pinned-tab.svg" color="black" />
+
+    <!-- The zone's CSP grants 'unsafe-inline' to `style-src-attr` alone, so a
+         `<style>` element here would be blocked and the page would render
+         unstyled. The stylesheet is a sibling file that Vite copies out of
+         `public/` under a stable, unhashed name. -->
+    <link rel="stylesheet" href="/404.css" />
+  </head>
+
+  <body>
+    <main>
+      <p aria-hidden="true" class="morse">····− −−−−− ····−</p>
+
+      <h1>
+        <span class="code">404</span>
+        <span class="label">Page not found</span>
+      </h1>
+
+      <p class="lede">This address doesn’t decode to anything.</p>
+
+      <p><a class="button" href="/">Back to the lessons</a></p>
+    </main>
+  </body>
+</html>
