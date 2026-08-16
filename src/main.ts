@@ -10,7 +10,7 @@ import { createPinia } from 'pinia'
 import * as Sentry from '@sentry/vue'
 import { createSentryPiniaPlugin } from '@sentry/vue'
 import i18n, { initLocale } from '@/i18n'
-import { recoverFromPreloadErrors } from '@/util/preloadRecovery'
+import { recoverFromPreloadErrors } from '@/utils/preloadRecovery'
 import App from './App.vue'
 
 recoverFromPreloadErrors()
@@ -23,6 +23,8 @@ if (sentryDSN) {
   Sentry.init({
     app,
     dsn: sentryDSN,
+    release: import.meta.env.VITE_SENTRY_RELEASE || undefined,
+    environment: import.meta.env.PROD ? 'production' : 'development',
     sendDefaultPii: true,
     integrations: [
       Sentry.browserTracingIntegration(),
@@ -31,7 +33,7 @@ if (sentryDSN) {
           trackComponents: true,
         },
       }),
-      Sentry.replayIntegration(),
+      Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
     ],
     tracesSampleRate: 1.0,
     enableLogs: true,
@@ -64,6 +66,27 @@ app.config.globalProperties.$filters = {
   },
 }
 
+/**
+ * Installs the Workbox service worker that backs offline use.
+ *
+ * A failed registration costs offline caching and nothing else, so the
+ * rejection is logged rather than left to surface as an unhandled error.
+ */
+function registerServiceWorker(): void {
+  if (!('serviceWorker' in navigator)) return
+
+  window.addEventListener('load', () => {
+    const swURL = `${import.meta.env.BASE_URL}sw.js`
+    navigator.serviceWorker
+      .register(swURL, { scope: import.meta.env.BASE_URL })
+      .catch((error: unknown) => {
+        Sentry.logger.warn('Service worker registration failed', {
+          reason: error instanceof Error ? error.message : String(error),
+        })
+      })
+  })
+}
+
 // Resolve the stored/browser locale (and lazily load its catalog) before the
 // first paint so the UI never flashes the fallback language. A promise chain
 // (not top-level await) keeps the entry chunk free of top-level-await syntax.
@@ -71,3 +94,6 @@ app.config.globalProperties.$filters = {
 void initLocale().finally(() => {
   app.mount('#app')
 })
+
+// Only a production build emits `sw.js`.
+if (import.meta.env.PROD) registerServiceWorker()

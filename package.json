@@ -9,8 +9,6 @@
   "scripts": {
     "build": "run-p type-check \"build-only {@}\" --",
     "build-only": "vite build",
-    "ci:build": "run-p type-check \"build-only {@}\" --",
-    "ci:unit": "vitest --run",
     "dev": "vite",
     "doc": "npx typedoc --out docs src",
     "format": "prettier --write .",
