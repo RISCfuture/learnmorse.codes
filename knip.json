@@ -16,8 +16,8 @@
     "entry": ["src/**/__tests__/*.spec.ts", "tests/unit/**/*.spec.ts", "tests/unit/setup.ts"]
   },
   "rules": {
-    "exports": "warn",
-    "unresolved": "off"
+    "exports": "error",
+    "unresolved": "error"
   },
   "ignoreExportsUsedInFile": true
 }
