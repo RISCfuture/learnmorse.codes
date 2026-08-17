@@ -11,6 +11,12 @@
   --button-background-color: #e6e6e6;
   --button-background-hover-color: #ccc;
   --focus-color: #00f;
+  --unlit-color: #d9d9d9;
+  --glow-color: rgb(0 0 0 / 30%);
+  --morse-unit: 150ms;
+  --morse-cycle: calc(var(--morse-unit) * 54);
+  --morse-length: min(16px, calc(90vw / 48));
+  --mark-glow: 0 0 calc(var(--morse-length) / 2) var(--glow-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +27,8 @@
     --button-background-color: #1a1a1a;
     --button-background-hover-color: #333;
     --focus-color: #66f;
+    --unlit-color: #262626;
+    --glow-color: rgb(255 255 255 / 45%);
   }
 }
 
@@ -48,13 +56,6 @@ main {
   max-width: 800px;
 }
 
-.morse {
-  margin: 0 0 20px;
-  font-size: 24px;
-  letter-spacing: 0.35em;
-  color: var(--muted-color);
-}
-
 h1 {
   display: flex;
   flex-direction: column;
@@ -78,6 +79,96 @@ h1 {
   color: var(--muted-color);
 }
 
+/* The transmitter, keying `····− −−−−− ····−`. Every duration is a multiple of
+   `--morse-unit`, the dit length: a dit lasts 1 unit, a dah 3, the gap between
+   marks inside a character 1, the gap between characters 3, and the word gap
+   that separates one transmission from the next 7. A `4` is four dits and a dah,
+   7 units of signal around 4 intra-character gaps, so 11 units; a `0` is five
+   dahs, 15 units of signal around 4 gaps, so 19. Two inter-character gaps of 3
+   join them into 11 + 3 + 19 + 3 + 11 = 47 units of signal, and the word gap
+   brings `--morse-cycle` — the period every mark shares — to 54 units. Space
+   follows time as well: `--morse-length` is one unit of width, which makes a dit
+   a square and a dah a 3:1 bar, exactly the pulse geometry the lessons use.
+   Those same 47 units lie end to end across the page, so a unit is capped at a
+   48th of the width inside the body's gutters and the row always has a unit to
+   spare. */
+
+.signal {
+  display: flex;
+  gap: calc(var(--morse-length) * 3);
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 40px;
+}
+
+.marks {
+  display: flex;
+  gap: var(--morse-length);
+  height: var(--morse-length);
+}
+
+/* A mark rests in the lit state, which is also the readable end state a
+   reduced-motion reader sees; the keyframes below spend the rest of the cycle
+   dark. A negative delay puts every mark inside the cycle from the first painted
+   frame, and subtracting one whole cycle keeps the delay negative while leaving
+   the phase at `--morse-start` units. */
+
+.mark {
+  height: 100%;
+  background-color: var(--text-color);
+  box-shadow: var(--mark-glow);
+  animation-duration: var(--morse-cycle);
+  animation-delay: calc(var(--morse-unit) * var(--morse-start) - var(--morse-cycle));
+  animation-timing-function: steps(1);
+  animation-iteration-count: infinite;
+}
+
+.dit {
+  width: var(--morse-length);
+  animation-name: dit-on-air;
+}
+
+.dah {
+  width: calc(var(--morse-length) * 3);
+  animation-name: dah-on-air;
+}
+
+/* A dit holds for 1 of the cycle's 54 units: 1 ÷ 54 = 1.852%. */
+
+@keyframes dit-on-air {
+  0% {
+    background-color: var(--text-color);
+    box-shadow: var(--mark-glow);
+  }
+
+  1.852%,
+  100% {
+    background-color: var(--unlit-color);
+    box-shadow: none;
+  }
+}
+
+/* A dah holds for 3 units: 3 ÷ 54 = 5.556%. */
+
+@keyframes dah-on-air {
+  0% {
+    background-color: var(--text-color);
+    box-shadow: var(--mark-glow);
+  }
+
+  5.556%,
+  100% {
+    background-color: var(--unlit-color);
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    animation: none;
+  }
+}
+
 .button {
   display: inline-block;
   padding: 20px;
@@ -98,10 +189,6 @@ h1 {
 }
 
 @media (width <= 700px) {
-  .morse {
-    font-size: 18px;
-  }
-
   .code {
     font-size: 48px;
   }
@@ -112,6 +199,10 @@ h1 {
 
   .lede {
     font-size: 18px;
+  }
+
+  .signal {
+    margin-bottom: 25px;
   }
 
   .button {

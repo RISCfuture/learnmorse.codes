@@ -24,7 +24,34 @@
 
   <body>
     <main>
-      <p aria-hidden="true" class="morse">····− −−−−− ····−</p>
+      <!-- Each mark carries the unit at which it goes on air in a `--morse-start`
+           custom property; `404.css` turns that into the mark's phase within one
+           shared transmission cycle. -->
+      <div aria-hidden="true" class="signal">
+        <span class="marks">
+          <span class="mark dit" style="--morse-start: 0"></span>
+          <span class="mark dit" style="--morse-start: 2"></span>
+          <span class="mark dit" style="--morse-start: 4"></span>
+          <span class="mark dit" style="--morse-start: 6"></span>
+          <span class="mark dah" style="--morse-start: 8"></span>
+        </span>
+
+        <span class="marks">
+          <span class="mark dah" style="--morse-start: 14"></span>
+          <span class="mark dah" style="--morse-start: 18"></span>
+          <span class="mark dah" style="--morse-start: 22"></span>
+          <span class="mark dah" style="--morse-start: 26"></span>
+          <span class="mark dah" style="--morse-start: 30"></span>
+        </span>
+
+        <span class="marks">
+          <span class="mark dit" style="--morse-start: 36"></span>
+          <span class="mark dit" style="--morse-start: 38"></span>
+          <span class="mark dit" style="--morse-start: 40"></span>
+          <span class="mark dit" style="--morse-start: 42"></span>
+          <span class="mark dah" style="--morse-start: 44"></span>
+        </span>
+      </div>
 
       <h1>
         <span class="code">404</span>
