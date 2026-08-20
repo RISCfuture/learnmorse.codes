@@ -40,6 +40,7 @@
     "no-plusplus": "off",
     "no-shadow": "off",
     "no-use-before-define": "off",
+    "one-var": "off",
     "prefer-destructuring": "off",
     "radix": "off",
     "oxc/no-async-await": "off",
