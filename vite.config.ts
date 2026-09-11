@@ -5,6 +5,26 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// Vendor packages worth isolating from application code: they turn over far more slowly than
+// `src/`, so a deploy that only touches the app leaves their chunks cached in visitors' browsers.
+// `vue-i18n` is matched ahead of the Vue runtime because the trailing slash is all that separates
+// the two, and `pinia` shares the runtime's chunk because rolldown merges the two either way.
+//
+// `@sentry/*` is deliberately absent: naming a chunk for it would pull the session-replay and
+// browser-tracing modules that `@/config/sentryIntegrations` defers back onto the critical path,
+// which costs far more than the caching it would buy.
+const vendorChunks: [chunk: string, modules: RegExp][] = [
+  ['vue-i18n', /node_modules\/(vue-i18n|@intlify)\//],
+  ['vue', /node_modules\/(vue|@vue|pinia)\//],
+]
+
+/**
+ * Assigns a vendor module to its own chunk, leaving everything else to default chunking.
+ */
+function vendorChunk(moduleID: string): string | undefined {
+  return vendorChunks.find(([, modules]) => modules.test(moduleID))?.[0]
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command }) => {
   const plugins = [
@@ -36,6 +56,11 @@ export default defineConfig(({ command }) => {
     },
     build: {
       sourcemap: 'hidden',
+      rollupOptions: {
+        output: {
+          manualChunks: vendorChunk,
+        },
+      },
     },
   }
 })
