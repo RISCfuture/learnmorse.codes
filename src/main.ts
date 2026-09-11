@@ -1,4 +1,3 @@
-import 'scroll-behavior-polyfill'
 import './config/css'
 import 'normalize.css/normalize.css'
 import '@/assets/styles/font-faces.scss'
@@ -27,13 +26,11 @@ if (sentryDSN) {
     environment: import.meta.env.PROD ? 'production' : 'development',
     sendDefaultPii: true,
     integrations: [
-      Sentry.browserTracingIntegration(),
       Sentry.vueIntegration({
         tracingOptions: {
           trackComponents: true,
         },
       }),
-      Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
     ],
     tracesSampleRate: 1.0,
     enableLogs: true,
@@ -87,12 +84,32 @@ function registerServiceWorker(): void {
   })
 }
 
+/**
+ * Pulls Sentry's browser-tracing and session-replay integrations in from their own chunk.
+ *
+ * They are the heaviest part of the Sentry payload and neither is needed to render, so they load
+ * after the mount instead of blocking it. Losing them costs telemetry alone, which is not worth
+ * an error of its own.
+ */
+function addDeferredSentryIntegrations(): void {
+  void import('@/config/sentryIntegrations')
+    .then(({ addDeferredIntegrations }) => {
+      addDeferredIntegrations()
+    })
+    .catch((error: unknown) => {
+      Sentry.logger.warn('Deferred Sentry integrations failed to load', {
+        reason: error instanceof Error ? error.message : String(error),
+      })
+    })
+}
+
 // Resolve the stored/browser locale (and lazily load its catalog) before the
 // first paint so the UI never flashes the fallback language. A promise chain
 // (not top-level await) keeps the entry chunk free of top-level-await syntax.
 // oxlint-disable-next-line unicorn/prefer-top-level-await
 void initLocale().finally(() => {
   app.mount('#app')
+  if (sentryDSN) addDeferredSentryIntegrations()
 })
 
 // Only a production build emits `sw.js`.

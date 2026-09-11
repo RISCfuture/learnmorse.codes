@@ -15,7 +15,7 @@ export default defineConfig(({ command }) => {
       manifest: false,
       injectRegister: false,
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest,woff,woff2,ttf}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest,woff2}'],
         // This site has no client-side router, so an unknown path is a real 404.
         // vite-plugin-pwa otherwise defaults this to index.html, which makes the
         // service worker answer every unknown path with the home page.
